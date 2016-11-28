@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+
+public class SqlConfigText
+{
+
+    public Dictionary<string, string> SqlConfigDic()
+    {
+        var dic = new Dictionary<string, string>()
+        {
+			{"Sql","#p_Sql"},
+			//---安全配置中心---
+			// {"GetUser","select * from sys_user where LoginName=?p_LoginName and LoginPwd=?p_LoginPwd"}
+		}; 
+        return dic; 
+    }
+}
