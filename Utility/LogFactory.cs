@@ -13,7 +13,7 @@ namespace Utility
         {
             if (Instance == null)
             {
-                var t = Type.GetType("BaseBox.Utility.Logger." + ConfigHandler.LogType);
+                var t = Type.GetType("Utility." + ConfigHandler.LogType);
                 if (t != null) Instance = (ILogger)Activator.CreateInstance(t, null);
             }
             return Instance;

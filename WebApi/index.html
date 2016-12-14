@@ -4,48 +4,68 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
     <script src="js/jquery.min.js"></script>
+    <style type="text/css">
+        #table {
+            border: 1px grey solid;
+            width: 100%;
+            border-collapse: collapse;
+            text-align:center;
+        }
+
+            #table td {
+                border: 1px grey solid;
+            }
+
+            #table th {
+                border: 1px grey solid;
+            }
+    </style>
 </head>
 <body>
     <div>
-        <h2>All Products</h2>
-        <ul id="products" />
+        接口信息
     </div>
     <div>
-        <h2>Search by ID</h2>
-        <input type="text" id="prodId" size="5" />
-        <input type="button" value="Search" onclick="find();" />
-        <p id="product" />
+        <table id="table">
+            <thead>
+                <tr>
+                    <th>接口编号</th>
+                    <th>所在模块</th>
+                    <th>接口说明</th>
+                    <th>接口方法</th>
+                    <th>接口参数</th>
+                    <th>返回参数类型</th>
+                    <th>返回参数说明</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
 
     <script>
-        var uri = 'api/product';
+        var uri = 'api/home/GetAllProducts';
 
         $(document).ready(function () {
             // Send an AJAX request
             $.getJSON(uri)
                 .done(function (data) {
-                    // On success, 'data' contains a list of products.
-                    $.each(data, function (key, item) {
-                        // Add a list item for the product.
-                        $('<li>', { text: formatItem(item) }).appendTo($('#products'));
+                    $("#table").find("tbody").empty();
+                    $.each(data, function (index, item) {
+                        var tr = "<tr>"
+                        tr += "<td>" + item.InterfaceNo + "</td>";
+                        tr += "<td>" + item.ResModule + "</td>";
+                        tr += "<td>" + item.InterfaceRemark + "</td>";
+                        tr += "<td>" + item.MethodBehavior + "</td>";
+                        tr += "<td>" + item.ParmsRemark + "</td>";
+                        tr += "<td>" + item.ReturnClass + "</td>";
+                        tr += "<td>" + item.ReturnRemark + "</td>";
+                        tr += "</tr>";
+                        $("#table").find("tbody").append(tr)
                     });
                 });
         });
 
-        function formatItem(item) {
-            return item.Name + ': $' + item.Price;
-        }
-
-        function find() {
-            var id = $('#prodId').val();
-            $.getJSON(uri + '/' + id)
-                .done(function (data) {
-                    $('#product').text(formatItem(data));
-                })
-                .fail(function (jqXHR, textStatus, err) {
-                    $('#product').text('Error: ' + err);
-                });
-        }
+       
     </script>
 </body>
 </html>

@@ -10,7 +10,10 @@ public class SqlConfigText
         {
 			{"Sql","#p_Sql"},
 			//---安全配置中心---
-			// {"GetUser","select * from sys_user where LoginName=?p_LoginName and LoginPwd=?p_LoginPwd"}
+			{"GetUser","SELECT * FROM table_user WHERE 1=1"},
+			{"GetUserCount","SELECT count(1) FROM table_user WHERE 1=1"},
+			{"DeleteUser","DELETE from table_user where id=p_Id"},
+			{"UpdateUser","UPDATE table_user SET  usr_account =?p_UserAccount,  usr_name =?p_UserName,  usr_access_id =?p_UserAccessId,  usr_pwd =?p_UserPassword,  usr_client_id =?p_UserClientId,  remark =?p_Remark,  creator =?p_Creator WHERE id =?p_Id"}
 		}; 
         return dic; 
     }

@@ -38,5 +38,55 @@ namespace Service
                 return _generateDal;
             }
         }
+
+        protected static IEnumerable<Condition> CreatePaginConditions(int pageIndex, int pageSize)
+        {
+            var conditions = new List<Condition>();
+            if (pageIndex == 1)
+            {
+                var conditionIndex = new Condition
+                {
+                    LeftBrace = "",
+                    ParamName = "Index",
+                    DbColumnName = "",
+                    ParamValue = pageIndex - 1,
+                    Operation = ConditionOperate.LimitIndex,
+                    RightBrace = "",
+                    Logic = ""
+
+                };
+                conditions.Add(conditionIndex);
+            }
+            else
+            {
+                var conditionIndex = new Condition
+                {
+                    LeftBrace = "",
+                    ParamName = "Index",
+                    DbColumnName = "",
+                    ParamValue = (pageIndex - 1) * pageSize,
+                    Operation = ConditionOperate.LimitIndex,
+                    RightBrace = "",
+                    Logic = ""
+
+                };
+                conditions.Add(conditionIndex);
+            }
+
+            var conditionLength = new Condition
+            {
+                LeftBrace = "",
+                ParamName = "Length",
+                DbColumnName = "",
+                ParamValue = pageSize,
+                Operation = ConditionOperate.LimitLength,
+                RightBrace = "",
+                Logic = ""
+
+            };
+            conditions.Add(conditionLength);
+
+            return conditions;
+        }
     }
 }

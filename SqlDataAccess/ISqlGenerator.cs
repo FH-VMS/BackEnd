@@ -9,6 +9,14 @@ namespace SqlDataAccess
 {
     public interface ISqlGenerator
     {
+        #region Tran
+
+        void BeginTransaction();
+        void CommitTransaction();
+        void RollBack();
+
+        #endregion
+
         #region Create
 
         /// <summary>
@@ -79,6 +87,43 @@ namespace SqlDataAccess
         /// <param name="t"></param>
         /// <returns></returns>
         List<T> Load<T>(T t);
+
+        List<T> LoadByConditions<T>(CommonSqlKey sqlKey, IList<Condition> parmObj);
+
+        int CountByConditions(CommonSqlKey sqlKey, IList<Condition> parmObj);
+
+        /// <summary>
+        /// 根据字典对象作为参数获取列表
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sqlKey"></param>
+        /// <param name="parmObj"></param>
+        /// <returns></returns>
+        List<T> Load<T>(CommonSqlKey sqlKey, IDictionary<string, object> parmObj);
+
+        /// <summary>
+        /// 根据SQL获取单值
+        /// </summary>
+        /// <param name="sqlKey"></param>
+        /// <returns></returns>
+        object Single(CommonSqlKey sqlKey);
+
+        /// <summary>
+        /// 根据带值的类型对象作为参数获取列表
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sqlKey"></param>
+        /// <param name="parmObj"></param>
+        /// <returns></returns>
+        object Single<T>(CommonSqlKey sqlKey, T parmObj);
+
+        /// <summary>
+        /// 根据字典对象作为参数获取列表
+        /// </summary>
+        /// <param name="sqlKey"></param>
+        /// <param name="parmObj"></param>
+        /// <returns></returns>
+        object Single(CommonSqlKey sqlKey, IDictionary<string, object> parmObj);
 
 
 

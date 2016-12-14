@@ -77,7 +77,7 @@ namespace Utility
                 conPool.Remove(Thread.CurrentThread.ManagedThreadId);
             }
 
-            _logger.LogInfo("Create Oracle Connection........");
+            //_logger.LogInfo("Create Oracle Connection........");
             conn = CreateConnectionWithQuery();
             conPool.Add(Thread.CurrentThread.ManagedThreadId, conn);
             return conn;

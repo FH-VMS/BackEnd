@@ -7,20 +7,48 @@ using System.Threading.Tasks;
 
 namespace Model.User
 {
-    [Table("user")]
+    [Table("table_user")]
     public class UserModel:BaseModel
     {
-        [Column(Name = "account")]
-        public string Account
+        [Column(Name = "id")]
+        public string Id
         {
             get;
             set;
         }
-        [Column(Name = "password")]
-        public string Password
+
+        [Column(Name = "usr_account")]
+        public string UserAccount
         {
             get;
             set;
         }
+        [Column(Name = "usr_access_id")]
+        public int UserAccessId
+        {
+            get;
+            set;
+        }
+
+
+        [Column(Name = "usr_name")]
+        public string UserName
+        {
+            get;
+            set;
+        }
+        [Column(Name = "usr_pwd")]
+        public string UserPassword
+        {
+            get;
+            set;
+        }
+        [Column(Name = "usr_client_id")]
+        public string UserClientId
+        {
+            get;
+            set;
+        }
+      
     }
 }

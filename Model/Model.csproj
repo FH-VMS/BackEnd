@@ -40,11 +40,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseModel.cs" />
-    <Compile Include="ProductModel.cs" />
+    <Compile Include="Common\MenuModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sys\ColumnAttribute.cs" />
     <Compile Include="Sys\ModelPropertyInfo.cs" />
     <Compile Include="Sys\ModelTableInfo.cs" />
+    <Compile Include="Sys\Pagination.cs" />
+    <Compile Include="Sys\RemarkAttribute.cs" />
+    <Compile Include="Sys\RemoteServiceEntity.cs" />
+    <Compile Include="Sys\ResultObj.cs" />
     <Compile Include="Sys\TableAttribute.cs" />
     <Compile Include="User\UserModel.cs" />
   </ItemGroup>

@@ -266,6 +266,35 @@ namespace SqlDataAccess
             return GetFromDictionary<T>(sqlKey, parmDic);
         }
 
+        public List<T> LoadByConditions<T>(CommonSqlKey sqlKey, IList<Condition> parmObj)
+        {
+            var parmDic = SqlConstructor.MakeParms(parmObj);
+
+            return GetFromDictionaryByConditions<T>(sqlKey, parmDic, parmObj);
+        }
+
+        public int CountByConditions(CommonSqlKey sqlKey, IList<Condition> parmObj)
+        {
+            var result = 0;
+            var parmDic = SqlConstructor.MakeParms(parmObj);
+
+            var sqlTxt = CommSqlText.Instance[sqlKey];
+
+            var sqlParameters = parmDic;
+
+            //解析where 后查询条件
+            List<DbParameter> parameter;
+            var whereSql = ConditionHandler.GetWhereSql(parmObj.ToList(), out parameter);
+
+            sqlTxt = sqlTxt + whereSql;
+
+            result = DbHelper.ExecuteScalar(sqlTxt, sqlParameters) == null
+                ? 0
+                : int.Parse(DbHelper.ExecuteScalar(sqlTxt, sqlParameters).ToString());
+
+            return result;
+        }
+
         public object Single(CommonSqlKey sqlKey)
         {
             return GetSingleFromDicDictionary(sqlKey, null);
@@ -378,34 +407,7 @@ namespace SqlDataAccess
             return result;
         }
 
-        public List<T> LoadByConditions<T>(CommonSqlKey sqlKey, IList<Condition> parmObj)
-        {
-            var parmDic = SqlConstructor.MakeParms(parmObj);
 
-            return GetFromDictionaryByConditions<T>(sqlKey, parmDic, parmObj);
-        }
-
-        public int CountByConditions(CommonSqlKey sqlKey, IList<Condition> parmObj)
-        {
-            var result = 0;
-            var parmDic = SqlConstructor.MakeParms(parmObj);
-
-            var sqlTxt = CommSqlText.Instance[sqlKey];
-
-            var sqlParameters = parmDic;
-
-            //解析where 后查询条件
-            List<DbParameter> parameter;
-            var whereSql = ConditionHandler.GetWhereSql(parmObj.ToList(), out parameter);
-
-            sqlTxt = sqlTxt + whereSql;
-
-            result = DbHelper.ExecuteScalar(sqlTxt, sqlParameters) == null
-                ? 0
-                : int.Parse(DbHelper.ExecuteScalar(sqlTxt, sqlParameters).ToString());
-
-            return result;
-        }
 
         #region Utility
 

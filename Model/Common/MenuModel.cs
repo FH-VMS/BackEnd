@@ -1,50 +1,50 @@
-﻿using System;
+﻿using Model.Sys;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Model.Sys;
-using System.ComponentModel;
 
-namespace Model
+namespace Model.Common
 {
-    public class BaseModel
+    [Table("table_menu")]
+    public class MenuModel
     {
-        public int PageIndex
+        [Column(Name = "menu_id")]
+        public string MenuId
         {
             get;
             set;
         }
 
-        public int PageSize
+        [Column(Name = "menu_name")]
+        public string MenuName
         {
             get;
             set;
         }
 
-        [Column(Name = "create_date")]
-        public DateTime CreateDate
+        [Column(Name = "menu_father")]
+        public string MenuFather
         {
             get;
             set;
         }
-        [Column(Name = "creator")]
-        public string Creator
+
+        [Column(Name = "url")]
+        public string Url
         {
             get;
             set;
         }
-        [Column(Name = "enddate")]
-        public DateTime EndDate
-        {
-            get;
-            set;
-        }
+
         [Column(Name = "remark")]
         public string Remark
         {
             get;
             set;
         }
+
+        public List<MenuModel> Menus;
     }
 }

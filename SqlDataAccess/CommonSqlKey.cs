@@ -9,6 +9,10 @@ namespace SqlDataAccess
     public enum CommonSqlKey
     {
         Null,
-        Sql
+        Sql,
+        GetUser,
+        GetUserCount,
+        UpdateUser,
+        DeleteUser
     }
 }
