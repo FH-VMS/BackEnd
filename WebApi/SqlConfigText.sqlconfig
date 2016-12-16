@@ -9,11 +9,24 @@ public class SqlConfigText
         var dic = new Dictionary<string, string>()
         {
 			{"Sql","#p_Sql"},
-			//---安全配置中心---
+			//---用户模块---
+			{"GetLogin","SELECT id,usr_account,usr_client_id,usr_access_id FROM table_user WHERE 1=1 AND usr_account=?p_UserAccount AND usr_pwd=?p_UserPassword AND sts=1"},
 			{"GetUser","SELECT * FROM table_user WHERE 1=1"},
 			{"GetUserCount","SELECT count(1) FROM table_user WHERE 1=1"},
-			{"DeleteUser","DELETE from table_user where id=p_Id"},
-			{"UpdateUser","UPDATE table_user SET  usr_account =?p_UserAccount,  usr_name =?p_UserName,  usr_access_id =?p_UserAccessId,  usr_pwd =?p_UserPassword,  usr_client_id =?p_UserClientId,  remark =?p_Remark,  creator =?p_Creator WHERE id =?p_Id"}
+			{"DeleteUser","DELETE from table_user where id=?p_Id"},
+			{"UpdateUser","UPDATE table_user SET  usr_account =?p_UserAccount,  usr_name =?p_UserName,  usr_access_id =?p_UserAccessId,  usr_pwd =?p_UserPassword,  usr_client_id =?p_UserClientId,  remark =?p_Remark,  creator =?p_Creator WHERE id =?p_Id"},
+
+			// 客户列表
+			{"GetCustomer","SELECT * FROM table_client WHERE 1=1"},
+			{"GetCustomerCount","SELECT count(1) FROM table_client WHERE 1=1"},
+			{"DeleteCustomer","DELETE from table_client where cliendt_id=?p_Id"},
+			{"UpdateCustomer","UPDATE table_client SET  client_name =?p_ClientName,  client_status =?p_ClientStatus,  client_father_id =?p_ClientFatherId,  client_type =?p_ClientType,  client_contect =?p_ClientContect,  client_tel =?p_ClientTel,  client_email =?p_ClientEmail,  client_country =?p_ClientCountry,  client_currency =?p_ClientCurrency,  client_address =?p_ClientAddress,  creator =?p_Creator,  create_date =?p_CreateDate,  updater =?p_Updater,  update_date =?p_UpdateDate,  remark =?p_Remark  WHERE client_id =?p_Id"},
+			//权限表
+			{"GetAuth","SELECT a.*,b.book_chinese as RankName FROM table_dms as a  LEFT JOIN table_book as b ON a.rank=b.value WHERE b.id='rank'"},
+			{"GetAuthCount","SELECT count(1) FROM table_dms WHERE 1=1"},
+			{"DeleteAuth","DELETE from table_dms where id=?p_Id"},
+			{"UpdateAuth","UPDATE table_dms SET  dms_name =?p_DmsName,  rank =?p_Rank,  remark =?p_Remark WHERE id =?p_Id"}
+
 		}; 
         return dic; 
     }

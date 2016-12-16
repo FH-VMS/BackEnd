@@ -1,5 +1,7 @@
 ﻿using Interface;
 using Model.Common;
+using Model.User;
+using SqlDataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +27,24 @@ namespace Service
                 item.Menus = menu.ToList<MenuModel>();
             }
             return fatherList.ToList<MenuModel>();
+        }
+
+        public UserModel PostUser(UserModel userInfo)
+        {
+            var dic = new Dictionary<string, object>();
+            dic.Add("UserAccount", userInfo.UserAccount);
+            dic.Add("UserPassword", userInfo.UserPassword);
+            var userList = GenerateDal.Load<UserModel>(CommonSqlKey.GetLogin, dic);
+            if (userList != null && userList.ToList<UserModel>().Count>0)
+            {
+
+                return userList[0];
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
     }

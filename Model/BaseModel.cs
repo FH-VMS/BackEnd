@@ -34,12 +34,7 @@ namespace Model
             get;
             set;
         }
-        [Column(Name = "enddate")]
-        public DateTime EndDate
-        {
-            get;
-            set;
-        }
+        
         [Column(Name = "remark")]
         public string Remark
         {

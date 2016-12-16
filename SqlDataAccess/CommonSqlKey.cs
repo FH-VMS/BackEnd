@@ -13,6 +13,18 @@ namespace SqlDataAccess
         GetUser,
         GetUserCount,
         UpdateUser,
-        DeleteUser
+        DeleteUser,
+        GetLogin,
+
+        UpdateCustomer,
+        DeleteCustomer,
+        GetCustomer,
+        GetCustomerCount,
+
+        //权限
+        GetAuthCount,
+        DeleteAuth,
+        UpdateAuth,
+        GetAuth
     }
 }

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Model.User
 {
-    [Table("table_user")]
-    public class UserModel:BaseModel
+    [Table("table_dms")]
+    public class AuthModel
     {
         [Column(Name = "id")]
         public string Id
@@ -17,45 +17,43 @@ namespace Model.User
             set;
         }
 
-        [Column(Name = "usr_account")]
-        public string UserAccount
-        {
-            get;
-            set;
-        }
-        [Column(Name = "usr_access_id")]
-        public int UserAccessId
+        [Column(Name = "dms_name")]
+        public string DmsName
         {
             get;
             set;
         }
 
-
-        [Column(Name = "usr_name")]
-        public string UserName
-        {
-            get;
-            set;
-        }
-        [Column(Name = "usr_pwd")]
-        public string UserPassword
-        {
-            get;
-            set;
-        }
-        [Column(Name = "usr_client_id")]
-        public string UserClientId
+        [Column(Name = "rank")]
+        public int Rank
         {
             get;
             set;
         }
 
-        [Column(Name = "enddate")]
-        public DateTime EndDate
+        public string RankName
         {
             get;
             set;
         }
-      
+
+        [Column(Name = "remark")]
+        public string Remark
+        {
+            get;
+            set;
+        }
+
+        public int PageIndex
+        {
+            get;
+            set;
+        }
+
+        public int PageSize
+        {
+            get;
+            set;
+        }
     }
 }

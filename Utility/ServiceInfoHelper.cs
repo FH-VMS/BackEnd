@@ -211,6 +211,9 @@ namespace Utility
             sw.WriteLine("* ");
             sw.WriteLine("**************** */");
             sw.WriteLine("const Front = { ");
+            sw.WriteLine("   BaseSetting: {");
+            sw.WriteLine("      PageSize: 10");
+            sw.WriteLine("   }, ");
             sw.WriteLine(" ");
 
             var sOldModule = "";

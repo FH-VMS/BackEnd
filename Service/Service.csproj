@@ -40,7 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractService.cs" />
+    <Compile Include="AuthService.cs" />
     <Compile Include="CommonService.cs" />
+    <Compile Include="CustomerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserService.cs" />
   </ItemGroup>
@@ -56,6 +58,10 @@
     <ProjectReference Include="..\SqlDataAccess\SqlDataAccess.csproj">
       <Project>{8a267221-cc70-40f8-a6ae-09e48fd2cfc7}</Project>
       <Name>SqlDataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{c4e86340-5939-4111-b8fd-987813664174}</Project>
+      <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

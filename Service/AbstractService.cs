@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Utility;
 
 namespace Service
 {
@@ -88,5 +89,6 @@ namespace Service
 
             return conditions;
         }
+
     }
 }

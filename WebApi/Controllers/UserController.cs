@@ -14,7 +14,7 @@ namespace Chuang.Back.Controllers
 {
     public class UserController : ApiBaseController
     {
-        private static IBase<UserModel> _User
+        private static IBase<UserModel> _IBase
         {
             get
             {
@@ -22,37 +22,38 @@ namespace Chuang.Back.Controllers
             }
         }
 
-        public ResultObj<List<UserModel>> GetUser(string userAccount="", string userName="", int pageIndex =1, int pageSize=10)
+        public ResultObj<List<UserModel>> GetData(string userAccount="", string userName="", int pageIndex =1, int pageSize=10)
         {
             // IProduct service = new ProductService();
             //List<ProductModel> products = service.GetAllProducts();
+
             UserModel userInfo = new UserModel();
             userInfo.UserName = userName;
             userInfo.UserAccount = userAccount;
             userInfo.PageIndex = pageIndex;
             userInfo.PageSize = pageSize;
-            var users = _User.GetAll(userInfo);
-            int totalcount = _User.GetCount(userInfo);
+            var users = _IBase.GetAll(userInfo);
+            int totalcount = _IBase.GetCount(userInfo);
 
             var pagination = new Pagination { PageSize = pageSize, PageIndex = pageIndex, StartIndex = 0, TotalRows = totalcount, TotalPage = 0 };
             return Content(users, pagination);
         }
 
-        public ResultObj<int> PostUser(UserModel userInfo)
+        public ResultObj<int> PostData(UserModel userInfo)
         {
             userInfo.CreateDate = DateTime.Now;
-            return Content(_User.PostData(userInfo));
+            return Content(_IBase.PostData(userInfo));
         }
 
-        public ResultObj<int> PutUser(UserModel userInfo)
+        public ResultObj<int> PutData(UserModel userInfo)
         {
             userInfo.CreateDate = DateTime.Now;
-            return Content(_User.UpdateData(userInfo));
+            return Content(_IBase.UpdateData(userInfo));
         }
 
-        public ResultObj<int> DeleteUser(string id)
+        public ResultObj<int> DeleteData(string idList)
         {
-            return Content(_User.DeleteData(id));
+            return Content(_IBase.DeleteData(idList));
         }
     }
 }

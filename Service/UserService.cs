@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utility;
 
 namespace Service
 {
@@ -13,7 +14,7 @@ namespace Service
     {
         public List<UserModel> GetAll(UserModel userInfo)
         {
-           
+            //var x = HttpContextHandler.GetHeaderObj("UserAccount");
             var conditions = new List<Condition>();
            
                var conditionAccount = new Condition

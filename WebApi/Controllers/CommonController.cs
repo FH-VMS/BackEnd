@@ -2,6 +2,7 @@
 using Interface;
 using Model.Common;
 using Model.Sys;
+using Model.User;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -24,9 +25,24 @@ namespace Chuang.Back.Controllers
 
         public ResultObj<int> GetWebAPIAndModel()
         {
-            ServiceInfoHelper.WriteWebAPI();
+            // ServiceInfoHelper.WriteWebAPI();
             ServiceInfoHelper.WriteWebModels();
             return Content(1);
+        }
+
+        public ResultObj<UserModel> PostLogin(UserModel userInfo)
+        {
+            ICommon common = new CommonService();
+            var user = common.PostUser(userInfo);
+            if (user == null)
+            {
+                return Content(new UserModel(), ResultCode.NoAccess, "用户名密码不正确！");
+            }
+            else
+            {
+                return Content(user);
+            }
+            
         }
     }
 }

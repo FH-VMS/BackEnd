@@ -63,6 +63,7 @@
     <Compile Include="ConfigHandler.cs" />
     <Compile Include="DateTimeHandler.cs" />
     <Compile Include="HttpCache.cs" />
+    <Compile Include="HttpContextHandler.cs" />
     <Compile Include="ICacheStrategy.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="JsonHandler.cs" />
