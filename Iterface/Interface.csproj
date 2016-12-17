@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAuth.cs" />
     <Compile Include="IBase.cs" />
     <Compile Include="ICommon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

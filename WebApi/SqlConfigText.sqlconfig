@@ -10,7 +10,7 @@ public class SqlConfigText
         {
 			{"Sql","#p_Sql"},
 			//---用户模块---
-			{"GetLogin","SELECT id,usr_account,usr_client_id,usr_access_id FROM table_user WHERE 1=1 AND usr_account=?p_UserAccount AND usr_pwd=?p_UserPassword AND sts=1"},
+			{"GetLogin","SELECT id,usr_account,usr_client_id,usr_access_id,sts FROM table_user WHERE 1=1 AND usr_account=?p_UserAccount AND usr_pwd=?p_UserPassword AND (sts=1 or sts=100)"},
 			{"GetUser","SELECT * FROM table_user WHERE 1=1"},
 			{"GetUserCount","SELECT count(1) FROM table_user WHERE 1=1"},
 			{"DeleteUser","DELETE from table_user where id=?p_Id"},

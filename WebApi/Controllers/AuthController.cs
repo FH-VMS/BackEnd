@@ -1,5 +1,6 @@
 ﻿using Chuang.Back.Base;
 using Interface;
+using Model.Common;
 using Model.Sys;
 using Model.User;
 using Service;
@@ -37,9 +38,10 @@ namespace Chuang.Back.Controllers
             return Content(users, pagination);
         }
 
-        public ResultObj<int> PostData(AuthModel authInfo)
+        public ResultObj<int> PostData(string name,int rank ,List<MenuModel> lstAuthInfo)
         {
-            return Content(_IBase.PostData(authInfo));
+            IAuth iAuth = new AuthService();
+            return Content(iAuth.PostAuthTemplate(name, rank, lstAuthInfo));
         }
 
         public ResultObj<int> PutData(AuthModel authInfo)

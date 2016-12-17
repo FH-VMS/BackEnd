@@ -24,7 +24,7 @@ namespace Model.User
             set;
         }
         [Column(Name = "usr_access_id")]
-        public int UserAccessId
+        public string UserAccessId
         {
             get;
             set;
@@ -52,6 +52,13 @@ namespace Model.User
 
         [Column(Name = "enddate")]
         public DateTime EndDate
+        {
+            get;
+            set;
+        }
+
+        [Column(Name = "sts")]
+        public int Sts
         {
             get;
             set;

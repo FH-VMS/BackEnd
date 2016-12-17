@@ -1,4 +1,5 @@
 ﻿using Interface;
+using Model.Common;
 using Model.User;
 using SqlDataAccess;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Service
 {
-    public class AuthService : AbstractService, IBase<AuthModel>
+    public class AuthService : AbstractService, IBase<AuthModel>,IAuth
     {
         public List<AuthModel> GetAll(AuthModel authInfo)
         {
@@ -51,6 +52,33 @@ namespace Service
 
 
             return result;
+        }
+
+        public int PostAuthTemplate(string name, int rank, List<MenuModel> lstAuthModel)
+        {
+           
+                try
+                {
+
+                    GenerateDal.BeginTransaction();
+                   
+                    AuthModel authModel = new AuthModel();
+                    authModel.Id=Guid.NewGuid().ToString();
+                    authModel.DmsName = name;
+                    authModel.Rank=rank;
+                    foreach(var menuModel in lstAuthModel)
+                    {
+                        
+                    }
+
+                    GenerateDal.CommitTransaction();
+                    return 1;
+                }
+                catch (Exception ee)
+                {
+                    GenerateDal.RollBack();
+                    return 0;
+                }
         }
 
         /// <summary>

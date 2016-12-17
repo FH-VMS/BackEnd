@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utility;
 
 namespace Service
 {
@@ -14,19 +15,29 @@ namespace Service
     {
         public List<MenuModel> GetMenus(string userAccount)
         {
-            var menuList = GenerateDal.Load<MenuModel>();
-            var fatherList = from m in menuList
-                             where m.MenuFather == null || m.MenuFather ==""
-                             orderby m.MenuId
-                             select m;
-            foreach (MenuModel item in fatherList)
+            string sts = HttpContextHandler.GetHeaderObj("Sts").ToString();
+            if (sts == "100")
             {
-                var menu = from m in menuList
-                           where m.MenuFather == item.MenuId
-                           select m;
-                item.Menus = menu.ToList<MenuModel>();
+                var dic = new Dictionary<string, object>();
+                var menuList = GenerateDal.Load<MenuModel>();
+                var fatherList = from m in menuList
+                                 where m.MenuFather == null || m.MenuFather == ""
+                                 orderby m.MenuId
+                                 select m;
+                foreach (MenuModel item in fatherList)
+                {
+                    var menu = from m in menuList
+                               where m.MenuFather == item.MenuId
+                               select m;
+                    item.Menus = menu.ToList<MenuModel>();
+                }
+                return fatherList.ToList<MenuModel>();
             }
-            return fatherList.ToList<MenuModel>();
+            else
+            {
+                return null;
+            }
+           
         }
 
         public UserModel PostUser(UserModel userInfo)
