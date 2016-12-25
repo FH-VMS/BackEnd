@@ -25,7 +25,7 @@ namespace Model.Customer
         }
 
         [Column(Name = "client_status")]
-        public int ClientStatus
+        public string ClientStatus
         {
             get;
             set;
@@ -39,7 +39,7 @@ namespace Model.Customer
         }
 
         [Column(Name = "client_type")]
-        public int ClientType
+        public string ClientType
         {
             get;
             set;
@@ -97,6 +97,12 @@ namespace Model.Customer
 
         [Column(Name = "updater")]
         public string Updater
+        {
+            get;
+            set;
+        }
+
+        public List<CustomerModel> children
         {
             get;
             set;

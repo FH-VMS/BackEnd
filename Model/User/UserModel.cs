@@ -50,6 +50,12 @@ namespace Model.User
             set;
         }
 
+        public string UserClientName
+        {
+            get;
+            set;
+        }
+
         [Column(Name = "enddate")]
         public DateTime EndDate
         {
@@ -59,6 +65,12 @@ namespace Model.User
 
         [Column(Name = "sts")]
         public int Sts
+        {
+            get;
+            set;
+        }
+
+        public List<UserModel> children
         {
             get;
             set;

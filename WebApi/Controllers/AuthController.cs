@@ -31,11 +31,18 @@ namespace Chuang.Back.Controllers
            
             authInfo.PageIndex = pageIndex;
             authInfo.PageSize = pageSize;
-            var users = _IBase.GetAll(authInfo);
+            var auths = _IBase.GetAll(authInfo);
+
+            IAuth iauth = new AuthService();
+            foreach(var auth in auths)
+            {
+                auth.lstAuthRelate = iauth.GetAuthRelateByDmsId(auth.Id);
+            }
+           
             int totalcount = _IBase.GetCount(authInfo);
 
             var pagination = new Pagination { PageSize = pageSize, PageIndex = pageIndex, StartIndex = 0, TotalRows = totalcount, TotalPage = 0 };
-            return Content(users, pagination);
+            return Content(auths, pagination);
         }
 
         public ResultObj<int> PostData(string name,int rank ,List<MenuModel> lstAuthInfo)
@@ -44,14 +51,21 @@ namespace Chuang.Back.Controllers
             return Content(iAuth.PostAuthTemplate(name, rank, lstAuthInfo));
         }
 
-        public ResultObj<int> PutData(AuthModel authInfo)
+        public ResultObj<int> PutData(string id,string name, int rank, List<MenuModel> lstAuthInfo)
         {
-            return Content(_IBase.UpdateData(authInfo));
+            IAuth iAuth = new AuthService();
+            return Content(iAuth.UpdaetAuthTemplate(id, name, rank, lstAuthInfo));
         }
 
         public ResultObj<int> DeleteData(string idList)
         {
             return Content(_IBase.DeleteData(idList));
+        }
+
+        public ResultObj<List<AuthModel>> GetAuthDic()
+        {
+            IAuth iAuth = new AuthService();
+            return Content(iAuth.GetAuthDic());
         }
     }
 }

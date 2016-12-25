@@ -16,27 +16,33 @@ namespace Service
         public List<MenuModel> GetMenus(string userAccount)
         {
             string sts = HttpContextHandler.GetHeaderObj("Sts").ToString();
+            List<MenuModel> menuList = null;
             if (sts == "100")
             {
                 var dic = new Dictionary<string, object>();
-                var menuList = GenerateDal.Load<MenuModel>();
-                var fatherList = from m in menuList
-                                 where m.MenuFather == null || m.MenuFather == ""
-                                 orderby m.MenuId
-                                 select m;
-                foreach (MenuModel item in fatherList)
-                {
-                    var menu = from m in menuList
-                               where m.MenuFather == item.MenuId
-                               select m;
-                    item.Menus = menu.ToList<MenuModel>();
-                }
-                return fatherList.ToList<MenuModel>();
+                menuList = GenerateDal.Load<MenuModel>();
+               
             }
             else
             {
-                return null;
+                string userAccessId  = HttpContextHandler.GetHeaderObj("UserAccessId").ToString();
+                var dic = new Dictionary<string, object>();
+                dic.Add("UserAccessId", userAccessId);
+                menuList = GenerateDal.Load<MenuModel>(CommonSqlKey.GetMenuByUser, dic);
             }
+
+            var fatherList = from m in menuList
+                             where m.MenuFather == null || m.MenuFather == ""
+                             orderby m.MenuId
+                             select m;
+            foreach (MenuModel item in fatherList)
+            {
+                var menu = from m in menuList
+                           where m.MenuFather == item.MenuId
+                           select m;
+                item.Menus = menu.ToList<MenuModel>();
+            }
+            return fatherList.ToList<MenuModel>();
            
         }
 
@@ -56,6 +62,104 @@ namespace Service
                 return null;
             }
             
+        }
+
+        //取字典的方法
+        public List<DicModel> GetDic(string id)
+        {
+            var dic = new Dictionary<string, object>();
+            dic.Add("id", id);
+            return GenerateDal.Load<DicModel>(CommonSqlKey.GetDic, dic);
+        }
+
+        //取客户等级
+        public List<DicModel> GetRank(string id)
+        {
+            string sts = HttpContextHandler.GetHeaderObj("Sts").ToString();
+            if (sts == "100")
+            {
+                var rankList = GetDic(id);
+                var result = from m in rankList
+                             where m.Value != "0"
+                             select m;
+                return result.ToList<DicModel>();
+            }
+            else
+            {
+                string userAccessId = HttpContextHandler.GetHeaderObj("UerAccessId").ToString(); 
+                var dic = new Dictionary<string, object>();
+                dic.Add("Id", id);
+                dic.Add("DmsId", id);
+                return GenerateDal.Load<DicModel>(CommonSqlKey.GetRank, dic);
+            }
+           
+        }
+
+        // 根据权限模板取等级
+        //取客户等级
+        public int GetRankValue(string id)
+        {
+            var dic = new Dictionary<string, object>();
+            dic.Add("Id", id);
+            return Convert.ToInt32(GenerateDal.Load<DicModel>(CommonSqlKey.GetRankValue, dic)[0].Value);
+        }
+
+        public List<CommonDic> GetClientDic()
+        {
+            string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
+            var clientId = HttpContextHandler.GetHeaderObj("UserClientId");
+            var conditions = new List<Condition>();
+            if (userStatus == "100" || userStatus == "99")
+            {
+
+            }
+            else
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = "",
+                    ParamName = "ClientFatherId",
+                    DbColumnName = "client_father_id",
+                    ParamValue = clientId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+
+             
+            }
+            return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetClientDic, conditions);
+
+        }
+
+        public List<CommonDic> GetAuthDic()
+        {
+            string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
+            var clientId = HttpContextHandler.GetHeaderObj("UserClientId");
+            string accessId = HttpContextHandler.GetHeaderObj("UserAccessId").ToString();
+            var conditions = new List<Condition>();
+            if (userStatus == "100" || userStatus == "99")
+            {
+
+            }
+            else
+            {
+                int rank = GetRankValue(accessId);
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " ",
+                    ParamName = "Rank",
+                    DbColumnName = "a.rank",
+                    ParamValue = rank,
+                    Operation = ConditionOperate.Greater,
+                    RightBrace = "",
+                    Logic = ""
+                });
+
+
+            }
+            return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetAuthDic, conditions);
+
         }
 
     }

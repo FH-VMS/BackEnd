@@ -45,8 +45,8 @@ namespace Model.Common
             set;
         }
 
-        private bool _add = true;
-        public bool Add
+        private int _add = 1;
+        public int Add
         {
             get{
                 return _add;
@@ -58,8 +58,8 @@ namespace Model.Common
             }
         }
 
-        private bool _del=true;
-        public bool Del
+        private int _del = 1;
+        public int Del
         {
             get
             {
@@ -72,8 +72,8 @@ namespace Model.Common
             }
         }
 
-        private bool _mod = true;
-        public bool Mod
+        private int _mod = 1;
+        public int Mod
         {
             get
             {
@@ -86,8 +86,8 @@ namespace Model.Common
             }
         }
 
-        private bool _sear = true;
-        public bool Sear
+        private int _sear = 1;
+        public int Sear
         {
             get
             {
@@ -100,8 +100,8 @@ namespace Model.Common
             }
         }
 
-        private bool _checked = true;
-        public bool Checked
+        private int _checked = 1;
+        public int Checked
         {
             get
             {

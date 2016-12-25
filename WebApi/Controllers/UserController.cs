@@ -1,5 +1,6 @@
 ﻿using Chuang.Back.Base;
 using Interface;
+using Model.Common;
 using Model.Sys;
 using Model.User;
 using Service;
@@ -55,5 +56,18 @@ namespace Chuang.Back.Controllers
         {
             return Content(_IBase.DeleteData(idList));
         }
+
+        public ResultObj<List<CommonDic>> GetClientDic()
+        {
+            ICommon iCommon = new CommonService();
+            return Content(iCommon.GetClientDic());
+        }
+
+        public ResultObj<List<CommonDic>> GetAuthDic()
+        {
+            ICommon iCommon = new CommonService();
+            return Content(iCommon.GetAuthDic());
+        }
+
     }
 }

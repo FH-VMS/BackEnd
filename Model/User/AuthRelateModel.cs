@@ -1,5 +1,4 @@
-﻿using Model.Common;
-using Model.Sys;
+﻿using Model.Sys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Model.User
 {
-    [Table("table_dms")]
-    public class AuthModel
+    [Table("table_corr_dms")]
+    public class AuthRelateModel
     {
         [Column(Name = "id")]
         public string Id
@@ -18,21 +17,43 @@ namespace Model.User
             set;
         }
 
-        [Column(Name = "dms_name")]
-        public string DmsName
+        [Column(Name = "corr_dms_id")]
+        public string CorrDmsId
         {
             get;
             set;
         }
 
-        [Column(Name = "rank")]
-        public int Rank
+        [Column(Name = "corr_menu_id")]
+        public string CorrMenuId
         {
             get;
             set;
         }
 
-        public string RankName
+        [Column(Name = "corr_add")]
+        public int CorrAdd
+        {
+            get;
+            set;
+        }
+
+        [Column(Name = "corr_del")]
+        public int CorrDel
+        {
+            get;
+            set;
+        }
+
+        [Column(Name = "corr_modify")]
+        public int CorrModify
+        {
+            get;
+            set;
+        }
+
+        [Column(Name = "corr_search")]
+        public int CorrSearch
         {
             get;
             set;
@@ -40,24 +61,6 @@ namespace Model.User
 
         [Column(Name = "remark")]
         public string Remark
-        {
-            get;
-            set;
-        }
-
-        public int PageIndex
-        {
-            get;
-            set;
-        }
-
-        public int PageSize
-        {
-            get;
-            set;
-        }
-
-        public List<MenuModel> lstAuthRelate
         {
             get;
             set;

@@ -44,5 +44,19 @@ namespace Chuang.Back.Controllers
             }
             
         }
+
+        public ResultObj<List<DicModel>> GetDic(string id)
+        {
+            ICommon menusService = new CommonService();
+            return Content(menusService.GetDic(id));
+        }
+
+        public ResultObj<List<DicModel>> GetRank(string id)
+        {
+            ICommon menusService = new CommonService();
+            return Content(menusService.GetRank(id));
+        }
+
+
     }
 }

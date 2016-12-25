@@ -15,16 +15,35 @@ namespace SqlDataAccess
         UpdateUser,
         DeleteUser,
         GetLogin,
+        GetClientDic,
+        GetAuthDic,
 
         UpdateCustomer,
         DeleteCustomer,
         GetCustomer,
         GetCustomerCount,
+        GetCustomerForSys,
+        GetCustomerCountForSys,
+        UpdateChildCustomer,
 
         //权限
         GetAuthCount,
         DeleteAuth,
         UpdateAuth,
-        GetAuth
+        GetAuth,
+        GetAuthByDmsId,
+        GetMenuByUser,
+        DeleteAuthRelate,
+        GetRankValue,
+
+        //公用模块
+        GetDic,
+        GetRank,
+
+        //机型
+        GetMachineType,
+        GetMachineTypeCount,
+        DeleteMachineType,
+        UpdateMachineType
     }
 }

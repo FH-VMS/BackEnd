@@ -22,14 +22,17 @@ namespace Chuang.Back.Controllers
             }
         }
 
-        public ResultObj<List<CustomerModel>> GetData(CustomerModel customerInfo)
+        public ResultObj<List<CustomerModel>> GetData(string clientName = "", int pageIndex = 1, int pageSize = 10)
         {
             // IProduct service = new ProductService();
             //List<ProductModel> products = service.GetAllProducts();
-
-            int totalcount = _IBase.GetCount(customerInfo);
-            var data = _IBase.GetAll(customerInfo);
-            var pagination = new Pagination { PageSize = customerInfo.PageSize, PageIndex = customerInfo.PageIndex, StartIndex = 0, TotalRows = totalcount, TotalPage = 0 };
+            CustomerModel cusInfo = new CustomerModel();
+            cusInfo.ClientName = clientName;
+            cusInfo.PageIndex = pageIndex;
+            cusInfo.PageSize = pageSize;
+            int totalcount = _IBase.GetCount(cusInfo);
+            var data = _IBase.GetAll(cusInfo);
+            var pagination = new Pagination { PageSize = pageSize, PageIndex = pageIndex, StartIndex = 0, TotalRows = totalcount, TotalPage = 0 };
             return Content(data, pagination);
         }
 

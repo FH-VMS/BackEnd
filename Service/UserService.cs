@@ -14,37 +14,94 @@ namespace Service
     {
         public List<UserModel> GetAll(UserModel userInfo)
         {
-            //var x = HttpContextHandler.GetHeaderObj("UserAccount");
+            string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
+            var userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
             var conditions = new List<Condition>();
-           
-               var conditionAccount = new Condition
-               {
-                   LeftBrace = "",
-                   ParamName = "UserAccount",
-                   DbColumnName = "usr_account",
-                   ParamValue = userInfo.UserAccount + "%",
-                   Operation = ConditionOperate.RightLike,
-                   RightBrace = "",
-                   Logic = "AND"
+            var conditionAccount = new Condition
+            {
+                LeftBrace = "",
+                ParamName = "UserAccount",
+                DbColumnName = "usr_account",
+                ParamValue = userInfo.UserAccount + "%",
+                Operation = ConditionOperate.RightLike,
+                RightBrace = "",
+                Logic = "AND"
 
-               };
-               conditions.Add(conditionAccount);
-           
-               var conditionUserName = new Condition
-               {
-                   LeftBrace = "",
-                   ParamName = "UserName",
-                   DbColumnName = "usr_name",
-                   ParamValue = userInfo.UserName + "%",
-                   Operation = ConditionOperate.RightLike,
-                   RightBrace = "",
-                   Logic = ""
+            };
+            conditions.Add(conditionAccount);
 
-               };
-               conditions.Add(conditionUserName);
+            var conditionUserName = new Condition
+            {
+                LeftBrace = "",
+                ParamName = "UserName",
+                DbColumnName = "usr_name",
+                ParamValue = userInfo.UserName + "%",
+                Operation = ConditionOperate.RightLike,
+                RightBrace = "",
+                Logic = ""
+
+            };
+            conditions.Add(conditionUserName);
+
+            if (userStatus == "100" || userStatus == "99")
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = "AND ",
+                    ParamName = "ClientFatherId",
+                    DbColumnName = "client_father_id",
+                    ParamValue = "self",
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+            else
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "UserClientId",
+                    DbColumnName = "b.client_father_id",
+                    ParamValue = userClientId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+           
+              
+
           
             conditions.AddRange(CreatePaginConditions(userInfo.PageIndex, userInfo.PageSize));
-            return GenerateDal.LoadByConditions<UserModel>(CommonSqlKey.GetUser, conditions);
+            return GetCustomersFinalResult(GenerateDal.LoadByConditions<UserModel>(CommonSqlKey.GetUser, conditions));
+        }
+
+        private List<UserModel> GetCustomersFinalResult(List<UserModel> result)
+        {
+            if (result != null && result.Count > 0)
+            {
+                foreach (UserModel userInfo in result)
+                {
+                    var conditions = new List<Condition>();
+                    conditions.Add(new Condition
+                    {
+                        LeftBrace = "",
+                        ParamName = "ClientFatherId",
+                        DbColumnName = "b.client_father_id",
+                        ParamValue = userInfo.UserClientId,
+                        Operation = ConditionOperate.Equal,
+                        RightBrace = "",
+                        Logic = ""
+                    });
+                    userInfo.children = GenerateDal.LoadByConditions<UserModel>(CommonSqlKey.GetUser, conditions);
+                    GetCustomersFinalResult(userInfo.children);
+                }
+            }
+
+
+
+            return result;
         }
 
         public int GetCount(UserModel userInfo)
@@ -53,7 +110,25 @@ namespace Service
 
             var conditions = new List<Condition>();
 
-         
+            string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
+            var userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
+            if (userStatus == "100" || userStatus == "99")
+            {
+
+            }
+            else
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = "",
+                    ParamName = "UserClientId",
+                    DbColumnName = "b.client_father_id",
+                    ParamValue = userClientId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = "AND"
+                });
+            }
                 var conditionUserAccount = new Condition
                 {
                     LeftBrace = "",
@@ -98,7 +173,7 @@ namespace Service
 
 
             userInfo.Id = Guid.NewGuid().ToString();
-
+            userInfo.Sts = 1;
             result = GenerateDal.Create(userInfo);
             
 
