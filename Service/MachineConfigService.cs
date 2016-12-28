@@ -182,18 +182,29 @@ namespace Service
         /// <returns></returns>
         public int PostData(MachineConfigModel machineConfigInfo)
         {
-            int result;
+            try
+            {
+                GenerateDal.BeginTransaction();
 
-            string userAccount = HttpContextHandler.GetHeaderObj("UserAccount").ToString();
-            machineConfigInfo.MachineId = Guid.NewGuid().ToString();
-            machineConfigInfo.UpdateDate = DateTime.Now;
-            machineConfigInfo.Updater = userAccount;
-            result = GenerateDal.Create(machineConfigInfo);
+                if (!string.IsNullOrEmpty(machineConfigInfo.MachineId))
+                {
+                    DeleteData(machineConfigInfo.MachineId);
+                }
+                string userAccount = HttpContextHandler.GetHeaderObj("UserAccount").ToString();
+                machineConfigInfo.UpdateDate = DateTime.Now;
+                machineConfigInfo.Updater = userAccount;
+                GenerateDal.Create(machineConfigInfo);
+                GenerateDal.CommitTransaction();
 
+                return 1;
+            }
+            catch (Exception e)
+            {
+                GenerateDal.RollBack();
+                return 0;
+            }
+           
 
-
-
-            return result;
         }
 
         /// <summary>

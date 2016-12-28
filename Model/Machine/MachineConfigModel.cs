@@ -17,6 +17,12 @@ namespace Model.Machine
             set;
         }
 
+        public string MachineIdB
+        {
+            get;
+            set;
+        }
+
         [Column(Name = "mc_status")]
         public int McStatus
         {
@@ -91,43 +97,43 @@ namespace Model.Machine
             set;
         }
         [Column(Name = "mc_area1_temp")]
-        public int McArea1Temp
+        public string McArea1Temp
         {
             get;
             set;
         }
         [Column(Name = "mc_area2_temp")]
-        public int McArea2Temp
+        public string McArea2Temp
         {
             get;
             set;
         }
         [Column(Name = "mc_area3_temp")]
-        public int McArea3Temp
+        public string McArea3Temp
         {
             get;
             set;
         }
         [Column(Name = "mc_area4_temp")]
-        public int McArea4Temp
+        public string McArea4Temp
         {
             get;
             set;
         }
         [Column(Name = "mc_goods_used")]
-        public int McGoodsUsed
+        public string McGoodsUsed
         {
             get;
             set;
         }
         [Column(Name = "mc_longitude")]
-        public decimal McLongitude
+        public string McLongitude
         {
             get;
             set;
         }
         [Column(Name = "mc_dimension")]
-        public decimal McDimension
+        public string McDimension
         {
             get;
             set;
