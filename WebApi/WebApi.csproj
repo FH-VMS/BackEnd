@@ -91,6 +91,8 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MachineConfigController.cs" />
+    <Compile Include="Controllers\MachineListController.cs" />
     <Compile Include="Controllers\MachineTypeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">

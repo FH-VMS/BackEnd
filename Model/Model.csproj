@@ -44,6 +44,8 @@
     <Compile Include="Common\DicModel.cs" />
     <Compile Include="Common\MenuModel.cs" />
     <Compile Include="Customer\CustomerModel.cs" />
+    <Compile Include="Machine\MachineConfigModel.cs" />
+    <Compile Include="Machine\MachineListModel.cs" />
     <Compile Include="Machine\MachineTypeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sys\ColumnAttribute.cs" />

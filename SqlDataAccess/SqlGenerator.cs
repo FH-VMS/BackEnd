@@ -193,6 +193,41 @@ namespace SqlDataAccess
             return tLst;
         }
 
+        private int GetCountFromDictionary<T>(CommonSqlKey sqlKey, IDictionary<string, object> parmDic)
+        {
+            DbDataReader dr = null;
+            int tLst = 0;
+            var logStep = 0;
+            try
+            {
+                //如果为空sql可以，则根据类型和传入参数自动构造select语句，同时where条件为传入参数
+                var sqlTxt = sqlKey == CommonSqlKey.Null ? SqlConstructor.GetSelectSqlByParmDic<T>(parmDic) : CommSqlText.Instance[sqlKey];
+                logStep++;
+                var sqlParameters = sqlKey == CommonSqlKey.Null ? null : parmDic; // SqlConstructor.MakeParms(parmDic, CommSqlText.SqlParms[sqlKey]);
+                sqlTxt = SqlConstructor.FilterSQLWithInsteadValue(sqlTxt, sqlParameters);
+                logStep++;
+                sqlParameters = sqlKey == CommonSqlKey.Null ? null : SqlConstructor.FilterParmsWithList(sqlParameters, CommSqlText.SqlParms[sqlKey]);
+                logStep++;
+                tLst = DbHelper.ExecuteScalar(sqlTxt, sqlParameters) == null
+              ? 0 : int.Parse(DbHelper.ExecuteScalar(sqlTxt, sqlParameters).ToString());
+            }
+            catch (MySqlException ee)
+            {
+                Logger.LogInfo(String.Format("GetFromDictionary ERROR STEP:{0}, EXCEPTION:{1}", logStep, ee.Message), 0, LogType.ERROR);
+                throw ee;
+            }
+            finally
+            {
+                if (dr != null)
+                {
+                    dr.Close();
+                    dr.Dispose();
+
+                }
+            }
+            return tLst;
+        }
+
         public T Get<T>(object value) where T : class
         {
             var properties = CommDbHelper.GetModelDataPropertyInfos(typeof(T));
@@ -293,6 +328,13 @@ namespace SqlDataAccess
                 : int.Parse(DbHelper.ExecuteScalar(sqlTxt, sqlParameters).ToString());
 
             return result;
+        }
+
+        public int CountByDictionary<T>(CommonSqlKey sqlKey, IDictionary<string, object> parmObj)
+        {
+            var parmDic = SqlConstructor.MakeParms(parmObj);
+
+            return GetCountFromDictionary<T>(sqlKey, parmDic);
         }
 
         public object Single(CommonSqlKey sqlKey)

@@ -30,5 +30,11 @@ namespace Interface
         [Remark("取权限模板当字典", ParmsNote = "", ReturnNote = "字典实体列表")]
         List<CommonDic> GetAuthDic();
 
+        [Remark("取机型模板当字典", ParmsNote = "", ReturnNote = "字典实体列表")]
+        List<CommonDic> GetMachineTypeDic();
+
+        [Remark("根据客户ID取他的用户们", ParmsNote = "客户ID", ReturnNote = "字典实体列表")]
+        List<CommonDic> GetUserByClientId(string id);
+
     }
 }

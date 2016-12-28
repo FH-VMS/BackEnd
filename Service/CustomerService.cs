@@ -17,83 +17,56 @@ namespace Service
         {
             string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
             var userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
-            var conditions = new List<Condition>();
-            var conditionAccount = new Condition
-            {
-                LeftBrace = "",
-                ParamName = "ClientName",
-                DbColumnName = "client_name",
-                ParamValue = customerInfo.ClientName + "%",
-                Operation = ConditionOperate.RightLike,
-                RightBrace = "",
-                Logic = ""
+            var dics = new Dictionary<string, object>();
 
-            };
+            dics.Add("ClientName", customerInfo.ClientName + "%");
             List<CustomerModel> result = null;
-            conditions.Add(conditionAccount);
             if (userStatus == "100" || userStatus == "99")
             {
-                conditions.Add(new Condition
-                {
-                    LeftBrace = "AND ",
-                    ParamName = "ClientFatherId",
-                    DbColumnName = "client_father_id",
-                    ParamValue = "self",
-                    Operation = ConditionOperate.Equal,
-                    RightBrace = "",
-                    Logic = ""
-                });
+                dics.Add("ClientId", "self");
             }
             else
             {
-               
-                conditions.Add(new Condition
-                {
-                    LeftBrace = "AND ",
-                    ParamName = "ClientFatherId",
-                    DbColumnName = "client_father_id",
-                    ParamValue = userClientId,
-                    Operation = ConditionOperate.Equal,
-                    RightBrace = "",
-                    Logic = ""
-                });
+                dics.Add("ClientId", userClientId);
                
             }
-
-
-            conditions.AddRange(CreatePaginConditions(customerInfo.PageIndex, customerInfo.PageSize));
-            result = GetCustomersFinalResult(GenerateDal.LoadByConditions<CustomerModel>(CommonSqlKey.GetCustomer, conditions));
-
-
-            return result;
-        }
-
-        private List<CustomerModel> GetCustomersFinalResult(List<CustomerModel> result)
-        {
-            if (result != null && result.Count > 0)
+            if (customerInfo.PageIndex == 1)
             {
-                foreach (CustomerModel cusInfo in result)
-                {
-                    var conditions = new List<Condition>();
-                    conditions.Add(new Condition
-                    {
-                        LeftBrace = "",
-                        ParamName = "ClientFatherId",
-                        DbColumnName = "client_father_id",
-                        ParamValue = cusInfo.Id,
-                        Operation = ConditionOperate.Equal,
-                        RightBrace = "",
-                        Logic = ""
-                    });
-                   cusInfo.children = GenerateDal.LoadByConditions<CustomerModel>(CommonSqlKey.GetCustomer, conditions);
-                   GetCustomersFinalResult(cusInfo.children);
-                }
+                dics.Add("PageIndex", customerInfo.PageIndex - 1);
+                dics.Add("PageSize", customerInfo.PageSize);
             }
 
+            result = GenerateDal.Load<CustomerModel>(CommonSqlKey.GetCustomer, dics);
+            CustomerModel curItem = new CustomerModel();
+            curItem.Id = userClientId;
+            var finalResult = LoopToAppendChildren(result, curItem);
 
 
-            return result;
+            return finalResult;
         }
+
+        private int keyI = 0;
+        private int keyJ = 0;
+        private List<CustomerModel> LoopToAppendChildren(List<CustomerModel> all, CustomerModel curItem)
+        {
+            var subItems = all.Where(ee => ee.ClientFatherId == curItem.Id).ToList();
+            if (subItems.Count > 0)
+            {
+                curItem.children = new List<CustomerModel>();
+                curItem.children.AddRange(subItems);
+            }
+           
+            foreach (var subItem in subItems)
+            {
+                
+                subItem.key = keyI.ToString() + keyJ.ToString();
+                keyJ++;
+                LoopToAppendChildren(all, subItem);
+            }
+            keyI++;
+            return subItems;
+        }
+
 
         public int GetCount(CustomerModel customerInfo)
         {
@@ -101,66 +74,20 @@ namespace Service
             string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
             var userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
 
-            var conditions = new List<Condition>();
-          
-            /*
-            var conditionUserAccount = new Condition
-            {
-                LeftBrace = "",
-                ParamName = "UserAccount",
-                DbColumnName = "usr_account",
-                ParamValue = customerInfo.UserAccount + "%",
-                Operation = ConditionOperate.RightLike,
-                RightBrace = "",
-                Logic = "AND"
+            var dics = new Dictionary<string, object>();
 
-            };
-            conditions.Add(conditionUserAccount);
-
-            var conditionUserName = new Condition
-            {
-                LeftBrace = "",
-                ParamName = "UserName",
-                DbColumnName = "usr_name",
-                ParamValue = customerInfo.UserName + "%",
-                Operation = ConditionOperate.RightLike,
-                RightBrace = "",
-                Logic = ""
-
-            };
-            
-            conditions.Add(conditionUserName);
-            */
+            dics.Add("ClientName", customerInfo.ClientName + "%");
             if (userStatus == "100" || userStatus == "99")
             {
-                
+                dics.Add("ClientId", "self");
             }
             else
             {
-                conditions.Add(new Condition
-                {
-                    LeftBrace = "",
-                    ParamName = "ClientFatherId",
-                    DbColumnName = "client_father_id",
-                    ParamValue = userClientId,
-                    Operation = ConditionOperate.Equal,
-                    RightBrace = "",
-                    Logic = "AND"
-                });
-            }
-            var conditionAccount = new Condition
-            {
-                LeftBrace = "",
-                ParamName = "ClientName",
-                DbColumnName = "client_name",
-                ParamValue = customerInfo.ClientName + "%",
-                Operation = ConditionOperate.RightLike,
-                RightBrace = "",
-                Logic = ""
+                dics.Add("ClientId", userClientId);
 
-            };
-            conditions.Add(conditionAccount);
-            result = GenerateDal.CountByConditions(CommonSqlKey.GetCustomerCount, conditions);
+            }
+
+            result = GenerateDal.CountByDictionary<CustomerModel>(CommonSqlKey.GetCustomerCount, dics);
 
             return result;
         }
@@ -205,15 +132,22 @@ namespace Service
             string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
             try
             {
-
+                
                 GenerateDal.BeginTransaction();
+                // 删除有子客户的客户 将子客户父级更新为删除对象的父级
+                string fatherId = string.Empty;
+                var fatherClientInfo = GenerateDal.Get<CustomerModel>(id);
+                if (fatherClientInfo != null)
+                {
+                    fatherId = fatherClientInfo.ClientFatherId;
+                }
                 CustomerModel customerInfo = new CustomerModel();
                 customerInfo.Id = id;
                 int delResult = GenerateDal.Delete<CustomerModel>(CommonSqlKey.DeleteCustomer, customerInfo);
                 if (delResult > 0)
                 {
                     CustomerModel updInfo = new CustomerModel();
-                    updInfo.ClientFatherId = userClientId;
+                    updInfo.ClientFatherId = fatherId;
                     updInfo.Id = id;
                     string userAccount = HttpContextHandler.GetHeaderObj("UserAccount").ToString();
                     if (!string.IsNullOrEmpty(userAccount))

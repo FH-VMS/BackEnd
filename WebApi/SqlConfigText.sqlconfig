@@ -11,8 +11,8 @@ public class SqlConfigText
 			{"Sql","#p_Sql"},
 			//---用户模块---
 			{"GetLogin","SELECT id,usr_account,usr_client_id,usr_access_id,sts FROM table_user WHERE 1=1 AND usr_account=?p_UserAccount AND usr_pwd=?p_UserPassword AND (sts=1 or sts=100 or sts=99)"},
-			{"GetUser","SELECT a.*, b.client_name as UserClientName FROM table_user a  LEFT JOIN table_client b ON a.usr_client_id = b.client_id WHERE (sts!=100 AND sts!=99)"},
-			{"GetUserCount","SELECT count(1) FROM table_user a  LEFT JOIN table_client b ON a.usr_client_id = b.client_id WHERE (sts!=100 AND sts!=99)"},
+			{"GetUser","SELECT a.*, b.client_name as UserClientName FROM table_user a  RIGHT JOIN (select * from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientFatherId))) b ON a.usr_client_id = b.client_id WHERE (sts!=100 AND sts!=99) AND usr_account like ?p_UserAccount AND usr_name like ?p_UserName  limit ?p_PageIndex  ,?p_PageSize"},
+			{"GetUserCount","SELECT count(1) FROM table_user a  RIGHT JOIN (select * from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientFatherId))) b ON a.usr_client_id = b.client_id WHERE (sts!=100 AND sts!=99) AND usr_account like ?p_UserAccount AND usr_name like ?p_UserName"},
 			{"DeleteUser","DELETE from table_user where id=?p_Id"},
 			{"UpdateUser","UPDATE table_user SET  usr_account =?p_UserAccount,  usr_name =?p_UserName,  usr_access_id =?p_UserAccessId,  usr_pwd =?p_UserPassword,  usr_client_id =?p_UserClientId,  remark =?p_Remark,  creator =?p_Creator WHERE id =?p_Id"},
 			{"GetMenuByUser","SELECT menu_id,url, menu_name,menu_father, 0 as 'Add', 0 as 'Del', 0 as 'Mod', 0 as 'Sear' FROM table_menu where menu_father is null or menu_father='' UNION select a.menu_id,a.url, a.menu_name,a.menu_father, b.corr_add as 'Add', b.corr_del as 'Del', b.corr_modify as 'Mod', b.corr_search as 'Sear' from table_menu a RIGHT JOIN table_corr_dms b on a.menu_id = b.corr_menu_id LEFT JOIN table_dms c on b.corr_dms_id = c.id LEFT JOIN table_user d on c.id = d.usr_access_id Where d.usr_access_id =?p_UserAccessId"},
@@ -20,8 +20,8 @@ public class SqlConfigText
 			{"GetAuthDic","SELECT a.Id as Id,a.dms_name as Name FROM table_dms as a  LEFT JOIN table_book as b ON a.rank=b.value WHERE b.id='rank'"},
 
 			// 客户列表
-			{"GetCustomer","SELECT * FROM table_client WHERE 1=1"},
-			{"GetCustomerCount","SELECT count(1) FROM table_client WHERE 1=1"},
+			{"GetCustomer","select * from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) AND client_name like ?p_ClientName limit ?p_PageIndex  ,?p_PageSize"},
+			{"GetCustomerCount","select count(1) from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) AND client_name like ?p_ClientName"},
 			{"DeleteCustomer","DELETE from table_client where client_id=?p_Id"},
 			{"UpdateCustomer","UPDATE table_client SET  client_name =?p_ClientName,  client_status =?p_ClientStatus, client_type =?p_ClientType,  client_contect =?p_ClientContect,  client_tel =?p_ClientTel,  client_email =?p_ClientEmail,  client_country =?p_ClientCountry,  client_currency =?p_ClientCurrency,  client_address =?p_ClientAddress,  creator =?p_Creator,  create_date =?p_CreateDate,  updater =?p_Updater,  update_date =?p_UpdateDate,  remark =?p_Remark  WHERE client_id =?p_Id"},
 			{"UpdateChildCustomer","UPDATE table_client SET  client_father_id =?p_ClientFatherId  WHERE client_father_id =?p_Id"},
@@ -37,12 +37,26 @@ public class SqlConfigText
 			//公用模板
 			{"GetDic","SELECT id,value,book_chinese FROM table_book WHERE id=?p_Id"},
 			{"GetRank","SELECT id,value,book_chinese FROM table_book WHERE id=?p_Id And value > (select rank from table_dms WHERE id = ?p_DmsId)"},
+			{"GetUserByClientId","SELECT id as Id,usr_account as Name FROM table_user WHERE 1=1"},
 
 			//机型
 			{"GetMachineType","SELECT a.*,b.book_chinese as TypeTypeText FROM table_machine_type as a  LEFT JOIN table_book as b ON a.type_type=b.value WHERE b.id='typetype'"},
 			{"GetMachineTypeCount","SELECT count(1) FROM table_machine_type WHERE 1=1"},
 			{"DeleteMachineType","DELETE from table_machine_type where id=?p_Id"},
-			{"UpdateMachineType","UPDATE table_machine_type SET  type_name =?p_TypeName,  type_type =?p_TypeType,max_goods=?p_MaxGoods,  type_remark =?p_TypeRemark WHERE id =?p_Id"}
+			{"UpdateMachineType","UPDATE table_machine_type SET  type_name =?p_TypeName,  type_type =?p_TypeType,max_goods=?p_MaxGoods,  type_remark =?p_TypeRemark WHERE id =?p_Id"},
+
+			//机器管理
+			{"GetMachineList","SELECT a.*, b.client_name as ClientText, c.usr_account as UserAccountName, d.type_name as TypeText FROM table_machine a  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id Left JOIN table_user c ON a.usr_account = c.id Left JOIN table_machine_type d ON a.type_id = d.id WHERE 1=1"},
+			{"GetMachineListCount","SELECT count(1) FROM table_machine a  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
+			{"DeleteMachineList","DELETE from table_machine where machine_id=?p_MachineId"},
+			{"UpdateMachineList","UPDATE table_machine SET  device_id =?p_DeviceId,  type_id =?p_TypeId,client_id=?p_ClientId,  usr_account =?p_UserAccount, Updater=?p_Updater, update_date=?p_UpdateDate WHERE machine_id =?p_MachineId"},
+			{"GetMachineTypeDic","SELECT id as Id, type_name as Name FROM table_machine_type"},
+
+			//机器配置
+			{"GetMachineConfig","SELECT a.*,b.device_id as DeviceId FROM table_machine_config a RIGHT JOIN table_machine b ON a.machine_id=b.machine_id LEFT JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"},
+			{"GetMachineConfigCount","SELECT count(1) FROM table_machine_config a RIGHT JOIN table_machine b ON a.machine_id=b.machine_id LEFT JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"},
+			{"DeleteMachineConfig","DELETE from table_machine_config where machine_id=?p_MachineId"},
+			{"UpdateMachineConfig","UPDATE table_machine SET  device_id =?p_DeviceId,  type_id =?p_TypeId,client_id=?p_ClientId,  usr_account =?p_UserAccount, Updater=?p_Updater, update_date=?p_UpdateDate WHERE machine_id =?p_MachineId"}
 
 		}; 
         return dic; 

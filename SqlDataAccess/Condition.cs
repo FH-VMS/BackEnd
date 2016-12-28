@@ -68,6 +68,7 @@ namespace SqlDataAccess
         BeforeDay,
         AfterDay,
         LimitIndex,
-        LimitLength
+        LimitLength,
+        None
     }
 }

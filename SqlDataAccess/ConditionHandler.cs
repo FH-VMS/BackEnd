@@ -23,11 +23,15 @@ namespace SqlDataAccess
             var conditionsCount = ConditionsCounter(conditions);
             if (conditions.Count > 0 && conditionsCount > 0)
             {
-                stringBuilder.Append(" AND");
+                // stringBuilder.Append(" AND");
             }
             var num = 0;
             foreach (Condition condition in conditions)
             {
+                if (condition.Operation == ConditionOperate.None)
+                {
+                    continue;
+                }
                 if (condition.ParamValue != null)
                 {
                     string text2;

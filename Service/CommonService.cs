@@ -104,7 +104,73 @@ namespace Service
             return Convert.ToInt32(GenerateDal.Load<DicModel>(CommonSqlKey.GetRankValue, dic)[0].Value);
         }
 
+        //取客户树形结构作字典
         public List<CommonDic> GetClientDic()
+        {
+            string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
+            var clientId = HttpContextHandler.GetHeaderObj("UserClientId");
+            var conditions = new List<Condition>();
+            if (userStatus == "100" || userStatus == "99")
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "ClientFatherId",
+                    DbColumnName = "client_father_id",
+                    ParamValue = "self",
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+            else
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "ClientFatherId",
+                    DbColumnName = "client_father_id",
+                    ParamValue = clientId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+
+             
+            }
+            return GetCustomersFinalResult(GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetClientDic, conditions));
+
+        }
+
+        private List<CommonDic> GetCustomersFinalResult(List<CommonDic> result)
+        {
+            if (result != null && result.Count > 0)
+            {
+                foreach (CommonDic cusInfo in result)
+                {
+                    var conditions = new List<Condition>();
+                    conditions.Add(new Condition
+                    {
+                        LeftBrace = " AND ",
+                        ParamName = "ClientFatherId",
+                        DbColumnName = "client_father_id",
+                        ParamValue = cusInfo.Id,
+                        Operation = ConditionOperate.Equal,
+                        RightBrace = "",
+                        Logic = ""
+                    });
+                    cusInfo.children = GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetClientDic, conditions);
+                    GetCustomersFinalResult(cusInfo.children);
+                }
+            }
+
+
+
+            return result;
+        }
+
+        // 取用户树形结构当字典
+        public List<CommonDic> GetUserDic()
         {
             string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
             var clientId = HttpContextHandler.GetHeaderObj("UserClientId");
@@ -117,7 +183,7 @@ namespace Service
             {
                 conditions.Add(new Condition
                 {
-                    LeftBrace = "",
+                    LeftBrace = " AND ",
                     ParamName = "ClientFatherId",
                     DbColumnName = "client_father_id",
                     ParamValue = clientId,
@@ -126,12 +192,13 @@ namespace Service
                     Logic = ""
                 });
 
-             
+
             }
             return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetClientDic, conditions);
 
         }
 
+        // 取权限等级字典
         public List<CommonDic> GetAuthDic()
         {
             string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
@@ -147,7 +214,7 @@ namespace Service
                 int rank = GetRankValue(accessId);
                 conditions.Add(new Condition
                 {
-                    LeftBrace = " ",
+                    LeftBrace = " AND ",
                     ParamName = "Rank",
                     DbColumnName = "a.rank",
                     ParamValue = rank,
@@ -162,5 +229,29 @@ namespace Service
 
         }
 
+        // 取机型字典模板
+        public List<CommonDic> GetMachineTypeDic()
+        {
+            var conditions = new List<Condition>();
+            return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetMachineTypeDic, conditions);
+
+        }
+
+        // 根据客户取客户的用户们
+        public List<CommonDic> GetUserByClientId(string id)
+        {
+            var conditions = new List<Condition>();
+            conditions.Add(new Condition
+            {
+                LeftBrace = " AND ",
+                ParamName = "ClientId",
+                DbColumnName = "usr_client_id",
+                ParamValue = id,
+                Operation = ConditionOperate.Equal,
+                RightBrace = "",
+                Logic = ""
+            });
+            return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetUserByClientId, conditions);
+        }
     }
 }

@@ -57,6 +57,12 @@ namespace Chuang.Back.Controllers
             return Content(menusService.GetRank(id));
         }
 
+        public ResultObj<List<CommonDic>> GetUserByClientId(string id)
+        {
+            ICommon menusService = new CommonService();
+            return Content(menusService.GetUserByClientId(id));
+        }
+
 
     }
 }

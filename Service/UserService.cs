@@ -16,65 +16,34 @@ namespace Service
         {
             string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
             var userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
-            var conditions = new List<Condition>();
-            var conditionAccount = new Condition
+            var dics = new Dictionary<string, object>();
+            dics.Add("UserAccount", userInfo.UserAccount + "%");
+            dics.Add("UserName", userInfo.UserName + "%");
+            if (userInfo.PageIndex == 1)
             {
-                LeftBrace = "",
-                ParamName = "UserAccount",
-                DbColumnName = "usr_account",
-                ParamValue = userInfo.UserAccount + "%",
-                Operation = ConditionOperate.RightLike,
-                RightBrace = "",
-                Logic = "AND"
-
-            };
-            conditions.Add(conditionAccount);
-
-            var conditionUserName = new Condition
-            {
-                LeftBrace = "",
-                ParamName = "UserName",
-                DbColumnName = "usr_name",
-                ParamValue = userInfo.UserName + "%",
-                Operation = ConditionOperate.RightLike,
-                RightBrace = "",
-                Logic = ""
-
-            };
-            conditions.Add(conditionUserName);
-
-            if (userStatus == "100" || userStatus == "99")
-            {
-                conditions.Add(new Condition
-                {
-                    LeftBrace = "AND ",
-                    ParamName = "ClientFatherId",
-                    DbColumnName = "client_father_id",
-                    ParamValue = "self",
-                    Operation = ConditionOperate.Equal,
-                    RightBrace = "",
-                    Logic = ""
-                });
+                dics.Add("PageIndex", userInfo.PageIndex-1);
             }
             else
             {
-                conditions.Add(new Condition
-                {
-                    LeftBrace = " AND ",
-                    ParamName = "UserClientId",
-                    DbColumnName = "b.client_father_id",
-                    ParamValue = userClientId,
-                    Operation = ConditionOperate.Equal,
-                    RightBrace = "",
-                    Logic = ""
-                });
+                dics.Add("PageIndex", userInfo.PageIndex);
             }
-           
-              
+            dics.Add("PageSize", userInfo.PageSize);
 
-          
-            conditions.AddRange(CreatePaginConditions(userInfo.PageIndex, userInfo.PageSize));
-            return GetCustomersFinalResult(GenerateDal.LoadByConditions<UserModel>(CommonSqlKey.GetUser, conditions));
+            
+
+            if (userStatus == "100" || userStatus == "99")
+            {
+                dics.Add("ClientFatherId", "self");
+            }
+            else
+            {
+                dics.Add("ClientFatherId", userClientId);
+            }
+
+
+
+
+            return GenerateDal.Load<UserModel>(CommonSqlKey.GetUser, dics);
         }
 
         private List<UserModel> GetCustomersFinalResult(List<UserModel> result)
@@ -108,55 +77,27 @@ namespace Service
         {
             var result = 0;
 
-            var conditions = new List<Condition>();
 
             string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
             var userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
+            var dics = new Dictionary<string, object>();
+            dics.Add("UserAccount", userInfo.UserAccount + "%");
+            dics.Add("UserName", userInfo.UserName + "%");
+           
+
+
+
             if (userStatus == "100" || userStatus == "99")
             {
-
+                dics.Add("ClientFatherId", "self");
             }
             else
             {
-                conditions.Add(new Condition
-                {
-                    LeftBrace = "",
-                    ParamName = "UserClientId",
-                    DbColumnName = "b.client_father_id",
-                    ParamValue = userClientId,
-                    Operation = ConditionOperate.Equal,
-                    RightBrace = "",
-                    Logic = "AND"
-                });
+                dics.Add("ClientFatherId", userClientId);
             }
-                var conditionUserAccount = new Condition
-                {
-                    LeftBrace = "",
-                    ParamName = "UserAccount",
-                    DbColumnName = "usr_account",
-                    ParamValue = userInfo.UserAccount + "%",
-                    Operation = ConditionOperate.RightLike,
-                    RightBrace = "",
-                    Logic = "AND"
 
-                };
-                conditions.Add(conditionUserAccount);
-           
-                var conditionUserName = new Condition
-                {
-                    LeftBrace = "",
-                    ParamName = "UserName",
-                    DbColumnName = "usr_name",
-                    ParamValue = userInfo.UserName + "%",
-                    Operation = ConditionOperate.RightLike,
-                    RightBrace = "",
-                    Logic = ""
 
-                };
-                conditions.Add(conditionUserName);
-            
-
-            result = GenerateDal.CountByConditions(CommonSqlKey.GetUserCount, conditions);
+            result = GenerateDal.CountByDictionary<UserModel>(CommonSqlKey.GetUserCount, dics);
 
             return result;
         }

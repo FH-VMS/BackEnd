@@ -19,5 +19,11 @@ namespace Model.Common
             get;
             set;
         }
+
+        public List<CommonDic> children
+        {
+            get;
+            set;
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace Model.Customer
     [Table("table_client")]
     public class CustomerModel: BaseModel
     {
-        [Column(Name = "client_id")]
+        [Column(Name = "client_id", IsPrimaryKey=true)]
         public string Id
         {
             get;
@@ -103,6 +103,12 @@ namespace Model.Customer
         }
 
         public List<CustomerModel> children
+        {
+            get;
+            set;
+        }
+
+        public string key
         {
             get;
             set;

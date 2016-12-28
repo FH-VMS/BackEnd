@@ -39,11 +39,25 @@ namespace SqlDataAccess
         //公用模块
         GetDic,
         GetRank,
+        GetUserByClientId,
 
         //机型
         GetMachineType,
         GetMachineTypeCount,
         DeleteMachineType,
-        UpdateMachineType
+        UpdateMachineType,
+
+        //机器列表
+        GetMachineList,
+        GetMachineListCount,
+        DeleteMachineList,
+        UpdateMachineList,
+        GetMachineTypeDic,
+
+        //机器配置
+        GetMachineConfig,
+        GetMachineConfigCount,
+        DeleteMachineConfig,
+        UpdateMachineConfig
     }
 }

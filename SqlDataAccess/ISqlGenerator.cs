@@ -92,6 +92,8 @@ namespace SqlDataAccess
 
         int CountByConditions(CommonSqlKey sqlKey, IList<Condition> parmObj);
 
+        int CountByDictionary<T>(CommonSqlKey sqlKey, IDictionary<string, object> parmObj);
+
         /// <summary>
         /// 根据字典对象作为参数获取列表
         /// </summary>

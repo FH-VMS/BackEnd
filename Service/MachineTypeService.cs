@@ -18,7 +18,7 @@ namespace Service
             var conditions = new List<Condition>();
             var conditionAccount = new Condition
             {
-                LeftBrace = "",
+                LeftBrace = " AND ",
                 ParamName = "TypeName",
                 DbColumnName = "type_name",
                 ParamValue = machineTypeInfo.TypeName + "%",
@@ -57,13 +57,13 @@ namespace Service
 
             var conditionAccount = new Condition
             {
-                LeftBrace = "",
+                LeftBrace = " AND ",
                 ParamName = "TypeName",
                 DbColumnName = "type_name",
                 ParamValue = machineTypeInfo.TypeName + "%",
                 Operation = ConditionOperate.RightLike,
                 RightBrace = "",
-                Logic = "AND"
+                Logic = ""
 
             };
             conditions.Add(conditionAccount);
@@ -71,7 +71,7 @@ namespace Service
             {
                 var conditionUserName = new Condition
                 {
-                    LeftBrace = "",
+                    LeftBrace = " AND ",
                     ParamName = "TypeType",
                     DbColumnName = "type_type",
                     ParamValue = machineTypeInfo.TypeType,
