@@ -89,6 +89,7 @@ namespace SqlDataAccess
         List<T> Load<T>(T t);
 
         List<T> LoadByConditions<T>(CommonSqlKey sqlKey, IList<Condition> parmObj);
+        List<T> LoadByConditionsWithOrder<T>(CommonSqlKey sqlKey, IList<Condition> parmObj, string orderField, string orderType);
 
         int CountByConditions(CommonSqlKey sqlKey, IList<Condition> parmObj);
 

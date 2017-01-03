@@ -38,6 +38,9 @@ public class SqlConfigText
 			{"GetDic","SELECT id,value,book_chinese FROM table_book WHERE id=?p_Id"},
 			{"GetRank","SELECT id,value,book_chinese FROM table_book WHERE id=?p_Id And value > (select rank from table_dms WHERE id = ?p_DmsId)"},
 			{"GetUserByClientId","SELECT id as Id,usr_account as Name FROM table_user WHERE 1=1"},
+			{"GetMachineDic","SELECT a.machine_id as Id, a.device_id as Name FROM table_machine a  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
+			{"GetCabinetByMachineId","SELECT a.cabinet_id as Id,a.cabinet_name as 'Name' FROM table_cabinet_config a LEFT JOIN table_mt_goods b ON a.cabinet_id=b.cabinet_type_id LEFT JOIN table_machine c ON b.machine_type_id = c.type_id WHERE 1=1"},
+
 
 			//机型
 			{"GetMachineType","SELECT a.*,b.book_chinese as TypeTypeText FROM table_machine_type as a  LEFT JOIN table_book as b ON a.type_type=b.value WHERE b.id='typetype'"},
@@ -46,17 +49,25 @@ public class SqlConfigText
 			{"UpdateMachineType","UPDATE table_machine_type SET  type_name =?p_TypeName,  type_type =?p_TypeType,max_goods=?p_MaxGoods,  type_remark =?p_TypeRemark WHERE id =?p_Id"},
 
 			//机器管理
-			{"GetMachineList","SELECT a.*, b.client_name as ClientText, c.usr_account as UserAccountName, d.type_name as TypeText FROM table_machine a  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id Left JOIN table_user c ON a.usr_account = c.id Left JOIN table_machine_type d ON a.type_id = d.id WHERE 1=1"},
-			{"GetMachineListCount","SELECT count(1) FROM table_machine a  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
+			{"GetMachineList","SELECT a.*, b.client_name as ClientText, c.usr_account as UserAccountName, d.type_name as TypeText FROM table_machine a  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id Left JOIN table_user c ON a.usr_account = c.id Left JOIN table_machine_type d ON a.type_id = d.id WHERE 1=1"},
+			{"GetMachineListCount","SELECT count(1) FROM table_machine a  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
 			{"DeleteMachineList","DELETE from table_machine where machine_id=?p_MachineId"},
 			{"UpdateMachineList","UPDATE table_machine SET  device_id =?p_DeviceId,  type_id =?p_TypeId,client_id=?p_ClientId,  usr_account =?p_UserAccount, Updater=?p_Updater, update_date=?p_UpdateDate WHERE machine_id =?p_MachineId"},
 			{"GetMachineTypeDic","SELECT id as Id, type_name as Name FROM table_machine_type"},
 
 			//机器配置
-			{"GetMachineConfig","SELECT a.*,b.device_id as DeviceId,b.machine_id as MachineIdB FROM table_machine_config a RIGHT JOIN table_machine b ON a.machine_id=b.machine_id LEFT JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"},
-			{"GetMachineConfigCount","SELECT count(1) FROM table_machine_config a RIGHT JOIN table_machine b ON a.machine_id=b.machine_id LEFT JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"},
+			{"GetMachineConfig","SELECT a.*,b.device_id as DeviceId,b.machine_id as MachineIdB FROM table_machine_config a RIGHT JOIN table_machine b ON a.machine_id=b.machine_id INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"},
+			{"GetMachineConfigCount","SELECT count(1) FROM table_machine_config a RIGHT JOIN table_machine b ON a.machine_id=b.machine_id INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"},
 			{"DeleteMachineConfig","DELETE from table_machine_config where machine_id=?p_MachineId"},
-			{"UpdateMachineConfig","UPDATE table_machine SET  device_id =?p_DeviceId,  type_id =?p_TypeId,client_id=?p_ClientId,  usr_account =?p_UserAccount, Updater=?p_Updater, update_date=?p_UpdateDate WHERE machine_id =?p_MachineId"}
+			{"UpdateMachineConfig","UPDATE table_machine SET  device_id =?p_DeviceId,  type_id =?p_TypeId,client_id=?p_ClientId,  usr_account =?p_UserAccount, Updater=?p_Updater, update_date=?p_UpdateDate WHERE machine_id =?p_MachineId"},
+
+			//货道配置
+			{"GetTunnelConfig","SELECT * FROM table_goods_config WHERE 1=1"},
+			{"GetCabinetConfig","SELECT layer_number,layer_goods_number FROM table_cabinet_config WHERE 1=1"},
+			{"GetTunnelConfigCount","SELECT count(1) FROM table_goods_config WHERE 1 = 1"},
+			{"DeleteTunnelConfig","DELETE from table_machine_config where machine_id=?p_MachineId"},
+			{"UpdateTunnelConfig","UPDATE table_machine SET  device_id =?p_DeviceId,  type_id =?p_TypeId,client_id=?p_ClientId,  usr_account =?p_UserAccount, Updater=?p_Updater, update_date=?p_UpdateDate WHERE machine_id =?p_MachineId"}
+
 
 		}; 
         return dic; 

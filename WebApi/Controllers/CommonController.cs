@@ -63,6 +63,11 @@ namespace Chuang.Back.Controllers
             return Content(menusService.GetUserByClientId(id));
         }
 
-
+        // 机器字典
+        public ResultObj<List<CommonDic>> GetMachineDic()
+        {
+            ICommon menusService = new CommonService();
+            return Content(menusService.GetMachineDic());
+        }
     }
 }

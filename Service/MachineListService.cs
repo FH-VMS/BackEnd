@@ -200,9 +200,25 @@ namespace Service
         /// <returns></returns>
         public int DeleteData(string id)
         {
-            MachineListModel machineListInfo = new MachineListModel();
-            machineListInfo.MachineId = id;
-            return GenerateDal.Delete<MachineListModel>(CommonSqlKey.DeleteMachineList, machineListInfo);
+           
+            try
+            {
+                GenerateDal.BeginTransaction();
+
+                MachineListModel machineListInfo = new MachineListModel();
+                machineListInfo.MachineId = id;
+                GenerateDal.Delete<MachineListModel>(CommonSqlKey.DeleteMachineList, machineListInfo);
+                MachineConfigService mcService = new MachineConfigService();
+                mcService.DeleteData(id);
+                GenerateDal.CommitTransaction();
+
+                return 1;
+            }
+            catch (Exception e)
+            {
+                GenerateDal.RollBack();
+                return 0;
+            }
         }
 
         public int UpdateData(MachineListModel machineListInfo)

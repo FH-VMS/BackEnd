@@ -1,0 +1,191 @@
+﻿using Interface;
+using Model.Machine;
+using SqlDataAccess;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Utility;
+
+namespace Service
+{
+    public class TunnelConfigService : AbstractService, IBase<TunnelConfigModel>
+    {
+
+        public List<TunnelConfigModel> GetAll(TunnelConfigModel tunnelConfigInfo)
+        {
+            int result = GetCount(tunnelConfigInfo);
+            if (result > 0)
+            {
+                var conditions = new List<Condition>();
+
+                if (!string.IsNullOrEmpty(tunnelConfigInfo.MachineId))
+                {
+                    conditions.Add(new Condition
+                    {
+                        LeftBrace = " AND ",
+                        ParamName = "MachineId",
+                        DbColumnName = "machine_id",
+                        ParamValue = tunnelConfigInfo.MachineId,
+                        Operation = ConditionOperate.Equal,
+                        RightBrace = "",
+                        Logic = ""
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(tunnelConfigInfo.CabinetId))
+                {
+                    conditions.Add(new Condition
+                    {
+                        LeftBrace = " AND ",
+                        ParamName = "CabinetId",
+                        DbColumnName = "cabinet_id",
+                        ParamValue = tunnelConfigInfo.CabinetId,
+                        Operation = ConditionOperate.Equal,
+                        RightBrace = "",
+                        Logic = ""
+                    });
+                }
+
+                return GenerateDal.LoadByConditionsWithOrder<TunnelConfigModel>(CommonSqlKey.GetTunnelConfig, conditions, "tunnel_position", "asc");
+            }
+            else
+            {
+                return GenerateTunnelConfig(tunnelConfigInfo.CabinetId);
+            }
+
+           
+        }
+
+        private List<TunnelConfigModel> GenerateTunnelConfig(string cabinetId)
+        {
+            List<TunnelConfigModel> lstTunnelConfig = new List<TunnelConfigModel>();
+            var conditions = new List<Condition>();
+
+            if (!string.IsNullOrEmpty(cabinetId))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "CabinetId",
+                    DbColumnName = "cabinet_id",
+                    ParamValue = cabinetId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            List<CabinetConfigModel> lstCabinetConfig = GenerateDal.LoadByConditions<CabinetConfigModel>(CommonSqlKey.GetCabinetConfig, conditions);
+            if (lstCabinetConfig == null || lstCabinetConfig.Count==0)
+            {
+                return null;
+            }
+            int layerNumber = lstCabinetConfig[0].LayerNumber;
+            string goodsNumber = lstCabinetConfig[0].LayerGoodsNumber;
+            string[] arrGoodsNumber = goodsNumber.Split(',');
+            for (int i = 1; i <= layerNumber; i++)
+            {
+                for (int j = 1; j <= Convert.ToInt32(arrGoodsNumber[i-1]); j++)
+                {
+                    TunnelConfigModel tunnelConfigModel = new TunnelConfigModel();
+                    tunnelConfigModel.TunnelPosition = i + "-" + j;
+                    lstTunnelConfig.Add(tunnelConfigModel);
+                }
+            }
+
+            return lstTunnelConfig;
+
+        }
+
+
+        public int GetCount(TunnelConfigModel tunnelConfigInfo)
+        {
+            var result = 0;
+
+
+            var conditions = new List<Condition>();
+
+            if (!string.IsNullOrEmpty(tunnelConfigInfo.MachineId))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "MachineId",
+                    DbColumnName = "machine_id",
+                    ParamValue = tunnelConfigInfo.MachineId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            if (!string.IsNullOrEmpty(tunnelConfigInfo.CabinetId))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "CabinetId",
+                    DbColumnName = "cabinet_id",
+                    ParamValue = tunnelConfigInfo.CabinetId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+
+
+            result = GenerateDal.CountByConditions(CommonSqlKey.GetTunnelConfigCount, conditions);
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// 新增/修改会员信息
+        /// </summary>
+        /// <param name="memberInfo"></param>
+        /// <returns></returns>
+        public int PostData(TunnelConfigModel tunnelConfigInfo)
+        {
+            try
+            {
+                GenerateDal.BeginTransaction();
+
+                if (!string.IsNullOrEmpty(tunnelConfigInfo.MachineId))
+                {
+                    DeleteData(tunnelConfigInfo.MachineId);
+                }
+                GenerateDal.Create(tunnelConfigInfo);
+                GenerateDal.CommitTransaction();
+
+                return 1;
+            }
+            catch (Exception e)
+            {
+                GenerateDal.RollBack();
+                return 0;
+            }
+
+
+        }
+
+        /// <summary>
+        /// 删除用户
+        /// </summary>
+        /// <returns></returns>
+        public int DeleteData(string id)
+        {
+            TunnelConfigModel tunnelConfigInfo = new TunnelConfigModel();
+            tunnelConfigInfo.MachineId = id;
+            return GenerateDal.Delete<TunnelConfigModel>(CommonSqlKey.DeleteTunnelConfig, tunnelConfigInfo);
+        }
+
+        public int UpdateData(TunnelConfigModel tunnelConfigInfo)
+        {
+            return GenerateDal.Update(CommonSqlKey.UpdateTunnelConfig, tunnelConfigInfo);
+        }
+    }
+}

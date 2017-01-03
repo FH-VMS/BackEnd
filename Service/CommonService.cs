@@ -253,5 +253,39 @@ namespace Service
             });
             return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetUserByClientId, conditions);
         }
+
+        // 根据客户取对应机器
+        public List<CommonDic> GetMachineDic()
+        {
+            string clientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
+            var conditions = new List<Condition>();
+            conditions.Add(new Condition
+            {
+                LeftBrace = " ",
+                ParamName = "ClientId",
+                DbColumnName = "",
+                ParamValue = clientId,
+                Operation = ConditionOperate.None,
+                RightBrace = "",
+                Logic = ""
+            });
+            List<CommonDic> machines = GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetMachineDic, conditions);
+            foreach (CommonDic commDic in machines)
+            {
+                var innerConditions = new List<Condition>();
+                innerConditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "MachineId",
+                    DbColumnName = "c.machine_id",
+                    ParamValue = commDic.Id,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+                commDic.children = GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetCabinetByMachineId, innerConditions);
+            }
+            return machines;
+        }
     }
 }

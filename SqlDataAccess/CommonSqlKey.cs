@@ -40,6 +40,8 @@ namespace SqlDataAccess
         GetDic,
         GetRank,
         GetUserByClientId,
+        GetMachineDic,
+        GetCabinetByMachineId,
 
         //机型
         GetMachineType,
@@ -58,6 +60,13 @@ namespace SqlDataAccess
         GetMachineConfig,
         GetMachineConfigCount,
         DeleteMachineConfig,
-        UpdateMachineConfig
+        UpdateMachineConfig,
+
+        //货道配置
+        GetTunnelConfigCount,
+        GetTunnelConfig,
+        GetCabinetConfig,
+        DeleteTunnelConfig,
+        UpdateTunnelConfig
     }
 }

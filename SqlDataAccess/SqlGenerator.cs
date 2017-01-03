@@ -308,6 +308,13 @@ namespace SqlDataAccess
             return GetFromDictionaryByConditions<T>(sqlKey, parmDic, parmObj);
         }
 
+        public List<T> LoadByConditionsWithOrder<T>(CommonSqlKey sqlKey, IList<Condition> parmObj, string orderField = "", string orderType = "")
+        {
+            var parmDic = SqlConstructor.MakeParms(parmObj);
+
+            return GetFromDictionaryByConditionsWithOrder<T>(sqlKey, parmDic, parmObj, orderField, orderType);
+        }
+
         public int CountByConditions(CommonSqlKey sqlKey, IList<Condition> parmObj)
         {
             var result = 0;
@@ -468,6 +475,58 @@ namespace SqlDataAccess
                 //解析where 后查询条件
                 List<DbParameter> parameter;
                 var whereSql = ConditionHandler.GetWhereSql(conditions.ToList(), out parameter);
+
+                sqlTxt = sqlTxt + whereSql;
+
+                logStep++;
+                logStep++;
+                dr = DbHelper.ExecuteReader(sqlTxt, sqlParameters);
+                logStep = 100;
+                if (dr == null)
+                    return tLst;
+                var hasCount = dr.Read();
+                while (hasCount)
+                {
+                    logStep += 10;
+                    var t = MakeMapToObject<T>(dr);
+                    if (t != null)
+                        tLst.Add(t);
+                    logStep += 1;
+                    hasCount = dr.Read();
+                }
+            }
+            catch (MySqlException ee)
+            {
+                Logger.LogInfo(String.Format("GetFromDictionary ERROR STEP:{0}, EXCEPTION:{1}", logStep, ee.Message), 0, LogType.ERROR);
+                throw ee;
+            }
+            finally
+            {
+                if (dr != null)
+                {
+                    dr.Close();
+                    dr.Dispose();
+
+                }
+            }
+            return tLst;
+        }
+
+        private List<T> GetFromDictionaryByConditionsWithOrder<T>(CommonSqlKey sqlKey, IDictionary<string, object> parmDic, IList<Condition> conditions, string orderField = "", string orderType = "")
+        {
+            DbDataReader dr = null;
+            var tLst = new List<T>();
+            var logStep = 0;
+            try
+            {
+                var sqlTxt = CommSqlText.Instance[sqlKey];
+
+                logStep++;
+                var sqlParameters = parmDic;
+
+                //解析where 后查询条件
+                List<DbParameter> parameter;
+                var whereSql = ConditionHandler.GetWhereSql(conditions.ToList(), out parameter, orderField, orderType);
 
                 sqlTxt = sqlTxt + whereSql;
 

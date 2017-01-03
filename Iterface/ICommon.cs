@@ -36,5 +36,8 @@ namespace Interface
         [Remark("根据客户ID取他的用户们", ParmsNote = "客户ID", ReturnNote = "字典实体列表")]
         List<CommonDic> GetUserByClientId(string id);
 
+        [Remark("取机器做字典", ParmsNote = "", ReturnNote = "字典实体列表")]
+        List<CommonDic> GetMachineDic();
+
     }
 }
