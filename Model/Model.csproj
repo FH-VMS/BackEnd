@@ -49,7 +49,9 @@
     <Compile Include="Machine\MachineConfigModel.cs" />
     <Compile Include="Machine\MachineListModel.cs" />
     <Compile Include="Machine\MachineTypeModel.cs" />
+    <Compile Include="Product\ProductListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource\PictureModel.cs" />
     <Compile Include="Sys\ColumnAttribute.cs" />
     <Compile Include="Sys\ModelPropertyInfo.cs" />
     <Compile Include="Sys\ModelTableInfo.cs" />

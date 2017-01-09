@@ -1,14 +1,17 @@
 ﻿using Chuang.Back.Base;
 using Interface;
 using Model.Common;
+using Model.Resource;
 using Model.Sys;
 using Model.User;
 using Service;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using Utility;
 
@@ -68,6 +71,63 @@ namespace Chuang.Back.Controllers
         {
             ICommon menusService = new CommonService();
             return Content(menusService.GetMachineDic());
+        }
+
+        // 上传图片
+        public ResultObj<List<CommonDic>> PostUpload()
+        {
+            var hfc = HttpContext.Current.Request.Files;
+            const string localPath = "Attachment/";
+            var path = HttpContext.Current.Request.PhysicalApplicationPath + localPath;
+            List<CommonDic> lstCommonDic = new List<CommonDic>();
+            if (hfc.Count == 0)
+            {
+                return Content(lstCommonDic);
+            }
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            IBase<PictureModel> _ibase = new PictureService();
+          
+            for (var i = 0; i < hfc.Count; i++)
+            {
+                var fileName = hfc[i].FileName.Split('.')[0] + "_" + DateTime.Now.ToString("yyyyMMddHHmmssfffff") + "." + hfc[i].FileName.Split('.')[1];
+                try
+                {
+                    hfc[i].SaveAs(path + fileName);
+                    var pictureInfo = new PictureModel();
+                    string guild = Guid.NewGuid().ToString();
+                    pictureInfo.PicId=guild;
+                    pictureInfo.PicName = fileName;
+                    pictureInfo.PicPath = "Attachment/" + fileName;
+                    _ibase.PostData(pictureInfo);
+                    lstCommonDic.Add(new CommonDic
+                    {
+                        Id = guild,
+                        Name = fileName
+                    });
+                }
+                catch (Exception ex)
+                {
+                    return Content(lstCommonDic);
+                }
+            }
+            return Content(lstCommonDic);
+        }
+
+        // 图片字典
+        public ResultObj<List<CommonDic>> GetPictureDic()
+        {
+            ICommon menusService = new CommonService();
+            return Content(menusService.GetPictureDic());
+        }
+
+        // 取商品作字典
+        public ResultObj<List<CommonDic>> GetProductDic()
+        {
+            ICommon menusService = new CommonService();
+            return Content(menusService.GetProductDic());
         }
     }
 }

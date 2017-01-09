@@ -42,6 +42,8 @@ namespace SqlDataAccess
         GetUserByClientId,
         GetMachineDic,
         GetCabinetByMachineId,
+        GetPictureDic,
+        GetProductDic,
 
         //机型
         GetMachineType,
@@ -67,6 +69,18 @@ namespace SqlDataAccess
         GetTunnelConfig,
         GetCabinetConfig,
         DeleteTunnelConfig,
-        UpdateTunnelConfig
+        UpdateTunnelConfig,
+
+        //商品列表
+        GetProductList,
+        GetProductListCount,
+        DeleteProductList,
+        UpdateProductList,
+
+        //图片资源
+        GetPictureList,
+        GetPictureListCount,
+        UpdatePictureList,
+        DeletePictureList
     }
 }

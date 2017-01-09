@@ -42,6 +42,7 @@
     <Compile Include="IAuth.cs" />
     <Compile Include="IBase.cs" />
     <Compile Include="ICommon.cs" />
+    <Compile Include="ITunnel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

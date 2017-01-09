@@ -287,5 +287,41 @@ namespace Service
             }
             return machines;
         }
+
+        //取图片资源字典
+        public List<CommonDic> GetPictureDic()
+        {
+            string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
+            var conditions = new List<Condition>();
+            conditions.Add(new Condition
+            {
+                LeftBrace = "  ",
+                ParamName = "ClientId",
+                DbColumnName = "",
+                ParamValue = userClientId,
+                Operation = ConditionOperate.None,
+                RightBrace = "",
+                Logic = ""
+            });
+            return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetPictureDic, conditions);
+        }
+
+        //取商品作字典
+        public List<CommonDic> GetProductDic()
+        {
+            string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
+            var conditions = new List<Condition>();
+            conditions.Add(new Condition
+            {
+                LeftBrace = "  ",
+                ParamName = "ClientId",
+                DbColumnName = "",
+                ParamValue = userClientId,
+                Operation = ConditionOperate.None,
+                RightBrace = "",
+                Logic = ""
+            });
+            return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetProductDic, conditions);
+        }
     }
 }

@@ -39,5 +39,11 @@ namespace Interface
         [Remark("取机器做字典", ParmsNote = "", ReturnNote = "字典实体列表")]
         List<CommonDic> GetMachineDic();
 
+        [Remark("取图片做字典", ParmsNote = "", ReturnNote = "字典实体列表")]
+        List<CommonDic> GetPictureDic();
+
+        [Remark("取商品做字典", ParmsNote = "", ReturnNote = "字典实体列表")]
+        List<CommonDic> GetProductDic();
+
     }
 }

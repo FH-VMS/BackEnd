@@ -94,6 +94,7 @@
     <Compile Include="Controllers\MachineConfigController.cs" />
     <Compile Include="Controllers\MachineListController.cs" />
     <Compile Include="Controllers\MachineTypeController.cs" />
+    <Compile Include="Controllers\ProductListController.cs" />
     <Compile Include="Controllers\TunnelConfigController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">

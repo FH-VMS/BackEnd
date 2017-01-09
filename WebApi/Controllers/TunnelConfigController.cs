@@ -15,7 +15,7 @@ namespace Chuang.Back.Controllers
     public class TunnelConfigController : ApiBaseController
     {
 
-        private static IBase<TunnelConfigModel> _IBase
+        private static ITunnel _IBase
         {
             get
             {
@@ -35,7 +35,7 @@ namespace Chuang.Back.Controllers
             return Content(tunnels);
         }
 
-        public ResultObj<int> PostData(TunnelConfigModel tunnelConfigInfo)
+        public ResultObj<int> PostData(List<TunnelConfigModel> tunnelConfigInfo)
         {
             return Content(_IBase.PostData(tunnelConfigInfo));
         }

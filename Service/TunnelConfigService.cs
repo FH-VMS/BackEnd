@@ -10,7 +10,7 @@ using Utility;
 
 namespace Service
 {
-    public class TunnelConfigService : AbstractService, IBase<TunnelConfigModel>
+    public class TunnelConfigService : AbstractService, ITunnel
     {
 
         public List<TunnelConfigModel> GetAll(TunnelConfigModel tunnelConfigInfo)
@@ -148,17 +148,17 @@ namespace Service
         /// </summary>
         /// <param name="memberInfo"></param>
         /// <returns></returns>
-        public int PostData(TunnelConfigModel tunnelConfigInfo)
+        public int PostData(List<TunnelConfigModel> tunnelConfigInfo)
         {
             try
             {
                 GenerateDal.BeginTransaction();
-
+                /*
                 if (!string.IsNullOrEmpty(tunnelConfigInfo.MachineId))
                 {
                     DeleteData(tunnelConfigInfo.MachineId);
                 }
-                GenerateDal.Create(tunnelConfigInfo);
+                GenerateDal.Create(tunnelConfigInfo);*/
                 GenerateDal.CommitTransaction();
 
                 return 1;

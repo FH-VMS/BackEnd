@@ -67,7 +67,7 @@ namespace Model.Machine
         }
 
         [Column(Name = "wares_id")]
-        public decimal WaresId
+        public string WaresId
         {
             get;
             set;
