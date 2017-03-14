@@ -45,7 +45,15 @@ namespace Service
             }
 
             conditions.AddRange(CreatePaginConditions(machineTypeInfo.PageIndex, machineTypeInfo.PageSize));
-            return GenerateDal.LoadByConditions<MachineTypeModel>(CommonSqlKey.GetMachineType, conditions);
+            List<MachineTypeModel> result = GenerateDal.LoadByConditions<MachineTypeModel>(CommonSqlKey.GetMachineType, conditions);
+            if (result != null && result.Count > 0)
+            {
+                foreach (MachineTypeModel item in result)
+                {
+                    item.Cabinets = new CabinetService().GetCabinetByMachineId(item.Id);
+                }
+            }
+            return result;
         }
 
 
@@ -98,16 +106,32 @@ namespace Service
         /// <returns></returns>
         public int PostData(MachineTypeModel machineTypeInfo)
         {
-            int result;
+            try
+            {
+                GenerateDal.BeginTransaction();
+                machineTypeInfo.Id = Guid.NewGuid().ToString();
+                GenerateDal.Create(machineTypeInfo);
+                if (machineTypeInfo.Cabinets != null && machineTypeInfo.Cabinets.Count>0)
+                {
+                    foreach (var item in machineTypeInfo.Cabinets)
+                    {
+                        var tmpInfo = new MachineTypeAndCabinetModel();
+                        tmpInfo.MachineTypeId = machineTypeInfo.Id;
+                        tmpInfo.CabinetTypeId = item.CabinetId;
+                        new CabinetService().PostCabinetRelationData(tmpInfo);
+                    }
+                }
+                GenerateDal.CommitTransaction();
+
+                return 1;
+            }
+            catch (Exception e)
+            {
+                GenerateDal.RollBack();
+                return 0;
+            }
 
 
-            machineTypeInfo.Id = Guid.NewGuid().ToString();
-            result = GenerateDal.Create(machineTypeInfo);
-
-
-
-
-            return result;
         }
 
         /// <summary>
@@ -116,14 +140,51 @@ namespace Service
         /// <returns></returns>
         public int DeleteData(string id)
         {
-            MachineTypeModel machineTypeInfo = new MachineTypeModel();
-            machineTypeInfo.Id = id;
-            return GenerateDal.Delete<MachineTypeModel>(CommonSqlKey.DeleteMachineType, machineTypeInfo);
+            try
+            {
+                GenerateDal.BeginTransaction();
+                MachineTypeModel machineTypeInfo = new MachineTypeModel();
+                machineTypeInfo.Id = id;
+                GenerateDal.Delete<MachineTypeModel>(CommonSqlKey.DeleteMachineType, machineTypeInfo);
+                new CabinetService().DeleteData(machineTypeInfo.Id);
+                GenerateDal.CommitTransaction();
+
+                return 1;
+            }
+            catch (Exception e)
+            {
+                GenerateDal.RollBack();
+                return 0;
+            }
+            
         }
 
         public int UpdateData(MachineTypeModel machineTypeInfo)
         {
-            return GenerateDal.Update(CommonSqlKey.UpdateMachineType, machineTypeInfo);
+            try
+            {
+                GenerateDal.BeginTransaction();
+               GenerateDal.Update(CommonSqlKey.UpdateMachineType, machineTypeInfo);
+               new CabinetService().DeleteData(machineTypeInfo.Id);
+                if (machineTypeInfo.Cabinets != null && machineTypeInfo.Cabinets.Count > 0)
+                {
+                    foreach (var item in machineTypeInfo.Cabinets)
+                    {
+                        var tmpInfo = new MachineTypeAndCabinetModel();
+                        tmpInfo.MachineTypeId = machineTypeInfo.Id;
+                        tmpInfo.CabinetTypeId = item.CabinetId;
+                        new CabinetService().PostCabinetRelationData(tmpInfo);
+                    }
+                }
+                GenerateDal.CommitTransaction();
+
+                return 1;
+            }
+            catch (Exception e)
+            {
+                GenerateDal.RollBack();
+                return 0;
+            }
         }
        
     }

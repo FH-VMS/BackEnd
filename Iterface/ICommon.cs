@@ -45,5 +45,8 @@ namespace Interface
         [Remark("取商品做字典", ParmsNote = "", ReturnNote = "字典实体列表")]
         List<CommonDic> GetProductDic();
 
+        [Remark("取货柜做字典", ParmsNote = "", ReturnNote = "字典实体列表")]
+        List<CommonDic> GetCabinetDic();
+
     }
 }

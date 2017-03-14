@@ -129,5 +129,12 @@ namespace Chuang.Back.Controllers
             ICommon menusService = new CommonService();
             return Content(menusService.GetProductDic());
         }
+
+        // 取货柜作字典
+        public ResultObj<List<CommonDic>> GetCabinetDic()
+        {
+            ICommon menusService = new CommonService();
+            return Content(menusService.GetCabinetDic());
+        }
     }
 }

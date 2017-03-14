@@ -51,6 +51,12 @@ namespace Model.Machine
               set;
           }
 
+          public List<CabinetConfigModel> Cabinets
+          {
+              get;
+              set;
+          }
+
           public int PageIndex
           {
               get;

@@ -41,7 +41,9 @@ public class SqlConfigText
 			{"GetMachineDic","SELECT a.machine_id as Id, a.device_id as Name FROM table_machine a  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
 			{"GetCabinetByMachineId","SELECT a.cabinet_id as Id,a.cabinet_name as 'Name' FROM table_cabinet_config a LEFT JOIN table_mt_goods b ON a.cabinet_id=b.cabinet_type_id LEFT JOIN table_machine c ON b.machine_type_id = c.type_id WHERE 1=1"},
 			{"GetPictureDic","SELECT a.pic_id as Id, a.pic_name as Name FROM table_pic a  LEFT JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
-			{"GetProductDic","SELECT a.wares_id as Id, a.wares_name as Name FROM table_product a  LEFT JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
+			{"GetProductDic","SELECT a.wares_id as Id, a.wares_name as Name FROM table_product a  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
+			{"GetProductDicAll","SELECT wares_id as Id, wares_name as Name FROM table_product WHERE 1=1"},
+			{"GetCabinetDic","SELECT cabinet_id as Id, cabinet_name as Name FROM table_cabinet_config WHERE 1=1"},
 
 
 			//机型
@@ -49,6 +51,8 @@ public class SqlConfigText
 			{"GetMachineTypeCount","SELECT count(1) FROM table_machine_type WHERE 1=1"},
 			{"DeleteMachineType","DELETE from table_machine_type where id=?p_Id"},
 			{"UpdateMachineType","UPDATE table_machine_type SET  type_name =?p_TypeName,  type_type =?p_TypeType,max_goods=?p_MaxGoods,  type_remark =?p_TypeRemark WHERE id =?p_Id"},
+			{"GetCabinetByMachineTypeId","SELECT a.* FROM table_cabinet_config a INNER JOIN table_mt_goods b ON a.cabinet_id = b.cabinet_type_id  WHERE 1=1"},
+			{"DeleteMachineTypeAndCabinet","DELETE from table_mt_goods where machine_type_id=?p_MachineTypeId"},
 
 			//机器管理
 			{"GetMachineList","SELECT a.*, b.client_name as ClientText, c.usr_account as UserAccountName, d.type_name as TypeText FROM table_machine a  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id Left JOIN table_user c ON a.usr_account = c.id Left JOIN table_machine_type d ON a.type_id = d.id WHERE 1=1"},
@@ -67,20 +71,31 @@ public class SqlConfigText
 			{"GetTunnelConfig","SELECT * FROM table_goods_config WHERE 1=1"},
 			{"GetCabinetConfig","SELECT layer_number,layer_goods_number FROM table_cabinet_config WHERE 1=1"},
 			{"GetTunnelConfigCount","SELECT count(1) FROM table_goods_config WHERE 1 = 1"},
-			{"DeleteTunnelConfig","DELETE from table_machine_config where machine_id=?p_MachineId"},
-			{"UpdateTunnelConfig","UPDATE table_machine SET  device_id =?p_DeviceId,  type_id =?p_TypeId,client_id=?p_ClientId,  usr_account =?p_UserAccount, Updater=?p_Updater, update_date=?p_UpdateDate WHERE machine_id =?p_MachineId"},
+			{"DeleteTunnelConfig","DELETE from table_goods_config where machine_id=?p_MachineId AND cabinet_id = ?p_CabinetId"},
+			{"UpdateTunnelConfig","UPDATE table_goods_config SET  device_id =?p_DeviceId,  type_id =?p_TypeId,client_id=?p_ClientId,  usr_account =?p_UserAccount, Updater=?p_Updater, update_date=?p_UpdateDate WHERE machine_id =?p_MachineId"},
 
 			//商品列表
-			{"GetProductList","SELECT a.*,b.client_name as ClientName FROM table_product a LEFT JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
+			{"GetProductList","SELECT a.*,b.client_name as ClientName FROM table_product a INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
 			{"GetProductListCount","SELECT count(1) FROM table_product a LEFT JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
 			{"DeleteProductList","DELETE from table_product where wares_id=?p_WaresId"},
 			{"UpdateProductList","UPDATE table_product SET  wares_name =?p_WaresName,  wares_unitprice =?p_WaresUnitPrice,wares_weight=?p_WaresWeight,  wares_specifications =?p_WaresSpecifications, wares_manufacture_date=?p_WaresManufactureDate, wares_quality_period=?p_WaresQualityPeriod, pic_id=?p_PicId, wares_type_id=?p_WaresTypeId, supplier_id=?p_SupplierId, creator=?p_Creator, update_date=?p_UpdateDate WHERE wares_id =?p_WaresId"},
+			{"GetProductAllList","SELECT *,b.client_name as ClientName FROM table_product a LEFT JOIN table_client b ON a.client_id=b.client_id WHERE 1=1"},
+			{"GetProductListAllCount","SELECT count(1) FROM table_product WHERE 1=1"},
 
 			//图片资源
 			{"GetPictureList","SELECT a.*,b.client_name as ClientName FROM table_pic a Left JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
 			{"GetPictureListCount","SELECT count(1) FROM table_pic a Left JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
 			{"DeletePictureList","DELETE from table_pic where pic_id=?p_PicId"},
-			{"UpdatePictureList","UPDATE table_pic SET  pic_name =?p_PicName, client_id=?p_ClientId WHERE pic_id =?p_PicId"}
+			{"UpdatePictureList","UPDATE table_pic SET  pic_name =?p_PicName, client_id=?p_ClientId WHERE pic_id =?p_PicId"},
+
+			//销售
+			{"UpdateSale","UPDATE table_sales_cashless SET  trade_status =?p_TradeStatus WHERE sales_ic_id =?p_SalesIcId"},
+			{"GetPayResultById","SELECT trade_status FROM table_sales_cashless WHERE  random_id =?p_RandomId"},
+			{"DeleteSaleList","DELETE FROM table_sales_cashless where sales_ic_id=?p_SalesIcId"},
+			{"GetSaleAllList","SELECT *,c.client_name as ClientName,b.device_id as DeviceId FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id LEFT JOIN table_client c ON b.client_id = c.client_id WHERE 1=1"},
+			{"GetSaleList","SELECT a.*,c.client_name as ClientName,b.device_id as DeviceId FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"},
+			{"GetSaleListAllCount","SELECT count(1) FROM table_sales_cashless WHERE 1=1"},
+			{"GetSaleListCount","SELECT COUNT(1) as ClientName FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"}
 		}; 
         return dic; 
     }

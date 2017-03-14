@@ -52,13 +52,13 @@ namespace Service
             }
             else
             {
-                return GenerateTunnelConfig(tunnelConfigInfo.CabinetId);
+                return GenerateTunnelConfig(tunnelConfigInfo.CabinetId, tunnelConfigInfo.MachineId);
             }
 
            
         }
 
-        private List<TunnelConfigModel> GenerateTunnelConfig(string cabinetId)
+        private List<TunnelConfigModel> GenerateTunnelConfig(string cabinetId, string machineId)
         {
             List<TunnelConfigModel> lstTunnelConfig = new List<TunnelConfigModel>();
             var conditions = new List<Condition>();
@@ -91,6 +91,9 @@ namespace Service
                 {
                     TunnelConfigModel tunnelConfigModel = new TunnelConfigModel();
                     tunnelConfigModel.TunnelPosition = i + "-" + j;
+                    tunnelConfigModel.TunnelId = i + "-" + j;
+                    tunnelConfigModel.CabinetId = cabinetId;
+                    tunnelConfigModel.MachineId = machineId;
                     lstTunnelConfig.Add(tunnelConfigModel);
                 }
             }
@@ -148,17 +151,20 @@ namespace Service
         /// </summary>
         /// <param name="memberInfo"></param>
         /// <returns></returns>
-        public int PostData(List<TunnelConfigModel> tunnelConfigInfo)
+        public int PostData(List<TunnelConfigModel> lstTunnelConfigInfo)
         {
             try
             {
                 GenerateDal.BeginTransaction();
-                /*
-                if (!string.IsNullOrEmpty(tunnelConfigInfo.MachineId))
+                if (lstTunnelConfigInfo.Count > 0)
                 {
-                    DeleteData(tunnelConfigInfo.MachineId);
+                    GenerateDal.Delete<TunnelConfigModel>(CommonSqlKey.DeleteTunnelConfig, lstTunnelConfigInfo[0]);
                 }
-                GenerateDal.Create(tunnelConfigInfo);*/
+                foreach (TunnelConfigModel tunnelConfigInfo in lstTunnelConfigInfo)
+                {
+                    GenerateDal.Create(tunnelConfigInfo);
+                }
+               
                 GenerateDal.CommitTransaction();
 
                 return 1;

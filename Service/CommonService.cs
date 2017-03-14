@@ -310,18 +310,38 @@ namespace Service
         public List<CommonDic> GetProductDic()
         {
             string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
+            string sts = HttpContextHandler.GetHeaderObj("Sts").ToString();
+            var result = new List<CommonDic>();
             var conditions = new List<Condition>();
-            conditions.Add(new Condition
+            if (sts == "100" || sts == "99")
             {
-                LeftBrace = "  ",
-                ParamName = "ClientId",
-                DbColumnName = "",
-                ParamValue = userClientId,
-                Operation = ConditionOperate.None,
-                RightBrace = "",
-                Logic = ""
-            });
-            return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetProductDic, conditions);
+                result = GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetProductDicAll, conditions);
+            }
+            else
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = "  ",
+                    ParamName = "ClientId",
+                    DbColumnName = "",
+                    ParamValue = userClientId,
+                    Operation = ConditionOperate.None,
+                    RightBrace = "",
+                    Logic = ""
+                });
+                result = GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetProductDic, conditions);
+
+            }
+
+            return result;
+        }
+
+        // 取货柜作字典
+        public List<CommonDic> GetCabinetDic()
+        {
+            var conditions = new List<Condition>();
+
+            return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetCabinetDic, conditions);
         }
     }
 }

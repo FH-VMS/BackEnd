@@ -1,5 +1,6 @@
 ﻿using Interface;
 using Model.Product;
+using Model.Sale;
 using SqlDataAccess;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,8 @@ namespace Service
         public List<ProductListModel> GetAll(ProductListModel productListInfo)
         {
             string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
-
+            string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
+            var result = new List<ProductListModel>();
             var conditions = new List<Condition>();
             if (!string.IsNullOrEmpty(productListInfo.WaresName))
             {
@@ -46,21 +48,32 @@ namespace Service
                 });
             }
 
-
-            conditions.Add(new Condition
-            {
-                LeftBrace = "",
-                ParamName = "ClientId",
-                DbColumnName = "",
-                ParamValue = userClientId,
-                Operation = ConditionOperate.None,
-                RightBrace = "",
-                Logic = ""
-            });
-
             conditions.AddRange(CreatePaginConditions(productListInfo.PageIndex, productListInfo.PageSize));
 
-            return GenerateDal.LoadByConditions<ProductListModel>(CommonSqlKey.GetProductList, conditions);
+            if (userStatus == "100" || userStatus == "99")
+            {
+                result = GenerateDal.LoadByConditions<ProductListModel>(CommonSqlKey.GetProductAllList, conditions);
+            }
+            else
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = "",
+                    ParamName = "ClientId",
+                    DbColumnName = "",
+                    ParamValue = userClientId,
+                    Operation = ConditionOperate.None,
+                    RightBrace = "",
+                    Logic = ""
+                });
+                result = GenerateDal.LoadByConditions<ProductListModel>(CommonSqlKey.GetProductList, conditions);
+            }
+
+
+
+
+
+            return result;
         }
 
 
@@ -69,7 +82,7 @@ namespace Service
             var result = 0;
 
             string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
-
+            string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
             var conditions = new List<Condition>();
             if (!string.IsNullOrEmpty(productListInfo.WaresName))
             {
@@ -99,21 +112,27 @@ namespace Service
                 });
             }
 
-
-            conditions.Add(new Condition
+            if (userStatus == "100" || userStatus == "99")
             {
-                LeftBrace = "",
-                ParamName = "ClientId",
-                DbColumnName = "",
-                ParamValue = userClientId,
-                Operation = ConditionOperate.None,
-                RightBrace = "",
-                Logic = ""
-            });
+                result = GenerateDal.CountByConditions(CommonSqlKey.GetProductListAllCount, conditions);
+            }
+            else
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = "",
+                    ParamName = "ClientId",
+                    DbColumnName = "",
+                    ParamValue = userClientId,
+                    Operation = ConditionOperate.None,
+                    RightBrace = "",
+                    Logic = ""
+                });
+                result = GenerateDal.CountByConditions(CommonSqlKey.GetProductListCount, conditions);
+            }
 
 
 
-            result = GenerateDal.CountByConditions(CommonSqlKey.GetProductListCount, conditions);
 
             return result;
         }
@@ -164,5 +183,7 @@ namespace Service
             productListInfo.UpdateDate = DateTime.Now;
             return GenerateDal.Update(CommonSqlKey.UpdateProductList, productListInfo);
         }
+
+       
     }
 }

@@ -44,12 +44,16 @@ namespace SqlDataAccess
         GetCabinetByMachineId,
         GetPictureDic,
         GetProductDic,
+        GetCabinetDic,
+        GetProductDicAll,
 
         //机型
         GetMachineType,
         GetMachineTypeCount,
         DeleteMachineType,
         UpdateMachineType,
+        GetCabinetByMachineTypeId,
+        DeleteMachineTypeAndCabinet,
 
         //机器列表
         GetMachineList,
@@ -76,11 +80,22 @@ namespace SqlDataAccess
         GetProductListCount,
         DeleteProductList,
         UpdateProductList,
+        GetProductAllList,
+        GetProductListAllCount,
 
         //图片资源
         GetPictureList,
         GetPictureListCount,
         UpdatePictureList,
-        DeletePictureList
+        DeletePictureList,
+
+        //销售
+        UpdateSale,
+        GetPayResultById,
+        DeleteSaleList,
+        GetSaleAllList,
+        GetSaleList,
+        GetSaleListAllCount,
+        GetSaleListCount
     }
 }

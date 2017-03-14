@@ -12,7 +12,8 @@ namespace Chuang.Back
     {
         protected void Application_Start()
         {
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            //GlobalConfiguration.Configure(WebApiConfig.Register);
+            WebApiConfig.Register(GlobalConfiguration.Configuration);
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
