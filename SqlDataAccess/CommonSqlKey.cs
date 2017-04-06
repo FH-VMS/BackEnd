@@ -83,6 +83,14 @@ namespace SqlDataAccess
         GetProductAllList,
         GetProductListAllCount,
 
+        //商品配置
+        GetProductConfigAll,
+        GetProductConfig,
+        GetProductConfigAllCount,
+        GetProductConfigCount,
+        DeleteProductConfig,
+        UpdateProductConfig,
+
         //图片资源
         GetPictureList,
         GetPictureListCount,
@@ -96,6 +104,12 @@ namespace SqlDataAccess
         GetSaleAllList,
         GetSaleList,
         GetSaleListAllCount,
-        GetSaleListCount
+        GetSaleListCount,
+
+        //货道信息
+        GetTunnelInfoCount,
+        GetTunnelInfo,
+        DeleteTunnelInfo,
+        UpdateTunnelInfo
     }
 }

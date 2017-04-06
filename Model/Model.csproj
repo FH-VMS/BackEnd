@@ -51,6 +51,7 @@
     <Compile Include="Machine\MachineConfigModel.cs" />
     <Compile Include="Machine\MachineListModel.cs" />
     <Compile Include="Machine\MachineTypeModel.cs" />
+    <Compile Include="Machine\TunnelInfoModel.cs" />
     <Compile Include="Product\ProductConfigModel.cs" />
     <Compile Include="Product\ProductListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

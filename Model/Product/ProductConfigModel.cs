@@ -30,6 +30,12 @@ namespace Model.Product
             set;
         }
 
+        public string WaresName
+        {
+            get;
+            set;
+        }
+
         [Column(Name = "low_missing")]
         public int LowMissing
         {
@@ -79,12 +85,6 @@ namespace Model.Product
             set;
         }
 
-        [Column(Name = "client_id")]
-        public string ClientId
-        {
-            get;
-            set;
-        }
 
         public int PageIndex
         {

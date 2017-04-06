@@ -124,9 +124,11 @@
     <Compile Include="Controllers\MachineListController.cs" />
     <Compile Include="Controllers\MachineTypeController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\ProductConfigController.cs" />
     <Compile Include="Controllers\ProductListController.cs" />
     <Compile Include="Controllers\SaleCashlessController.cs" />
     <Compile Include="Controllers\TunnelConfigController.cs" />
+    <Compile Include="Controllers\TunnelInfoController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
