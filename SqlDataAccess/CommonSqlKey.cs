@@ -110,6 +110,10 @@ namespace SqlDataAccess
         GetTunnelInfoCount,
         GetTunnelInfo,
         DeleteTunnelInfo,
-        UpdateTunnelInfo
+        UpdateTunnelInfo,
+
+        //机器对应接口
+        GetProductByMachine,
+        GetProductByMachineCount
     }
 }

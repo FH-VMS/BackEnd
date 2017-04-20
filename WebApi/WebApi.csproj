@@ -121,6 +121,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MachineConfigController.cs" />
+    <Compile Include="Controllers\MachineController.cs" />
     <Compile Include="Controllers\MachineListController.cs" />
     <Compile Include="Controllers\MachineTypeController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
@@ -271,6 +272,10 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{7c938b52-05c0-4603-8cfe-91f667657cb8}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PaymentLib\PaymentLib.csproj">
+      <Project>{b2ad751f-2f09-4f83-bce4-3b01d7bfb46c}</Project>
+      <Name>PaymentLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\Service\Service.csproj">
       <Project>{812dc2ec-0d0d-468c-a909-5cef0806b157}</Project>

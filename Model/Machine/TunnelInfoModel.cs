@@ -78,5 +78,11 @@ namespace Model.Machine
             set;
         }
 
+        public string ProductName
+        {
+            get;
+            set;
+        }
+
     }
 }
