@@ -47,8 +47,8 @@ namespace PaymentLib.ali
             _input_charset = Config.input_charset.Trim().ToLower();
             _sign_type = Config.sign_type.Trim().ToUpper();
         }
-		
-		 /// <summary>
+
+        /// <summary>
         /// 从文件读取公钥转公钥字符串
         /// </summary>
         /// <param name="Path">公钥文件路径</param>
@@ -129,7 +129,7 @@ namespace PaymentLib.ali
 
             //过滤空值、sign与sign_type参数
             sPara = Core.FilterPara(inputPara);
-            
+
             //获取待签名字符串
             string preSignStr = Core.CreateLinkString(sPara);
 

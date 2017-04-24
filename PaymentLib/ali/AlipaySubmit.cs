@@ -94,7 +94,7 @@ namespace PaymentLib.ali
         /// <param name="sParaTemp">请求前的参数数组</param>
         /// <param name="code">字符编码</param>
         /// <returns>要请求的参数数组字符串</returns>
-        private static string BuildRequestParaToString(SortedDictionary<string, string> sParaTemp, Encoding code)
+        public static string BuildRequestParaToString(SortedDictionary<string, string> sParaTemp, Encoding code)
         {
             //待签名请求参数数组
             Dictionary<string, string> sPara = new Dictionary<string, string>();

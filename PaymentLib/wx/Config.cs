@@ -27,14 +27,14 @@ namespace PaymentLib.wx
         public const string SSLCERT_PATH = "cert/apiclient_cert.p12";
         public const string SSLCERT_PASSWORD = "1233410002";
 
-        public const string FRONT_URL = "http://www.wangchaocctv.com/p/w/m.html";
+        public static string FRONT_URL = Path.PathConfig+"/m.html";
 
 
 
         //=======【支付结果通知url】===================================== 
         /* 支付结果通知回调url，用于商户接收支付结果
         */
-        public const string NOTIFY_URL = "http://paysdk.weixin.qq.com/example/ResultNotifyPage.aspx";
+        public static string NOTIFY_URL = Path.PathConfig + "/m.html#/product";
 
         //=======【商户系统后台机器IP】===================================== 
         /* 此参数可手动配置也可在程序中自动获取

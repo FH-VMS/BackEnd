@@ -92,8 +92,9 @@
     <Content Include="index.html" />
     <Content Include="js\jquery.min.js" />
     <Content Include="js\jquery.qrcode.min.js" />
+    <Content Include="payment\ali\page\default.aspx" />
     <Content Include="payment\ali\page\notify_url.aspx" />
-    <Content Include="payment\ali\page\pay.aspx" />
+    <Content Include="payment\ali\page\readme.txt" />
     <Content Include="payment\ali\page\return_url.aspx" />
     <Content Include="payment\pay.html" />
     <Content Include="payment\wx\page\DownloadBillpage.aspx" />
@@ -139,16 +140,16 @@
     <Compile Include="payment\ali\code\AlipayNotify.cs" />
     <Compile Include="payment\ali\code\AlipaySubmit.cs" />
     <Compile Include="payment\ali\code\MD5.cs" />
+    <Compile Include="payment\ali\page\default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="payment\ali\page\default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="payment\ali\page\notify_url.aspx.cs">
       <DependentUpon>notify_url.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\ali\page\pay.aspx.cs">
-      <DependentUpon>pay.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\ali\page\pay.aspx.designer.cs">
-      <DependentUpon>pay.aspx</DependentUpon>
     </Compile>
     <Compile Include="payment\ali\page\return_url.aspx.cs">
       <DependentUpon>return_url.aspx</DependentUpon>

@@ -49,6 +49,7 @@
     <Compile Include="ali\AlipayNotify.cs" />
     <Compile Include="ali\AlipaySubmit.cs" />
     <Compile Include="ali\MD5.cs" />
+    <Compile Include="Path.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="wx\Config.cs" />
     <Compile Include="wx\Data.cs" />

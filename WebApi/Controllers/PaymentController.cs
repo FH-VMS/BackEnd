@@ -3,12 +3,14 @@ using Model.Pay;
 using Model.Product;
 using Model.Sys;
 using Payment.wx;
+using PaymentLib.ali;
 using PaymentLib.wx;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 
@@ -27,7 +29,8 @@ namespace Chuang.Back.Controllers
             return null;
         }
 
-        public ResultObj<PayStateModel> GetData(string k, string code)
+        //微信支付
+        public ResultObj<PayStateModel> GetDataW(string k, string code)
         {
             //解码机器传过来的key值
             AnalizeKey(k);
@@ -78,6 +81,60 @@ namespace Chuang.Back.Controllers
         private void AnalizeKey(string key)
         {
 
+        }
+
+
+        //支付宝支付
+        public ResultObj<PayStateModel> GetDataA(string k)
+        {
+            AnalizeKey(k);
+            ////////////////////////////////////////////请求参数////////////////////////////////////////////
+            PayStateModel payStateModel = new PayStateModel();
+
+            //商户订单号，商户网站订单系统中唯一订单号，必填
+            Random ran = new Random();
+            int RandKey = ran.Next(1000, 9999);
+            string out_trade_no = DateTime.Now.ToString("yyyyMMddhhmmssffff") + RandKey.ToString();
+
+            //订单名称，必填
+            string subject = "测试商品";
+
+            //付款金额，必填
+            string total_fee = "0.01";
+
+            //收银台页面上，商品展示的超链接，必填
+            string show_url ="";
+
+            //商品描述，可空
+            string body = "";
+
+
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+
+            //把请求参数打包成数组
+            SortedDictionary<string, string> sParaTemp = new SortedDictionary<string, string>();
+            sParaTemp.Add("partner", Config.partner);
+            sParaTemp.Add("seller_id", Config.seller_id);
+            sParaTemp.Add("_input_charset", Config.input_charset.ToLower());
+            sParaTemp.Add("service", Config.service);
+            sParaTemp.Add("payment_type", Config.payment_type);
+            sParaTemp.Add("notify_url", Config.notify_url);
+            sParaTemp.Add("return_url", Config.return_url);
+            sParaTemp.Add("out_trade_no", out_trade_no);
+            sParaTemp.Add("subject", subject);
+            sParaTemp.Add("total_fee", total_fee);
+            sParaTemp.Add("show_url", show_url);
+            //sParaTemp.Add("app_pay","Y");//启用此参数可唤起钱包APP支付。
+            sParaTemp.Add("body", body);
+            //其他业务参数根据在线开发文档，添加参数.文档地址:https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.2Z6TSk&treeId=60&articleId=103693&docType=1
+            //如sParaTemp.Add("参数名","参数值");
+
+            //建立请求
+            string sHtmlText = Config.GateWay+Submit.BuildRequestParaToString(sParaTemp, Encoding.UTF8);
+            payStateModel.ProductJson = "";
+            payStateModel.RequestData = sHtmlText;
+            return Content(payStateModel);
         }
     }
 }

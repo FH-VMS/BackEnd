@@ -52,7 +52,7 @@ namespace Chuang.Back.Controllers
             AnalizeKey(k);
             // IProduct service = new ProductService();
             //List<ProductModel> products = service.GetAllProducts();
-
+            k = "248cacdb-6f6e-468c-bd7c-7d294ca5fa31";
             ProductForMachineModel machineInfo = new ProductForMachineModel();
             machineInfo.MachineId = k;
             machineInfo.PageIndex = pageIndex;
