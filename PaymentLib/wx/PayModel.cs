@@ -42,5 +42,20 @@ namespace Payment.wx
         /// 机器传过来的编码
         /// </summary>
         public string k { get; set; }
+
+        /// <summary>
+        /// 商品名称
+        /// </summary>
+        public string product_name
+        {
+            get;
+            set;
+        }
+
+        public string trade_no
+        {
+            get;
+            set;
+        }
     }
 }

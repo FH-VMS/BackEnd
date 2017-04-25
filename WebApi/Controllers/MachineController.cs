@@ -1,6 +1,8 @@
 ﻿using Chuang.Back.Base;
 using Interface;
 using Model.Machine;
+using Model.Pay;
+using Model.Sale;
 using Model.Sys;
 using Service;
 using System;
@@ -9,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Utility;
 
 namespace Chuang.Back.Controllers
 {
@@ -24,7 +27,15 @@ namespace Chuang.Back.Controllers
         // 返回支付结果，需要出货的东东
         public string GetPayResult(string k)
         {
-            return "ok, get pay result";
+            KeyJsonModel keyJsonInfo = AnalizeKey(k);
+            ISale _isale = new SalesService();
+            //trade_status: (0:待支付，1:支付待出货,2：支付成功且已出货,3：支付成功出货失败未退款，4:支付成功出货失败已退款，5：支付失败)
+            List<KeyTunnelModel> lstSales = _isale.GetPayResult("", "1", keyJsonInfo.m);
+            if (lstSales.Count == 0)
+            {
+                return "";
+            }
+            return JsonHandler.GetJsonStrFromObject(lstSales,false);
         }
 
         //出货后，告诉汇报出货情况并更新库存
@@ -49,10 +60,10 @@ namespace Chuang.Back.Controllers
 
         public ResultObj<List<ProductForMachineModel>> GetProductByMachine(string k = "", int pageIndex = 1, int pageSize = 10)
         {
-            AnalizeKey(k);
+            //KeyJsonModel keyJsonInfo = AnalizeKey(k);
             // IProduct service = new ProductService();
             //List<ProductModel> products = service.GetAllProducts();
-            k = "248cacdb-6f6e-468c-bd7c-7d294ca5fa31";
+            //k = "ABC123456789";
             ProductForMachineModel machineInfo = new ProductForMachineModel();
             machineInfo.MachineId = k;
             machineInfo.PageIndex = pageIndex;
@@ -65,10 +76,11 @@ namespace Chuang.Back.Controllers
         }
 
 
-        //对k进行解码
-        private void AnalizeKey(string key)
+        //对k进行解码 k格式：{"m":"123128937","t":[{"tid":"1-2","n":3},{"tid":"1-3","n":2}]}
+        private KeyJsonModel AnalizeKey(string key)
         {
-
+           KeyJsonModel keyJsonInfo = JsonHandler.GetObjectFromJson<KeyJsonModel>(key);
+           return keyJsonInfo;
         }
 
 

@@ -53,7 +53,9 @@
     <Compile Include="Machine\MachineListModel.cs" />
     <Compile Include="Machine\MachineTypeModel.cs" />
     <Compile Include="Machine\TunnelInfoModel.cs" />
+    <Compile Include="Pay\KeyJsonModel.cs" />
     <Compile Include="Pay\PayStateModel.cs" />
+    <Compile Include="Pay\ProductModel.cs" />
     <Compile Include="Product\ProductConfigModel.cs" />
     <Compile Include="Product\ProductListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

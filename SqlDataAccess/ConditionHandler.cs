@@ -215,6 +215,7 @@ namespace SqlDataAccess
                         }));
                             list.Add(CreateDbParameter(text + text3, condition.ParamValue + "%"));
                             break;
+
                         case ConditionOperate.Yesterday:
                             {
                                 var dateTime = DateTimeHandler.GetDateTime(DateTime.Now.AddDays(-1.0).ToString("yyyy-MM-dd") + " 00:00");

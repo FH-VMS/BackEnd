@@ -45,6 +45,7 @@
     <Compile Include="ICabinet.cs" />
     <Compile Include="ICommon.cs" />
     <Compile Include="IMachine.cs" />
+    <Compile Include="IPay.cs" />
     <Compile Include="ISale.cs" />
     <Compile Include="ITunnel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

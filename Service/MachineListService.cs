@@ -183,7 +183,7 @@ namespace Service
             int result;
 
             string userAccount = HttpContextHandler.GetHeaderObj("UserAccount").ToString();
-            machineListInfo.MachineId = Guid.NewGuid().ToString();
+            machineListInfo.MachineId = machineListInfo.DeviceId;
             machineListInfo.CreateDate = DateTime.Now;
             machineListInfo.Creator = userAccount;
             result = GenerateDal.Create(machineListInfo);

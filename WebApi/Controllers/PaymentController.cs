@@ -1,10 +1,12 @@
 ﻿using Chuang.Back.Base;
+using Interface;
 using Model.Pay;
 using Model.Product;
 using Model.Sys;
 using Payment.wx;
 using PaymentLib.ali;
 using PaymentLib.wx;
+using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,7 @@ using System.Net.Http;
 using System.Text;
 using System.Web;
 using System.Web.Http;
+using Utility;
 
 namespace Chuang.Back.Controllers
 {
@@ -33,23 +36,15 @@ namespace Chuang.Back.Controllers
         public ResultObj<PayStateModel> GetDataW(string k, string code)
         {
             //解码机器传过来的key值
-            AnalizeKey(k);
+           
 
             JsApi.payInfo = new PayModel();
             JsApi.payInfo.k = k;
-            Log.Debug(this.GetType().ToString(), "Get k : " + k + "get code:" + code);
             //生成code 根据code取微信支付的openid和access_token
             JsApi.GetOpenidAndAccessToken(code);
-            string total_fee = "1";
-            //检测是否给当前页面传递了相关参数
-
-
-            //若传递了相关参数，则调统一下单接口，获得后续相关接口的入口参数
-
-            // jsApiPay.openid = openid;
-            JsApi.payInfo.total_fee = int.Parse(total_fee);
+           
             PayStateModel payState = new PayStateModel();
-            if (string.IsNullOrEmpty(JsApi.payInfo.openid) || string.IsNullOrEmpty(total_fee))
+            if (string.IsNullOrEmpty(JsApi.payInfo.openid))
             {
                 payState.RequestState = "0";
                 payState.ProductJson = "";
@@ -60,11 +55,57 @@ namespace Chuang.Back.Controllers
             //JSAPI支付预处理
             try
             {
-                WxPayData unifiedOrderResult = JsApi.GetUnifiedOrderResult();
+                //解析k值
+                KeyJsonModel keyJsonInfo = AnalizeKey(k);
+                if (string.IsNullOrEmpty(keyJsonInfo.m) || keyJsonInfo.t.Count == 0)
+                {
+                    payState.RequestState = "2";
+                    payState.ProductJson = "";
+                    payState.RequestData = "";
+                    return Content(payState);
+                }
+                //生成交易号
+                JsApi.payInfo.trade_no = GeneraterTradeNo();
+                //取商品信息
+                IPay _ipay = new PayService();
 
+                decimal totalFee = 0;
+                string productNames = string.Empty;
+               
+                List<ProductModel> lstProduct = _ipay.GetProducInfo(keyJsonInfo.m, keyJsonInfo.t);
+                
+                //遍历商品
+                foreach (ProductModel productInfo in lstProduct)
+                {
+                    var tunnelInfo = (from m in keyJsonInfo.t
+                                      where m.tid == productInfo.TunnelId
+                                      select m).ToList<KeyTunnelModel>();
+                    if (tunnelInfo.Count > 0)
+                    {
+                        productInfo.Num = string.IsNullOrEmpty(tunnelInfo[0].n) ? "1" : tunnelInfo[0].n;
+                        totalFee = totalFee + Convert.ToInt32(productInfo.Num) * Convert.ToDecimal(productInfo.UnitW);
+                        productNames = productNames + productInfo.WaresName + ",";
+                        productInfo.TradeNo = JsApi.payInfo.trade_no;
+                    }
+
+
+                }
+                JsApi.payInfo.product_name = productNames.Length > 25 ? productNames.Substring(0, 25) : productNames;
+               
+                //string total_fee = "1";
+                //检测是否给当前页面传递了相关参数
+
+                // 1.先取购买商品的详情返回给用户   并缓存到页面   2.支付成功后跳转到支付结果页并把缓存数据插入到销售记录表
+                //若传递了相关参数，则调统一下单接口，获得后续相关接口的入口参数 
+
+                // jsApiPay.openid = openid;
+                JsApi.payInfo.total_fee = Convert.ToInt32((totalFee * 100));
+               
+                WxPayData unifiedOrderResult = JsApi.GetUnifiedOrderResult();
+                
                 string wxJsApiParam = JsApi.GetJsApiParameters();//获取H5调起JS API参数       
                 payState.RequestState = "1";
-                payState.ProductJson = "";
+                payState.ProductJson = JsonHandler.GetJsonStrFromObject(lstProduct, false);
                 payState.RequestData = wxJsApiParam;
                 
                 return Content(payState);
@@ -77,30 +118,71 @@ namespace Chuang.Back.Controllers
             return Content(new PayStateModel());
         }
 
-        //对k进行解码
-        private void AnalizeKey(string key)
-        {
+      
 
+        //对k进行解码 k格式：{"m":"ABC123456789","t":[{"tid":"1-2","n":3},{"tid":"1-3","n":2}]}
+        private KeyJsonModel AnalizeKey(string key)
+        {
+            KeyJsonModel keyJsonInfo = JsonHandler.GetObjectFromJson<KeyJsonModel>(key);
+
+            return keyJsonInfo;
+        }
+
+        private string GeneraterTradeNo()
+        {
+            Random ran = new Random();
+            int RandKey = ran.Next(1000, 9999);
+            string out_trade_no = DateTime.Now.ToString("yyyyMMddhhmmssffff") + RandKey.ToString();
+            return out_trade_no;
         }
 
 
         //支付宝支付
         public ResultObj<PayStateModel> GetDataA(string k)
         {
-            AnalizeKey(k);
             ////////////////////////////////////////////请求参数////////////////////////////////////////////
             PayStateModel payStateModel = new PayStateModel();
+            //解析k值
+            KeyJsonModel keyJsonInfo = AnalizeKey(k);
+            if (string.IsNullOrEmpty(keyJsonInfo.m) || keyJsonInfo.t.Count == 0)
+            {
+                payStateModel.RequestState = "2";
+                payStateModel.ProductJson = "";
+                payStateModel.RequestData = "";
+                return Content(payStateModel);
+            }
+            //生成交易号
+            string out_trade_no = GeneraterTradeNo();
+            //取商品信息
+            IPay _ipay = new PayService();
 
-            //商户订单号，商户网站订单系统中唯一订单号，必填
-            Random ran = new Random();
-            int RandKey = ran.Next(1000, 9999);
-            string out_trade_no = DateTime.Now.ToString("yyyyMMddhhmmssffff") + RandKey.ToString();
+            decimal totalFee = 0;
+            string productNames = string.Empty;
+           
+            List<ProductModel> lstProduct = _ipay.GetProducInfo(keyJsonInfo.m, keyJsonInfo.t);
+            //遍历商品
+            foreach (ProductModel productInfo in lstProduct)
+            {
+                var tunnelInfo = (from m in keyJsonInfo.t
+                                  where m.tid == productInfo.TunnelId
+                                  select m).ToList<KeyTunnelModel>();
+                if (tunnelInfo.Count > 0)
+                {
+                    productInfo.Num = string.IsNullOrEmpty(tunnelInfo[0].n) ? "1" : tunnelInfo[0].n;
+                    totalFee = totalFee + Convert.ToInt32(productInfo.Num) * Convert.ToDecimal(productInfo.UnitA);
+                    productNames = productNames + productInfo.WaresName + ",";
+                    productInfo.TradeNo = out_trade_no;
+                }
+
+
+            }
+
 
             //订单名称，必填
-            string subject = "测试商品";
+            string subject = productNames.Length > 25 ? productNames.Substring(0, 25) : productNames;
 
             //付款金额，必填
-            string total_fee = "0.01";
+            string total_fee = totalFee.ToString();
 
             //收银台页面上，商品展示的超链接，必填
             string show_url ="";
@@ -132,8 +214,9 @@ namespace Chuang.Back.Controllers
 
             //建立请求
             string sHtmlText = Config.GateWay+Submit.BuildRequestParaToString(sParaTemp, Encoding.UTF8);
-            payStateModel.ProductJson = "";
+            payStateModel.ProductJson = JsonHandler.GetJsonStrFromObject(lstProduct, false);
             payStateModel.RequestData = sHtmlText;
+            payStateModel.RequestState = "1";
             return Content(payStateModel);
         }
     }

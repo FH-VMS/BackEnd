@@ -92,23 +92,6 @@
     <Content Include="index.html" />
     <Content Include="js\jquery.min.js" />
     <Content Include="js\jquery.qrcode.min.js" />
-    <Content Include="payment\ali\page\default.aspx" />
-    <Content Include="payment\ali\page\notify_url.aspx" />
-    <Content Include="payment\ali\page\readme.txt" />
-    <Content Include="payment\ali\page\return_url.aspx" />
-    <Content Include="payment\pay.html" />
-    <Content Include="payment\wx\page\DownloadBillpage.aspx" />
-    <Content Include="payment\wx\page\JsApiPayPage.aspx" />
-    <Content Include="payment\wx\page\MakeQRCode.aspx" />
-    <Content Include="payment\wx\page\MicroPayPage.aspx" />
-    <Content Include="payment\wx\page\NativeNotifyPage.aspx" />
-    <Content Include="payment\wx\page\NativePayPage.aspx" />
-    <Content Include="payment\wx\page\OrderQueryPage.aspx" />
-    <Content Include="payment\wx\page\ProductPage.aspx" />
-    <Content Include="payment\wx\page\RefundPage.aspx" />
-    <Content Include="payment\wx\page\RefundQueryPage.aspx" />
-    <Content Include="payment\wx\page\ResultNotifyPage.aspx" />
-    <Content Include="payment\qrCode.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -135,125 +118,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="payment\ali\code\AlipayConfig.cs" />
-    <Compile Include="payment\ali\code\AlipayCore.cs" />
-    <Compile Include="payment\ali\code\AlipayNotify.cs" />
-    <Compile Include="payment\ali\code\AlipaySubmit.cs" />
-    <Compile Include="payment\ali\code\MD5.cs" />
-    <Compile Include="payment\ali\page\default.aspx.cs">
-      <DependentUpon>default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\ali\page\default.aspx.designer.cs">
-      <DependentUpon>default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="payment\ali\page\notify_url.aspx.cs">
-      <DependentUpon>notify_url.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\ali\page\return_url.aspx.cs">
-      <DependentUpon>return_url.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\wx\business\DownloadBill.cs" />
-    <Compile Include="payment\wx\business\JsApiPay.cs" />
-    <Compile Include="payment\wx\business\MicroPay.cs" />
-    <Compile Include="payment\wx\business\NativeNotify.cs" />
-    <Compile Include="payment\wx\business\NativePay.cs" />
-    <Compile Include="payment\wx\business\OrderQuery.cs" />
-    <Compile Include="payment\wx\business\Refund.cs" />
-    <Compile Include="payment\wx\business\RefundQuery.cs" />
-    <Compile Include="payment\wx\business\ResultNotify.cs" />
-    <Compile Include="payment\wx\lib\Config.cs" />
-    <Compile Include="payment\wx\lib\Data.cs" />
-    <Compile Include="payment\wx\lib\Exception.cs" />
-    <Compile Include="payment\wx\lib\HttpService.cs" />
-    <Compile Include="payment\wx\lib\Log.cs" />
-    <Compile Include="payment\wx\lib\Notify.cs" />
-    <Compile Include="payment\wx\lib\WxPayApi.cs" />
-    <Compile Include="payment\wx\page\DownloadBillPage.aspx.cs">
-      <DependentUpon>DownloadBillpage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\wx\page\DownloadBillPage.aspx.designer.cs">
-      <DependentUpon>DownloadBillpage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="payment\wx\page\JsApiPayPage.aspx.cs">
-      <DependentUpon>JsApiPayPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\wx\page\JsApiPayPage.aspx.designer.cs">
-      <DependentUpon>JsApiPayPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="payment\wx\page\MakeQRCode.aspx.cs">
-      <DependentUpon>MakeQRCode.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\wx\page\MakeQRCode.aspx.designer.cs">
-      <DependentUpon>MakeQRCode.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="payment\wx\page\MicroPayPage.aspx.cs">
-      <DependentUpon>MicroPayPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\wx\page\MicroPayPage.aspx.designer.cs">
-      <DependentUpon>MicroPayPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="payment\wx\page\NativeNotifyPage.aspx.cs">
-      <DependentUpon>NativeNotifyPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\wx\page\NativeNotifyPage.aspx.designer.cs">
-      <DependentUpon>NativeNotifyPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="payment\wx\page\NativePayPage.aspx.cs">
-      <DependentUpon>NativePayPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\wx\page\NativePayPage.aspx.designer.cs">
-      <DependentUpon>NativePayPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="payment\wx\page\OrderQueryPage.aspx.cs">
-      <DependentUpon>OrderQueryPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\wx\page\OrderQueryPage.aspx.designer.cs">
-      <DependentUpon>OrderQueryPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="payment\wx\page\ProductPage.aspx.cs">
-      <DependentUpon>ProductPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\wx\page\ProductPage.aspx.designer.cs">
-      <DependentUpon>ProductPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="payment\wx\page\RefundPage.aspx.cs">
-      <DependentUpon>RefundPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\wx\page\RefundPage.aspx.designer.cs">
-      <DependentUpon>RefundPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="payment\wx\page\RefundQueryPage.aspx.cs">
-      <DependentUpon>RefundQueryPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\wx\page\RefundQueryPage.aspx.designer.cs">
-      <DependentUpon>RefundQueryPage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="payment\wx\page\ResultNotifyPage.aspx.cs">
-      <DependentUpon>ResultNotifyPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="payment\wx\page\ResultNotifyPage.aspx.designer.cs">
-      <DependentUpon>ResultNotifyPage.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="SqlConfigText.sqlconfig" />
-    <Content Include="payment\wx\cert\apiclient_cert.p12" />
     <None Include="Properties\PublishProfiles\web.config.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -1,5 +1,6 @@
 ﻿using Interface;
 using Model.Machine;
+using Model.Sale;
 using SqlDataAccess;
 using System;
 using System.Collections.Generic;
@@ -61,5 +62,8 @@ namespace Service
 
             return result;
         }
+
+
+       
     }
 }

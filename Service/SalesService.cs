@@ -1,4 +1,5 @@
 ﻿using Interface;
+using Model.Pay;
 using Model.Sale;
 using SqlDataAccess;
 using System;
@@ -28,11 +29,55 @@ namespace Service
 
         }
 
-        public string GetPayResultById(string randomId)
+        //返回支付结果
+        public List<KeyTunnelModel> GetPayResult(string randomId, string tradeStatus, string machineId)
         {
-            SaleModel saleInfo = new SaleModel();
-            saleInfo.RandomId = randomId;
-            return GenerateDal.Single<SaleModel>(CommonSqlKey.GetPayResultById, saleInfo).ToString();
+            var conditions = new List<Condition>();
+
+            if (!string.IsNullOrEmpty(randomId))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "RandomId",
+                    DbColumnName = "random_id",
+                    ParamValue = randomId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            if (!string.IsNullOrEmpty(tradeStatus))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "TradeStatus",
+                    DbColumnName = "trade_status",
+                    ParamValue = tradeStatus,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            if (!string.IsNullOrEmpty(machineId))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "MachineId",
+                    DbColumnName = "machine_id",
+                    ParamValue = machineId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+
+            return GenerateDal.LoadByConditions<KeyTunnelModel>(CommonSqlKey.GetPayResultById, conditions);
         }
 
         public List<SaleModel> GetAll(SaleModel saleInfo)

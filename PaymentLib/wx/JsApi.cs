@@ -108,14 +108,14 @@ namespace PaymentLib.wx
         {
             //统一下单
             WxPayData data = new WxPayData();
-            data.SetValue("body", "test");
-            data.SetValue("attach", "test");
-            data.SetValue("out_trade_no", WxPayApi.GenerateOutTradeNo());
+            data.SetValue("body", payInfo.product_name);
+            data.SetValue("attach", "售卖机");
+            data.SetValue("out_trade_no", payInfo.trade_no);
 
             data.SetValue("total_fee", payInfo.total_fee);
             data.SetValue("time_start", DateTime.Now.ToString("yyyyMMddHHmmss"));
             data.SetValue("time_expire", DateTime.Now.AddMinutes(10).ToString("yyyyMMddHHmmss"));
-            data.SetValue("goods_tag", "test");
+            data.SetValue("goods_tag", "零售");
             data.SetValue("trade_type", "JSAPI");
             data.SetValue("openid", payInfo.openid);
 
