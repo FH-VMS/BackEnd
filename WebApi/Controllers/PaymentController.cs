@@ -86,6 +86,7 @@ namespace Chuang.Back.Controllers
                         totalFee = totalFee + Convert.ToInt32(productInfo.Num) * Convert.ToDecimal(productInfo.UnitW);
                         productNames = productNames + productInfo.WaresName + ",";
                         productInfo.TradeNo = JsApi.payInfo.trade_no;
+                        tunnelInfo[0].p = productInfo.UnitW;
                     }
 
 
@@ -99,8 +100,10 @@ namespace Chuang.Back.Controllers
                 //若传递了相关参数，则调统一下单接口，获得后续相关接口的入口参数 
 
                 // jsApiPay.openid = openid;
+                
                 JsApi.payInfo.total_fee = Convert.ToInt32((totalFee * 100));
-               
+                JsApi.payInfo.jsonProduct=JsonHandler.GetJsonStrFromObject(keyJsonInfo, false);
+                
                 WxPayData unifiedOrderResult = JsApi.GetUnifiedOrderResult();
                 
                 string wxJsApiParam = JsApi.GetJsApiParameters();//获取H5调起JS API参数       

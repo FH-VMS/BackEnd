@@ -7,6 +7,6 @@ namespace PaymentLib
 {
     public class Path
     {
-        public static string PathConfig = "http://www.wangchaocctv.com/p/w";
+        public static string PathConfig = "http://www.fy-cn.top/p";
     }
 }

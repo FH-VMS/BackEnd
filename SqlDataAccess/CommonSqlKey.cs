@@ -115,6 +115,7 @@ namespace SqlDataAccess
         //机器对应接口
         GetProductByMachine,
         GetProductByMachineCount,
+        GetCountByTradeNo,
         //支付对应接口
         GetProductInfo
     }

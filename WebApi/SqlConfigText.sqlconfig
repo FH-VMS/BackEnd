@@ -98,7 +98,7 @@ public class SqlConfigText
 
 			//销售
 			{"UpdateSale","UPDATE table_sales_cashless SET  trade_status =?p_TradeStatus WHERE sales_ic_id =?p_SalesIcId"},
-			{"GetPayResultById","SELECT trade_status as s,goods_id as tid,sales_number as n FROM table_sales_cashless WHERE  1=1"},
+			{"GetPayResultById","SELECT trade_status as s,goods_id as tid,sales_number as n, trade_no as tn FROM table_sales_cashless WHERE  1=1"},
 			{"DeleteSaleList","DELETE FROM table_sales_cashless where sales_ic_id=?p_SalesIcId"},
 			{"GetSaleAllList","SELECT *,c.client_name as ClientName,b.device_id as DeviceId FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id LEFT JOIN table_client c ON b.client_id = c.client_id WHERE 1=1"},
 			{"GetSaleList","SELECT a.*,c.client_name as ClientName,b.device_id as DeviceId FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"},
@@ -114,6 +114,7 @@ public class SqlConfigText
 			//机器所对应接口
 			{"GetProductByMachine","SELECT a.machine_id,a.tunnel_id, a.wares_id, a.alipay_prices, a.wpay_prices, b.wares_name as WaresName, c.curr_stock as CurrStock, d.pic_path as PicUrl FROM table_goods_config a LEFT JOIN table_product b ON a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id LEFT JOIN table_pic d ON b.pic_id=d.pic_id WHERE 1=1"},
 			{"GetProductByMachineCount","SELECT count(1) FROM table_goods_config a LEFT JOIN table_product b ON a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id LEFT JOIN table_pic d ON b.pic_id=d.pic_id WHERE 1=1"},
+			{"GetCountByTradeNo","SELECT count(1) FROM table_sales_cashless WHERE 1=1"},
 			//支付相关对应接口
 			{"GetProductInfo","SELECT a.machine_id as MachineId,a.tunnel_id as TunnelId, a.wpay_prices as UnitW,a.alipay_prices as UnitA, b.wares_name as WaresName from table_goods_config a Left Join table_product b On a.wares_id=b.wares_id WHERE 1=1"}
 

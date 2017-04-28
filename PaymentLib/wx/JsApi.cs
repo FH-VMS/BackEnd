@@ -109,7 +109,7 @@ namespace PaymentLib.wx
             //统一下单
             WxPayData data = new WxPayData();
             data.SetValue("body", payInfo.product_name);
-            data.SetValue("attach", "售卖机");
+            data.SetValue("attach", JsApi.payInfo.jsonProduct);
             data.SetValue("out_trade_no", payInfo.trade_no);
 
             data.SetValue("total_fee", payInfo.total_fee);

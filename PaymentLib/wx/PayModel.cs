@@ -52,7 +52,15 @@ namespace Payment.wx
             set;
         }
 
+        //商户订单号
         public string trade_no
+        {
+            get;
+            set;
+        }
+
+        //商品列表信息
+        public string jsonProduct
         {
             get;
             set;

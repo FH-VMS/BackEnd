@@ -22,12 +22,14 @@ namespace Model.Pay
     }
 
     public class KeyTunnelModel{
+        //货道Id
         public string tid
         {
             get;
             set;
         }
 
+        //数量
         public string n
         {
             get;
@@ -36,6 +38,18 @@ namespace Model.Pay
 
         //销售货物的状态
         public string s
+        {
+            get;
+            set;
+        }
+        //价格
+        public string p
+        {
+            get;
+            set;
+        }
+        //交易号
+        public string tn
         {
             get;
             set;

@@ -31,10 +31,10 @@ namespace PaymentLib.ali
         public static string key = "7bvs5ke7to0m6064mt7tkcm1gafo9qjf";
 
         // 服务器异步通知页面路径，需http://格式的完整路径，不能加?id=123这类自定义参数,必须外网可以正常访问
-        public static string notify_url = Path.PathConfig + "/m.html";
+        public static string notify_url = Path.PathConfig + "/m.html#/payresult";
 
         // 页面跳转同步通知页面路径，需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-        public static string return_url = Path.PathConfig + "/m.html#/product";
+        public static string return_url = Path.PathConfig + "/m.html#/payresult";
 
         // 签名方式
         public static string sign_type = "MD5";

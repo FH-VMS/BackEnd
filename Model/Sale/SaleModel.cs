@@ -116,13 +116,12 @@ namespace Model.Sale
              set;
          }
 
-          [Column(Name = "ClientName")]
          public string ClientName
          {
              get;
              set;
          }
-          [Column(Name = "DeviceId")]
+
           public string DeviceId
           {
               get;
