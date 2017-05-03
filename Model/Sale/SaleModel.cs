@@ -103,7 +103,7 @@ namespace Model.Sale
          }
 
          [Column(Name = "trade_status")]
-         public double TradeStatus
+         public int TradeStatus
          {
              get;
              set;
@@ -111,6 +111,13 @@ namespace Model.Sale
 
          [Column(Name = "random_id")]
          public string RandomId
+         {
+             get;
+             set;
+         }
+
+         [Column(Name = "reality_sale_number")]
+         public int RealitySaleNumber
          {
              get;
              set;

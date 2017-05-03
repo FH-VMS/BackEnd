@@ -50,7 +50,7 @@ namespace Service
         {
             var dic = new Dictionary<string, object>();
             dic.Add("UserAccount", userInfo.UserAccount);
-            dic.Add("UserPassword", userInfo.UserPassword);
+            dic.Add("UserPassword", Md5.md5(userInfo.UserPassword,16));
             var userList = GenerateDal.Load<UserModel>(CommonSqlKey.GetLogin, dic);
             if (userList != null && userList.ToList<UserModel>().Count>0)
             {

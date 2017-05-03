@@ -47,7 +47,9 @@
     <Compile Include="Customer\CustomerModel.cs" />
     <Compile Include="Machine\CabinetConfigModel.cs" />
     <Compile Include="Machine\MachineTypeAndCabinetModel.cs" />
+    <Compile Include="Machine\PriceAndMaxStockModel.cs" />
     <Compile Include="Machine\ProductForMachineModel.cs" />
+    <Compile Include="Machine\ToMachineModel.cs" />
     <Compile Include="Machine\TunnelConfigModel.cs" />
     <Compile Include="Machine\MachineConfigModel.cs" />
     <Compile Include="Machine\MachineListModel.cs" />

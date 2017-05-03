@@ -387,6 +387,58 @@ namespace SqlDataAccess
             return DbHelper.ExecuteDataTable(sql);
         }
 
+        public DataTable LoadDataTable(CommonSqlKey sqlKey, IDictionary<string, object> parmDic)
+        {
+
+            var logStep = 0;
+            try
+            {
+                if (sqlKey == CommonSqlKey.Null) return null;
+                var sqlTxt = CommSqlText.Instance[sqlKey];
+                logStep++;
+                sqlTxt = SqlConstructor.FilterSQLWithInsteadValue(sqlTxt, parmDic);
+                logStep++;
+                parmDic = SqlConstructor.FilterParmsWithList(parmDic, CommSqlText.SqlParms[sqlKey]);
+                logStep++;
+
+                return DbHelper.ExecuteDataTable(sqlTxt, parmDic);
+            }
+            catch (MySqlException ee)
+            {
+                Logger.LogInfo(String.Format("GetSingleFromDicDictionary ERROR STEP:{0}, EXCEPTION:{1}", logStep, ee.Message), 0, LogType.ERROR);
+                throw ee;
+            }
+        }
+
+        public DataTable LoadDataTableByConditions(CommonSqlKey sqlKey, IList<Condition> parmObj)
+        {
+            var logStep = 0;
+            try
+            {
+                if (sqlKey == CommonSqlKey.Null) return null;
+                var sqlTxt = CommSqlText.Instance[sqlKey];
+                logStep++;
+                var parmDic = SqlConstructor.MakeParms(parmObj);
+                  List<DbParameter> parameter;
+                  var whereSql = ConditionHandler.GetWhereSql(parmObj.ToList(), out parameter);
+                  sqlTxt = SqlConstructor.FilterSQLWithInsteadValue(sqlTxt + whereSql, parmDic);
+                logStep++;
+                parmDic = SqlConstructor.FilterParmsWithList(parmDic, CommSqlText.SqlParms[sqlKey]);
+                logStep++;
+
+                return DbHelper.ExecuteDataTable(sqlTxt, parmDic);
+            }
+            catch (MySqlException ee)
+            {
+                Logger.LogInfo(String.Format("GetSingleFromDicDictionary ERROR STEP:{0}, EXCEPTION:{1}", logStep, ee.Message), 0, LogType.ERROR);
+                throw ee;
+            }
+           
+            
+        }
+
+       
+
         public int Update<T>(CommonSqlKey sqlKey, T t)
         {
             var sqlContent = CommSqlText.Instance[sqlKey];

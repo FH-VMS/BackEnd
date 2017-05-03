@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2017-04-24 16:50:31
+Date: 2017-05-01 17:44:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -54,7 +54,7 @@ CREATE TABLE `table_cabinet_config` (
 -- ----------------------------
 -- Records of table_cabinet_config
 -- ----------------------------
-INSERT INTO `table_cabinet_config` VALUES ('1', '单货柜', '普通机器', '5', '7,6,5,8,8', null);
+INSERT INTO `table_cabinet_config` VALUES ('A', '单货柜', '普通机器', '5', '7,6,5,8,8', null);
 
 -- ----------------------------
 -- Table structure for `table_client`
@@ -159,10 +159,10 @@ CREATE TABLE `table_goods_config` (
 -- ----------------------------
 -- Records of table_goods_config
 -- ----------------------------
-INSERT INTO `table_goods_config` VALUES ('ABC123456789', '1-1', '1', '9', '6.44', '6.98', '5.99', '8.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '1-1');
-INSERT INTO `table_goods_config` VALUES ('ABC123456789', '1-2', '1', '44', '33.00', '22.00', '11.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '1-2');
-INSERT INTO `table_goods_config` VALUES ('ABC123456789', '1-3', '1', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '1-3');
-INSERT INTO `table_goods_config` VALUES ('ABC123456789', '1-4', '1', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '1-4');
+INSERT INTO `table_goods_config` VALUES ('ABC123456789', '1-1', '1', '9', '7.88', '7.88', '7.99', '7.88', '046aa7f6-00f8-4e5f-8c4e-88488fd78948', '0', '1-1');
+INSERT INTO `table_goods_config` VALUES ('ABC123456789', '1-2', '1', '44', '0.01', '0.01', '0.01', '0.01', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '1-2');
+INSERT INTO `table_goods_config` VALUES ('ABC123456789', '1-3', '1', '34', '0.01', '0.01', '0.01', '0.01', 'f0fe516e-3d10-4ea6-ac19-81adf241bcaf', '0', '1-3');
+INSERT INTO `table_goods_config` VALUES ('ABC123456789', '1-4', '1', '45', '0.01', '0.01', '0.01', '0.01', 'e87eee2a-7756-499c-81ca-806a928c8e83', '0', '1-4');
 INSERT INTO `table_goods_config` VALUES ('ABC123456789', '1-5', '1', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '1-5');
 INSERT INTO `table_goods_config` VALUES ('ABC123456789', '1-6', '1', '0', '0.00', '0.00', '1.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '1-6');
 INSERT INTO `table_goods_config` VALUES ('ABC123456789', '1-7', '1', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '1-7');
@@ -193,6 +193,40 @@ INSERT INTO `table_goods_config` VALUES ('ABC123456789', '5-5', '1', '0', '0.00'
 INSERT INTO `table_goods_config` VALUES ('ABC123456789', '5-6', '1', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '5-6');
 INSERT INTO `table_goods_config` VALUES ('ABC123456789', '5-7', '1', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '5-7');
 INSERT INTO `table_goods_config` VALUES ('ABC123456789', '5-8', '1', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '5-8');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0101', 'A', '14', '1.22', '1.22', '1.22', '1.22', '046aa7f6-00f8-4e5f-8c4e-88488fd78948', '0', '1-1');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0102', 'A', '5', '0.00', '0.01', '0.01', '0.00', 'f0fe516e-3d10-4ea6-ac19-81adf241bcaf', '0', '1-2');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0103', 'A', '5', '0.00', '0.01', '0.01', '0.00', 'e87eee2a-7756-499c-81ca-806a928c8e83', '0', '1-3');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0104', 'A', '5', '0.00', '0.01', '0.01', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '1-4');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0105', 'A', '5', '0.00', '0.01', '0.01', '0.00', '046aa7f6-00f8-4e5f-8c4e-88488fd78948', '0', '1-5');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0106', 'A', '5', '0.00', '0.01', '0.01', '0.00', 'f0fe516e-3d10-4ea6-ac19-81adf241bcaf', '0', '1-6');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0107', 'A', '5', '0.00', '0.01', '0.01', '0.00', 'e87eee2a-7756-499c-81ca-806a928c8e83', '0', '1-7');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0201', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '2-1');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0202', 'A', '0', '0.00', '0.00', '0.00', '0.00', '046aa7f6-00f8-4e5f-8c4e-88488fd78948', '0', '2-2');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0203', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'f0fe516e-3d10-4ea6-ac19-81adf241bcaf', '0', '2-3');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0204', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e87eee2a-7756-499c-81ca-806a928c8e83', '0', '2-4');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0205', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '2-5');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0206', 'A', '0', '0.00', '0.00', '0.00', '0.00', '046aa7f6-00f8-4e5f-8c4e-88488fd78948', '0', '2-6');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0301', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'f0fe516e-3d10-4ea6-ac19-81adf241bcaf', '0', '3-1');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0302', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e87eee2a-7756-499c-81ca-806a928c8e83', '0', '3-2');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0303', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '3-3');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0304', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e87eee2a-7756-499c-81ca-806a928c8e83', '0', '3-4');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0305', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'f0fe516e-3d10-4ea6-ac19-81adf241bcaf', '0', '3-5');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0401', 'A', '0', '0.00', '0.00', '0.00', '0.00', '046aa7f6-00f8-4e5f-8c4e-88488fd78948', '0', '4-1');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0402', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'f0fe516e-3d10-4ea6-ac19-81adf241bcaf', '0', '4-2');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0403', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e87eee2a-7756-499c-81ca-806a928c8e83', '0', '4-3');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0404', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '4-4');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0405', 'A', '0', '0.00', '0.00', '0.00', '0.00', '046aa7f6-00f8-4e5f-8c4e-88488fd78948', '0', '4-5');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0406', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'f0fe516e-3d10-4ea6-ac19-81adf241bcaf', '0', '4-6');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0407', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e87eee2a-7756-499c-81ca-806a928c8e83', '0', '4-7');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0408', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '4-8');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0501', 'A', '0', '0.00', '0.00', '0.00', '0.00', '046aa7f6-00f8-4e5f-8c4e-88488fd78948', '0', '5-1');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0502', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'f0fe516e-3d10-4ea6-ac19-81adf241bcaf', '0', '5-2');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0503', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e87eee2a-7756-499c-81ca-806a928c8e83', '0', '5-3');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0504', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '5-4');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0505', 'A', '0', '0.00', '0.00', '0.00', '0.00', '046aa7f6-00f8-4e5f-8c4e-88488fd78948', '0', '5-5');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0506', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'f0fe516e-3d10-4ea6-ac19-81adf241bcaf', '0', '5-6');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0507', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e87eee2a-7756-499c-81ca-806a928c8e83', '0', '5-7');
+INSERT INTO `table_goods_config` VALUES ('ABC000000001', 'A0508', 'A', '0', '0.00', '0.00', '0.00', '0.00', 'e891427d-61a3-4db7-8a7a-36b1ad30620d', '0', '5-8');
 
 -- ----------------------------
 -- Table structure for `table_goods_status`
@@ -213,6 +247,40 @@ CREATE TABLE `table_goods_status` (
 -- ----------------------------
 -- Records of table_goods_status
 -- ----------------------------
+INSERT INTO `table_goods_status` VALUES ('A0103', 'ABC000000001', '5', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0104', 'ABC000000001', '5', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0105', 'ABC000000001', '5', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0106', 'ABC000000001', '5', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0107', 'ABC000000001', '5', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0201', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0202', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0203', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0204', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0205', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0206', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0301', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0302', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0303', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0304', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0305', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0401', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0402', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0403', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0404', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0405', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0406', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0407', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0408', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0501', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0502', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0503', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0504', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0505', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0506', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0507', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0508', 'ABC000000001', '0', null, null, null, '0', '2017-04-30 17:32:44', 'A');
+INSERT INTO `table_goods_status` VALUES ('A0101', 'ABC000000001', '1', '0', null, null, '1', '2017-04-30 18:59:23', null);
+INSERT INTO `table_goods_status` VALUES ('A0102', 'ABC000000001', '2', '0', null, null, '1', '2017-04-30 18:59:40', null);
 
 -- ----------------------------
 -- Table structure for `table_ic_account`
@@ -298,6 +366,7 @@ CREATE TABLE `table_machine` (
 INSERT INTO `table_machine` VALUES ('ABC123456789', '12345', '32984fed-48ac-48ad-ac02-2dd028a2beb8', 'cb870f39-92ce-448e-982d-06a563efa64f', 'c4fdeab3-d61b-491e-b223-8b610ee02a5d', '2016-12-01 09:33:21', '2016-12-09 09:33:24', null, 'root', '2016-12-27 17:33:27', 'root', '2016-12-27 21:23:41', null);
 INSERT INTO `table_machine` VALUES ('ba37426d-3025-4698-b034-39c1821900da', 'AW009LS123', '56cea9ce-1d87-4e37-9398-e37346276188', '783755de-1a45-4175-84c4-6c7258289002', '7c04a2e6-e03b-4133-b6fd-3690464bcd38', '2016-12-01 12:12:23', '2016-12-31 12:12:26', null, 'root', '2016-12-31 20:12:31', 'root', '2017-01-10 18:16:54', null);
 INSERT INTO `table_machine` VALUES ('25795909-ed7a-4c9c-b58f-36d3dd14a552', 'AW001', '32984fed-48ac-48ad-ac02-2dd028a2beb8', 'd82cc1be-0254-470a-b925-615444a806af', '477e407a-f2b9-4598-b5cf-3e1e0067c0ec', '2016-12-01 12:33:10', '2016-12-31 12:33:12', null, 'root', '2016-12-31 20:33:15', null, null, null);
+INSERT INTO `table_machine` VALUES ('ABC000000001', 'ABC000000001', 'a69dc85d-bb6b-4831-bca7-fc3a3fe39728', 'cb870f39-92ce-448e-982d-06a563efa64f', 'c4fdeab3-d61b-491e-b223-8b610ee02a5d', '2017-04-27 14:05:45', null, null, 'root', '2017-04-28 22:05:44', null, null, null);
 
 -- ----------------------------
 -- Table structure for `table_machine_config`
@@ -332,8 +401,10 @@ CREATE TABLE `table_machine_config` (
 -- ----------------------------
 -- Records of table_machine_config
 -- ----------------------------
-INSERT INTO `table_machine_config` VALUES ('ba37426d-3025-4698-b034-39c1821900da', '1', 'ddd', '1', '1', '0', '0', '0', '0', '1', '1', '1', '0', '12', '13', '12', '12', '12', '12', '12', 'xiaoli', '2016-12-31 20:43:05', null);
 INSERT INTO `table_machine_config` VALUES ('ABC123456789', '1', '促销', '1', '1', '1', '0', '1', '0', '1', '1', '1', '0', '12', '4', '5', '5.5', '12', '132', '88', 'root', '2017-03-20 15:16:05', '备注1');
+INSERT INTO `table_machine_config` VALUES ('ba37426d-3025-4698-b034-39c1821900da', '1', 'ddd123', '1', '1', '0', '0', '0', '0', '1', '1', '1', '0', '12', '13', '12', '12', '12', '12', '12', 'root', '2017-05-01 15:33:59', null);
+INSERT INTO `table_machine_config` VALUES ('25795909-ed7a-4c9c-b58f-36d3dd14a552', '1', '12', '1', '1', '0', '0', '0', '0', '0', '0', '1', '0', '12', '12', '12', '12', '80', '12', '12', 'root', '2017-05-01 15:42:54', null);
+INSERT INTO `table_machine_config` VALUES ('ABC000000001', '1', null, '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1', '2', '0', '0', '0', null, null, 'root', '2017-05-01 16:17:05', null);
 
 -- ----------------------------
 -- Table structure for `table_machine_log`
@@ -503,8 +574,9 @@ CREATE TABLE `table_mt_goods` (
 -- ----------------------------
 -- Records of table_mt_goods
 -- ----------------------------
-INSERT INTO `table_mt_goods` VALUES ('32984fed-48ac-48ad-ac02-2dd028a2beb8', '1');
-INSERT INTO `table_mt_goods` VALUES ('56cea9ce-1d87-4e37-9398-e37346276188', '1');
+INSERT INTO `table_mt_goods` VALUES ('32984fed-48ac-48ad-ac02-2dd028a2beb8', 'A');
+INSERT INTO `table_mt_goods` VALUES ('56cea9ce-1d87-4e37-9398-e37346276188', 'A');
+INSERT INTO `table_mt_goods` VALUES ('a69dc85d-bb6b-4831-bca7-fc3a3fe39728', 'A');
 
 -- ----------------------------
 -- Table structure for `table_operation`
@@ -712,7 +784,7 @@ CREATE TABLE `table_sales_cashless` (
   `sales_ic_id` varchar(50) NOT NULL,
   `machine_id` varchar(50) DEFAULT NULL,
   `sales_date` datetime DEFAULT NULL,
-  `sales_number` int(10) DEFAULT NULL,
+  `sales_number` int(2) DEFAULT NULL,
   `pay_date` datetime DEFAULT NULL,
   `pay_type` varchar(10) DEFAULT NULL,
   `pay_interface` varchar(50) DEFAULT NULL,
@@ -723,13 +795,52 @@ CREATE TABLE `table_sales_cashless` (
   `com_id` varchar(50) DEFAULT NULL,
   `trade_amount` decimal(10,2) DEFAULT NULL,
   `trade_status` varchar(2) DEFAULT NULL,
-  `random_id` varchar(50) DEFAULT NULL
+  `random_id` varchar(50) DEFAULT NULL,
+  `reality_sale_number` int(2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of table_sales_cashless
 -- ----------------------------
-INSERT INTO `table_sales_cashless` VALUES ('123123123', 'ABC123456789', '2017-04-24 16:38:27', '1', '2017-04-24 16:38:35', 'a', null, null, '12312312312', null, '1-1', null, '0.01', '1', null);
+INSERT INTO `table_sales_cashless` VALUES ('4278beb6-8e12-410f-b5f0-b9014dc12d3f', 'ABC123456789', '2017-04-28 15:04:32', '1', '2017-04-28 15:04:32', null, '微信', null, '2017042803042310762386', null, '1-3', null, '0.01', '1', null, null);
+INSERT INTO `table_sales_cashless` VALUES ('81a56ac3-d00f-4372-89c1-eaae008d8909', 'ABC123456789', '2017-04-28 15:05:10', '1', '2017-04-28 15:05:10', null, '支付宝', null, '2017042803045788886659', null, '1-4', null, '0.01', '1', null, null);
+INSERT INTO `table_sales_cashless` VALUES ('2ba15ca5-1e64-4d7a-b3c9-ee37ee677093', 'ABC123456789', '2017-04-28 15:05:30', '1', '2017-04-28 15:05:30', null, '微信', null, '2017042803011663881253', null, '1-2', null, '0.01', '1', null, null);
+INSERT INTO `table_sales_cashless` VALUES ('b574faf9-e074-4e57-8aab-9c09137f5c39', 'ABC123456789', '2017-04-28 16:40:44', '1', '2017-04-28 16:40:44', null, '微信', null, '2017042804403218575866', null, '1-3', null, '0.01', '1', null, null);
+INSERT INTO `table_sales_cashless` VALUES ('cee82695-7985-49e7-847b-cf0eb848c3bc', 'ABC123456789', '2017-04-28 16:40:44', '1', '2017-04-28 16:40:44', null, '微信', null, '2017042804403218575866', null, '1-2', null, '0.01', '1', null, null);
+INSERT INTO `table_sales_cashless` VALUES ('9171f140-34ad-4f14-9b78-5802b1d43458', 'ABC123456789', '2017-04-28 16:43:05', '1', '2017-04-28 16:43:05', null, '支付宝', null, '2017042804423590445303', null, '1-3', null, '0.01', '1', null, null);
+INSERT INTO `table_sales_cashless` VALUES ('86565da3-9c5c-4cc5-a8ba-cfdfcc6fbe93', 'ABC123456789', '2017-04-28 16:43:06', '1', '2017-04-28 16:43:06', null, '支付宝', null, '2017042804423590445303', null, '1-4', null, '0.01', '1', null, null);
+INSERT INTO `table_sales_cashless` VALUES ('51af835a-2fe6-4235-a124-e5dc165d7e7e', 'ABC000000001', '2017-04-29 21:50:59', '1', '2017-04-28 22:53:11', null, '支付宝', null, '2017042810524520134971', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('447f2f4a-ea07-40f9-a3cd-495f266c4d6d', 'ABC000000001', '2017-04-29 22:17:34', '1', '2017-04-28 22:55:03', null, '微信', null, '2017042810545620132417', null, 'A0101', null, '0.01', '0', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('b4a12372-a5a7-4c65-aeb9-bfc3fcbc9228', 'ABC000000001', '2017-04-29 22:17:35', '1', '2017-04-28 23:04:24', null, '微信', null, '2017042811040967018660', null, 'A0101', null, '0.01', '0', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('e9906395-d136-43e1-986d-9682f41c05c6', 'ABC000000001', '2017-04-29 22:17:35', '1', '2017-04-28 23:05:44', null, '支付宝', null, '2017042811053084192430', null, 'A0101', null, '0.01', '0', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('45ab6111-50a2-4ab0-9282-0e9adfc5617c', 'ABC000000001', '2017-04-29 22:17:35', '1', '2017-04-29 17:31:58', null, '支付宝', null, '2017042905313432636945', null, 'A0105', null, '0.01', '0', null, '0');
+INSERT INTO `table_sales_cashless` VALUES ('c8290a35-cd14-4536-b83d-0b0f8b6f33f2', 'ABC000000001', '2017-04-29 22:43:48', '1', '2017-04-29 22:29:29', null, '微信', null, '2017042910291517012589', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('6c6cecbc-6f71-44b2-be69-b09b60ce3581', 'ABC000000001', '2017-04-29 22:54:05', '1', '2017-04-29 22:46:08', null, '微信', null, '2017042910455993574328', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('0a9ae8d4-f73c-4cd7-9f83-63d6376e07bd', 'ABC000000001', '2017-04-29 22:54:55', '1', '2017-04-29 22:54:44', null, '微信', null, '2017042910543699822531', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('e875136f-f55b-4ff2-a33c-d55c7fe9535b', 'ABC000000001', '2017-04-29 22:56:54', '1', '2017-04-29 22:56:00', null, '支付宝', null, '2017042910554734192206', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('5aa82549-b03c-41bd-bb90-35b975b02651', 'ABC000000001', '2017-04-29 22:59:37', '1', '2017-04-29 22:59:20', null, '支付宝', null, '2017042910590848263557', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('fa15b479-5e8c-4136-970b-c4eb7a02af79', 'ABC000000001', '2017-04-29 23:00:22', '1', '2017-04-29 23:00:07', null, '支付宝', null, '2017042910595473265093', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('eae2849b-a5a6-4dcd-a3f2-7f404a0a4bbc', 'ABC000000001', '2017-04-29 23:01:19', '1', '2017-04-29 23:00:56', null, '微信', null, '2017042911004593572784', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('509cfe3a-506d-4b33-acf6-4ce99d69f01b', 'ABC000000001', '2017-04-29 23:02:10', '1', '2017-04-29 23:01:55', null, '微信', null, '2017042911014802947081', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('57e12d61-e1d1-4096-87cc-de40a99f3c2f', 'ABC000000001', '2017-04-29 23:03:39', '1', '2017-04-29 23:03:19', null, '微信', null, '2017042911031007631949', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('fa6d7308-66f4-4d1f-9432-4c59209ff1bd', 'ABC000000001', '2017-04-29 23:04:19', '1', '2017-04-29 23:04:06', null, '微信', null, '2017042911035934194497', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('6cdaa58c-feff-4de3-a26a-2eb5dc3c3ec6', 'ABC000000001', '2017-04-30 11:12:57', '1', '2017-04-30 11:04:16', null, '微信', null, '2017043011040874824748', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('98306649-221e-44ed-b3aa-355153866b72', 'ABC000000001', '2017-04-30 11:13:25', '1', '2017-04-30 11:13:13', null, '微信', null, '2017043011124729519760', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('5f326ed3-4cd8-4ef7-90b0-e21b41373b5a', 'ABC000000001', '2017-04-30 11:14:21', '1', '2017-04-30 11:14:04', null, '微信', null, '2017043011135609193410', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('20d35473-212c-4b29-aef0-51d212e6d468', 'ABC000000001', '2017-04-30 14:28:02', '1', '2017-04-30 14:27:38', null, '微信', null, '2017043002272251389349', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('bff9562f-54ad-4ab3-8f93-7badcc03b549', 'ABC000000001', '2017-04-30 14:28:02', '1', '2017-04-30 14:27:40', null, '支付宝', null, '2017043002271621692939', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('a55cdfbf-bbb2-4130-96bf-888379562048', 'ABC000000001', '2017-04-30 15:03:41', '1', '2017-04-30 15:03:19', null, '微信', null, '2017043003030974828624', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('d11d8115-7bbe-4288-8663-622fe5edfa64', 'ABC000000001', '2017-04-30 15:07:45', '1', '2017-04-30 15:07:30', null, '微信', null, '2017043003072196699235', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('ee81f4a5-ec99-4bbc-ba53-8ec700ca5f87', 'ABC000000001', '2017-04-30 18:58:12', '1', '2017-04-30 18:57:59', null, '微信', null, '2017043006574807637982', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('19f404f2-a909-4573-b217-8c6b845a4051', 'ABC000000001', '2017-04-30 20:09:27', '1', '2017-04-30 20:07:29', null, '微信', null, '2017043008072062329579', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('8081fcda-fc07-4021-8e17-7e4f87f3976f', 'ABC000000001', '2017-04-30 22:13:35', '1', '2017-04-30 22:13:21', null, '微信', null, '2017043010131410762847', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('96be5584-9c7e-48b1-a61c-90969856a953', 'ABC000000001', '2017-04-30 22:14:46', '1', '2017-04-30 22:14:31', null, '微信', null, '2017043010142387327567', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('f0ffe004-7faa-420f-9828-d4c1a272976a', 'ABC000000001', '2017-04-30 22:15:31', '1', '2017-04-30 22:15:03', null, '微信', null, '2017043010145577943086', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('c7054976-c8ea-487c-9f7a-c7c42ee51f42', 'ABC000000001', '2017-04-30 22:16:07', '1', '2017-04-30 22:15:50', null, '微信', null, '2017043010154304516978', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('a3ac8cfc-48ab-4b97-a41a-0e7554d90bc3', 'ABC000000001', '2017-04-30 22:16:41', '1', '2017-04-30 22:16:27', null, '微信', null, '2017043010161821694666', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('9f0d158f-89ec-478e-b5eb-745b6bf677ff', 'ABC000000001', '2017-05-01 09:15:56', '1', '2017-05-01 09:15:44', null, '微信', null, '2017050109153548265733', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('d6ee06d7-8411-45b2-95ae-c545c96cc5b2', 'ABC000000001', '2017-05-01 09:49:59', '1', '2017-05-01 09:49:44', null, '微信', null, '2017050109493721691471', null, 'A0101', null, '0.01', '2', null, '1');
+INSERT INTO `table_sales_cashless` VALUES ('7467561d-29e1-42e5-af35-9573bae3bca0', 'ABC000000001', '2017-05-01 09:50:43', '1', '2017-05-01 09:50:26', null, '微信', null, '2017050109501573268071', null, 'A0101', null, '0.01', '2', null, '1');
 
 -- ----------------------------
 -- Table structure for `table_sales_ic`
@@ -755,6 +866,20 @@ CREATE TABLE `table_sales_ic` (
 -- ----------------------------
 -- Records of table_sales_ic
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `table_to_machine`
+-- ----------------------------
+DROP TABLE IF EXISTS `table_to_machine`;
+CREATE TABLE `table_to_machine` (
+  `machine_id` varchar(50) DEFAULT NULL,
+  `machine_status` varchar(2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of table_to_machine
+-- ----------------------------
+INSERT INTO `table_to_machine` VALUES ('ABC000000001', 'p');
 
 -- ----------------------------
 -- Table structure for `table_user`

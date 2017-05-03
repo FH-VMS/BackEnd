@@ -31,7 +31,7 @@ namespace PaymentLib.ali
         public static string key = "7bvs5ke7to0m6064mt7tkcm1gafo9qjf";
 
         // 服务器异步通知页面路径，需http://格式的完整路径，不能加?id=123这类自定义参数,必须外网可以正常访问
-        public static string notify_url = Path.PathConfig + "/m.html#/payresult";
+        public static string notify_url = "http://120.27.217.224:8088/api/Machine/PostPayResultA";//Path.PathConfig + "/m.html#/payresult";
 
         // 页面跳转同步通知页面路径，需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
         public static string return_url = Path.PathConfig + "/m.html#/payresult";

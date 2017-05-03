@@ -91,7 +91,7 @@ namespace Service
                 {
                     TunnelConfigModel tunnelConfigModel = new TunnelConfigModel();
                     tunnelConfigModel.TunnelPosition = i + "-" + j;
-                    tunnelConfigModel.TunnelId = i + "-" + j;
+                    tunnelConfigModel.TunnelId = cabinetId + (i < 10 ? "0" + i : i.ToString()) + (j < 10 ? "0" + j : j.ToString());
                     tunnelConfigModel.CabinetId = cabinetId;
                     tunnelConfigModel.MachineId = machineId;
                     lstTunnelConfig.Add(tunnelConfigModel);
@@ -164,9 +164,13 @@ namespace Service
                 {
                     GenerateDal.Create(tunnelConfigInfo);
                 }
-               
+                //向机器下行表里插入数据
+                if (lstTunnelConfigInfo.Count > 0)
+                {
+                    MachineService ms = new MachineService();
+                    ms.PostToMachine(lstTunnelConfigInfo[0].MachineId,"p");
+                }
                 GenerateDal.CommitTransaction();
-
                 return 1;
             }
             catch (Exception e)

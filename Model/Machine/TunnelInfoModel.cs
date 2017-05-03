@@ -58,7 +58,7 @@ namespace Model.Machine
         }
 
         [Column(Name = "curr_status")]
-        public int CurrStatus
+        public string CurrStatus
         {
             get;
             set;

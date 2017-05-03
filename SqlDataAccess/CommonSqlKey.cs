@@ -116,6 +116,17 @@ namespace SqlDataAccess
         GetProductByMachine,
         GetProductByMachineCount,
         GetCountByTradeNo,
+        UpdatePayResult,
+        DeleteTunnelStatusByMachine,
+        FullfilGoodsOneKey,
+        DeleteTunnelStatusByMachineAndTunnel,
+        GetBeepHeart,
+        DeleteToMachine,
+        ToMachinePrice,
+        ToMachineStock,
+        PostPriceAndMaxStock,
+        GetMachineSetting,
+        UpdateCurrStock,
         //支付对应接口
         GetProductInfo
     }

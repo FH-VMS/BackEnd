@@ -132,6 +132,10 @@ namespace SqlDataAccess
 
         DataTable LoadDataTable(string sql);
 
+        DataTable LoadDataTable(CommonSqlKey sqlKey, IDictionary<string, object> parmDic);
+
+        DataTable LoadDataTableByConditions(CommonSqlKey sqlKey, IList<Condition> parmObj);
+
         #endregion
 
         #region Update

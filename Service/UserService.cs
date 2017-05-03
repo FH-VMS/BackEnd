@@ -115,6 +115,7 @@ namespace Service
 
             userInfo.Id = Guid.NewGuid().ToString();
             userInfo.Sts = 1;
+            userInfo.UserPassword = Md5.md5(userInfo.UserPassword, 16);
             result = GenerateDal.Create(userInfo);
             
 
@@ -136,6 +137,7 @@ namespace Service
 
         public int UpdateData(UserModel userInfo)
         {
+            userInfo.UserPassword = Md5.md5(userInfo.UserPassword, 16);
             return GenerateDal.Update(CommonSqlKey.UpdateUser, userInfo);
         }
        

@@ -100,14 +100,14 @@ public class SqlConfigText
 			{"UpdateSale","UPDATE table_sales_cashless SET  trade_status =?p_TradeStatus WHERE sales_ic_id =?p_SalesIcId"},
 			{"GetPayResultById","SELECT trade_status as s,goods_id as tid,sales_number as n, trade_no as tn FROM table_sales_cashless WHERE  1=1"},
 			{"DeleteSaleList","DELETE FROM table_sales_cashless where sales_ic_id=?p_SalesIcId"},
-			{"GetSaleAllList","SELECT *,c.client_name as ClientName,b.device_id as DeviceId FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id LEFT JOIN table_client c ON b.client_id = c.client_id WHERE 1=1"},
+			{"GetSaleAllList","SELECT a.*,c.client_name as ClientName,b.device_id as DeviceId FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id LEFT JOIN table_client c ON b.client_id = c.client_id WHERE 1=1"},
 			{"GetSaleList","SELECT a.*,c.client_name as ClientName,b.device_id as DeviceId FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"},
 			{"GetSaleListAllCount","SELECT count(1) FROM table_sales_cashless WHERE 1=1"},
 			{"GetSaleListCount","SELECT COUNT(1) as ClientName FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"},
 
 			//货道信息
-			{"GetTunnelInfo","SELECT a.tunnel_id as TunnelId, b.* FROM table_goods_config a LEFT JOIN table_goods_status b ON a.machine_id = b.machine_id WHERE 1=1"},
-			{"GetTunnelInfoCount","SELECT COUNT(1) FROM table_goods_config a LEFT JOIN table_goods_status b ON a.machine_id = b.machine_id WHERE 1=1"},
+			{"GetTunnelInfo","SELECT a.goods_stu_id as TunnelId,a.* FROM table_goods_status a WHERE 1=1"},
+			{"GetTunnelInfoCount","SELECT COUNT(1) FROM table_goods_status WHERE 1=1"},
 			{"DeleteTunnelInfo","DELETE from table_goods_status WHERE machine_id=?p_MachineId"},
 			{"UpdateTunnelInfo","UPDATE table_goods_status SET curr_stock=?p_CurrStock,curr_missing=?p_CurrMissing,fault_code=?p_FaultCode,fault_describe=?p_FaultDescribe,curr_status=?p_CurrStatus,update_date=?p_UpdateDate WHERE machine_id=?p_MachineId AND goods_stu_id=?p_GoodsStuId AND cabinet_id=?p_CabinetId"},
 
@@ -115,6 +115,17 @@ public class SqlConfigText
 			{"GetProductByMachine","SELECT a.machine_id,a.tunnel_id, a.wares_id, a.alipay_prices, a.wpay_prices, b.wares_name as WaresName, c.curr_stock as CurrStock, d.pic_path as PicUrl FROM table_goods_config a LEFT JOIN table_product b ON a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id LEFT JOIN table_pic d ON b.pic_id=d.pic_id WHERE 1=1"},
 			{"GetProductByMachineCount","SELECT count(1) FROM table_goods_config a LEFT JOIN table_product b ON a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id LEFT JOIN table_pic d ON b.pic_id=d.pic_id WHERE 1=1"},
 			{"GetCountByTradeNo","SELECT count(1) FROM table_sales_cashless WHERE 1=1"},
+			{"UpdatePayResult","UPDATE table_sales_cashless SET  trade_status=?p_TradeStatus, reality_sale_number=?p_RealitySaleNumber, sales_date=?p_SalesDate WHERE machine_id=?p_MachineId AND trade_no=?p_TradeNo AND goods_id=?p_GoodsId"},  //上报出货结果
+			{"UpdateCurrStock","UPDATE table_goods_status SET curr_stock=curr_stock-?p_CurrStock WHERE machine_id=?p_MachineId AND goods_stu_id=?p_GoodsStuId"},  //销售后更新库存
+			{"FullfilGoodsOneKey","INSERT INTO table_goods_status(goods_stu_id,machine_id,curr_stock,curr_status,cabinet_id,update_date) SELECT tunnel_id as goods_stu_id, machine_id, max_puts AS curr_stock,is_used as curr_status, cabinet_id, NOW() as update_date FROM table_goods_config WHERE machine_id = ?p_MachineId"},  //一键补货
+			{"DeleteTunnelStatusByMachine","DELETE FROM table_goods_status WHERE machine_id = ?p_MachineId"}, 
+			{"DeleteTunnelStatusByMachineAndTunnel","DELETE FROM table_goods_status WHERE machine_id = ?p_MachineId And goods_stu_id = ?p_GoodsStuId"}, 
+			{"GetBeepHeart","SELECT machine_status as s FROM table_to_machine WHERE machine_id = ?p_MachineId"}, //心跳包
+			{"DeleteToMachine","DELETE FROM table_to_machine WHERE machine_id = ?p_MachineId AND machine_status=?p_MachineStatus"},
+			{"ToMachinePrice","SELECT TUNNEL_ID AS TID,CASH_PRICES AS P1,ALIPAY_PRICES AS P2,WPAY_PRICES AS P3,IC_PRICES AS P4, max_puts as ms  FROM TABLE_GOODS_CONFIG  WHERE 1=1"},
+			{"ToMachineStock","SELECT goods_stu_id AS TID,curr_stock as cs, curr_status as csta FROM table_goods_status  WHERE 1=1"},
+			{"PostPriceAndMaxStock","UPDATE table_goods_config SET  max_puts=?p_MaxPuts, cash_prices=?p_CashPrices, wpay_prices=?p_WpayPrices, alipay_prices=?p_AlipayPrices, ic_prices=?p_IcPrices WHERE machine_id=?p_MachineId AND  tunnel_id=?p_TunnelId"},
+			{"GetMachineSetting","SELECT mc_area1_temp as t1, mc_area2_temp as t2, mc_area3_temp as t3, mc_area4_temp as t4, mc_status as s  FROM table_machine_config WHERE 1=1"},
 			//支付相关对应接口
 			{"GetProductInfo","SELECT a.machine_id as MachineId,a.tunnel_id as TunnelId, a.wpay_prices as UnitW,a.alipay_prices as UnitA, b.wares_name as WaresName from table_goods_config a Left Join table_product b On a.wares_id=b.wares_id WHERE 1=1"}
 

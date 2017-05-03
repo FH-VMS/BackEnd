@@ -4,14 +4,17 @@ using Model.Machine;
 using Model.Pay;
 using Model.Sale;
 using Model.Sys;
+using Newtonsoft.Json;
 using Service;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Web;
 using System.Web.Http;
 using System.Xml;
 using Utility;
@@ -45,20 +48,70 @@ namespace Chuang.Back.Controllers
         public string GetOutResult(string k)
         {
             KeyJsonModel keyJsonInfo = AnalizeKey(k);
+            int result = _IMachine.PutPayResult(keyJsonInfo);
 
-            return "ok, get deliver situation";
+            return result==1?"OK":"NG";
         }
 
         // 心跳
         public string GetHeartBeep(string k)
         {
-            return "ok, heart beat";
+            KeyJsonModel keyJsonInfo = AnalizeKey(k);
+            DataTable dt = _IMachine.GetBeepHeart(keyJsonInfo.m);
+            return JsonHandler.DataTable2Json(dt);
+        }
+
+        // 上报机器下行处理结果
+        public string GetHandleResult(string k)
+        {
+            ToMachineModel toMachineInfo = JsonHandler.GetObjectFromJson<ToMachineModel>(k);
+            int result = _IMachine.GetHandleResult(toMachineInfo.m, toMachineInfo.s);
+            return result == 1 ? "OK" : "NG";
+        }
+
+        //向机器下行价格
+        public string GetToMachinePrice(string k)
+        {
+            Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(k);
+            return JsonHandler.DataTable2Json(_IMachine.GetToMachinePrice(values["m"], Convert.ToInt32(values["start"]), Convert.ToInt32(values["len"])));
+        }
+
+         //向机器下行当前补货库存
+        public string GetToMachineStock(string k)
+        {
+            Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(k);
+            return JsonHandler.DataTable2Json(_IMachine.GetToMachineStock(values["m"], Convert.ToInt32(values["start"]), Convert.ToInt32(values["len"])));
         }
 
         //一键补货
         public string GetFullfilGood(string k)
         {
-            return "ok, get fullfil good";
+            KeyJsonModel keyJsonInfo = AnalizeKey(k);
+            int result = _IMachine.GetFullfilGood(keyJsonInfo.m);
+            return result == 1 ? "OK" : "NG";
+        }
+
+        //按货道补货
+        public string GetFullfilGoodByTunnel(string k)
+        {
+            KeyJsonModel keyJsonInfo = AnalizeKey(k);
+            int result = _IMachine.GetFullfilGoodByTunnel(keyJsonInfo);
+            return result == 1 ? "OK" : "NG";
+        }
+
+        //机器端设置价格和最大库存上报
+        public string GetReportMaxStockAndPrice(string k)
+        {
+            PriceAndMaxStock priceAndMaxStock = JsonHandler.GetObjectFromJson<PriceAndMaxStock>(k);
+            int result = _IMachine.PostMaxStockAndPrice(priceAndMaxStock.t, priceAndMaxStock.m);
+            return result == 1 ? "OK" : "NG";
+        }
+
+        public string GetMachineSetting(string k)
+        {
+            KeyJsonModel keyJsonInfo = AnalizeKey(k);
+            DataTable dt = _IMachine.GetMachineSetting(keyJsonInfo.m);
+            return JsonHandler.DataTable2Json(dt);
         }
 
         // 微信支付结果
@@ -96,15 +149,37 @@ namespace Chuang.Back.Controllers
         }
 
         //支付宝支付结果
+        /*
         public ResultObj<int> PostPayResultA(List<ProductModel> listProductInfo)
         {
+            
             IMachine _imachine = new MachineService();
             _imachine.PostPayResultA(listProductInfo);
             return Content(1);
         }
+        */
+        public ResultObj<int> PostPayResultA()
+        {
+           
+            string outTradeNo = HttpContext.Current.Request.Form["out_trade_no"];
+            IMachine _imachine = new MachineService();
+            if (_imachine.GetCountByTradeNo(outTradeNo) > 0)
+            {
+                return Content(1);
+            }
+
+            string tradeStatus = HttpContext.Current.Request.Form["trade_status"].ToUpper();
+            if (tradeStatus == "TRADE_SUCCESS")
+            {
+                string jsonProduct = HttpContext.Current.Request.Form["body"];
+                KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(jsonProduct);
+                _imachine.PostPayResultA(keyJsonModel, outTradeNo);
+            }
+            return Content(1);
+        }
 
 
-
+        //取商品列表
         public ResultObj<List<ProductForMachineModel>> GetProductByMachine(string k = "", int pageIndex = 1, int pageSize = 10)
         {
             //KeyJsonModel keyJsonInfo = AnalizeKey(k);
@@ -130,21 +205,6 @@ namespace Chuang.Back.Controllers
            return keyJsonInfo;
         }
 
-
-        public void GetTest()
-        {
-            List<ProductModel> lstProduct = new List<ProductModel>();
-            lstProduct.Add(new ProductModel()
-            {
-                MachineId = "123"
-            });
-            lstProduct.Add(new ProductModel()
-            {
-                MachineId = "dfg"
-            });
-
-            string sss = JsonHandler.GetJsonStrFromObject(lstProduct, false);
-        }
 
 
     }

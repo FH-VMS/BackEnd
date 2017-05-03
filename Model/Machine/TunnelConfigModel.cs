@@ -46,7 +46,7 @@ namespace Model.Machine
         }
 
         [Column(Name = "wpay_prices")]
-        public decimal WapyPrices
+        public decimal WpayPrices
         {
             get;
             set;

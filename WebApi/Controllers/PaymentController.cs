@@ -175,6 +175,7 @@ namespace Chuang.Back.Controllers
                     totalFee = totalFee + Convert.ToInt32(productInfo.Num) * Convert.ToDecimal(productInfo.UnitA);
                     productNames = productNames + productInfo.WaresName + ",";
                     productInfo.TradeNo = out_trade_no;
+                    tunnelInfo[0].p = productInfo.UnitA;
                 }
 
 
@@ -191,7 +192,7 @@ namespace Chuang.Back.Controllers
             string show_url ="";
 
             //商品描述，可空
-            string body = "";
+            string body = JsonHandler.GetJsonStrFromObject(keyJsonInfo, false);
 
 
 

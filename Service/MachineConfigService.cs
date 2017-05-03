@@ -194,6 +194,9 @@ namespace Service
                 machineConfigInfo.UpdateDate = DateTime.Now;
                 machineConfigInfo.Updater = userAccount;
                 GenerateDal.Create(machineConfigInfo);
+                //需要插入机器下行表中待机器取
+                MachineService mc = new MachineService();
+                mc.PostToMachine(machineConfigInfo.MachineId, "t");
                 GenerateDal.CommitTransaction();
 
                 return 1;

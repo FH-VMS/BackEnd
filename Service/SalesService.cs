@@ -76,6 +76,41 @@ namespace Service
                 });
             }
 
+            conditions.Add(new Condition
+            {
+                LeftBrace = "  ",
+                ParamName = "PayDate",
+                DbColumnName = "pay_date",
+                ParamValue = "asc",
+                Operation = ConditionOperate.OrderBy,
+                RightBrace = "",
+                Logic = ""
+            });
+
+            conditions.Add(new Condition
+            {
+                LeftBrace = "",
+                ParamName = "Index",
+                DbColumnName = "",
+                ParamValue = 0,
+                Operation = ConditionOperate.LimitIndex,
+                RightBrace = "",
+                Logic = ""
+
+            });
+
+            conditions.Add(new Condition
+            {
+                LeftBrace = "",
+                ParamName = "Length",
+                DbColumnName = "",
+                ParamValue = 5,
+                Operation = ConditionOperate.LimitLength,
+                RightBrace = "",
+                Logic = ""
+
+            });
+
 
             return GenerateDal.LoadByConditions<KeyTunnelModel>(CommonSqlKey.GetPayResultById, conditions);
         }
@@ -113,6 +148,17 @@ namespace Service
                     Logic = ""
                 });
             }
+
+            conditions.Add(new Condition
+            {
+                LeftBrace = "  ",
+                ParamName = "PayDate",
+                DbColumnName = "pay_date",
+                ParamValue = "desc",
+                Operation = ConditionOperate.OrderBy,
+                RightBrace = "",
+                Logic = ""
+            });
 
             conditions.AddRange(CreatePaginConditions(saleInfo.PageIndex, saleInfo.PageSize));
 
