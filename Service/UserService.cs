@@ -112,7 +112,10 @@ namespace Service
         {
             int result;
 
-
+            if (CheckUserName(userInfo.UserAccount) > 0)
+            {
+                return -1;
+            } 
             userInfo.Id = Guid.NewGuid().ToString();
             userInfo.Sts = 1;
             userInfo.UserPassword = Md5.md5(userInfo.UserPassword, 16);
@@ -122,6 +125,22 @@ namespace Service
 
 
             return result;
+        }
+
+        private int CheckUserName(string name)
+        {
+            var conditions = new List<Condition>();
+            conditions.Add(new Condition
+            {
+                LeftBrace = " AND ",
+                ParamName = "UserAccount",
+                DbColumnName = "usr_account",
+                ParamValue = name,
+                Operation = ConditionOperate.Equal,
+                RightBrace = "",
+                Logic = ""
+            });
+            return GenerateDal.CountByConditions(CommonSqlKey.CheckUserExist, conditions);
         }
 
         /// <summary>
@@ -137,6 +156,32 @@ namespace Service
 
         public int UpdateData(UserModel userInfo)
         {
+            var conditions = new List<Condition>();
+            conditions.Add(new Condition
+            {
+                LeftBrace = " AND ",
+                ParamName = "UserAccount",
+                DbColumnName = "usr_account",
+                ParamValue = userInfo.UserAccount,
+                Operation = ConditionOperate.Equal,
+                RightBrace = "",
+                Logic = ""
+            });
+            conditions.Add(new Condition
+            {
+                LeftBrace = " AND ",
+                ParamName = "Id",
+                DbColumnName = "id",
+                ParamValue = userInfo.Id,
+                Operation = ConditionOperate.NotEqual,
+                RightBrace = "",
+                Logic = ""
+            });
+            int result = GenerateDal.CountByConditions(CommonSqlKey.CheckUserExist, conditions);
+            if (result > 0)
+            {
+                return -1;
+            }
             userInfo.UserPassword = Md5.md5(userInfo.UserPassword, 16);
             return GenerateDal.Update(CommonSqlKey.UpdateUser, userInfo);
         }

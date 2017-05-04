@@ -52,5 +52,9 @@ namespace Chuang.Back.Controllers
         {
             return Content(_IBase.DeleteData(idList));
         }
+
+        
+
+
     }
 }

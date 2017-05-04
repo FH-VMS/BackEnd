@@ -48,5 +48,8 @@ namespace Interface
         [Remark("取货柜做字典", ParmsNote = "", ReturnNote = "字典实体列表")]
         List<CommonDic> GetCabinetDic();
 
+        [Remark("修改密码", ParmsNote = "用户实体", ReturnNote = "int")]
+        int UpdatePassword(UserModel userInfo);
+
     }
 }

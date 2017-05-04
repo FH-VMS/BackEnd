@@ -343,5 +343,12 @@ namespace Service
 
             return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetCabinetDic, conditions);
         }
+
+        //修改个人登录密码
+        public int UpdatePassword(UserModel userInfo)
+        {
+            userInfo.UserPassword = Md5.md5(userInfo.UserPassword, 16);
+            return GenerateDal.Update(CommonSqlKey.ChangePassword, userInfo);
+        }
     }
 }

@@ -17,6 +17,10 @@ namespace SqlDataAccess
         GetLogin,
         GetClientDic,
         GetAuthDic,
+        CheckUserExist,
+
+        //用户设置
+        ChangePassword,
 
         UpdateCustomer,
         DeleteCustomer,

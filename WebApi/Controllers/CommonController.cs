@@ -136,5 +136,13 @@ namespace Chuang.Back.Controllers
             ICommon menusService = new CommonService();
             return Content(menusService.GetCabinetDic());
         }
+
+        //修改密码
+        public ResultObj<int> PutPassword(UserModel userInfo)
+        {
+            ICommon menusService = new CommonService();
+           
+            return Content(menusService.UpdatePassword(userInfo));
+        }
     }
 }
