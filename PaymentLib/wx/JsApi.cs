@@ -106,12 +106,11 @@ namespace PaymentLib.wx
         */
         public static WxPayData GetUnifiedOrderResult()
         {
-            //统一下单
+            //统一下单 字段最长保存为128
             WxPayData data = new WxPayData();
             data.SetValue("body", payInfo.product_name);
-            data.SetValue("attach", JsApi.payInfo.jsonProduct);
+            //data.SetValue("attach", payInfo.jsonProduct);
             data.SetValue("out_trade_no", payInfo.trade_no);
-
             data.SetValue("total_fee", payInfo.total_fee);
             data.SetValue("time_start", DateTime.Now.ToString("yyyyMMddHHmmss"));
             data.SetValue("time_expire", DateTime.Now.AddMinutes(10).ToString("yyyyMMddHHmmss"));

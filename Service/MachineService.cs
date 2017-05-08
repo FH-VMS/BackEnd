@@ -460,30 +460,26 @@ namespace Service
                     TunnelConfigModel tc = new TunnelConfigModel();
                     tc.MachineId = machineId;
                     tc.TunnelId = priceAndStock.tid;
-                    if (priceAndStock.p1 != 0)
+                    tc.CashPrices = priceAndStock.p1;
+                    tc.AlipayPrices = priceAndStock.p2;
+                    tc.WpayPrices = priceAndStock.p3;
+                    tc.IcPrices = priceAndStock.p4;
+                    tc.MaxPuts = priceAndStock.ms;
+
+                    if (priceAndStock.p1 == 0 && priceAndStock.ms != 0)
                     {
-                        tc.CashPrices = priceAndStock.p1;
+                        GenerateDal.Update(CommonSqlKey.UpdateMaxPuts, tc);
+                    }
+                    else if (priceAndStock.p1 != 0 && priceAndStock.ms == 0)
+                    {
+                        GenerateDal.Update(CommonSqlKey.UpdatePrice, tc);
+                    }
+                    else
+                    {
+                        GenerateDal.Update(CommonSqlKey.PostPriceAndMaxStock, tc);
                     }
 
-                    if (priceAndStock.p2 != 0)
-                    {
-                        tc.AlipayPrices = priceAndStock.p2;
-                    }
 
-                    if (priceAndStock.p3 != 0)
-                    {
-                        tc.WpayPrices = priceAndStock.p3;
-                    }
-
-                    if (priceAndStock.p4 != 0)
-                    {
-                        tc.IcPrices = priceAndStock.p4;
-                    }
-                    if (priceAndStock.ms != 0)
-                    {
-                        tc.MaxPuts = priceAndStock.ms;
-                    }
-                    GenerateDal.Update(CommonSqlKey.PostPriceAndMaxStock, tc);
                 }
                 PostToMachine(machineId, "p");
                 GenerateDal.CommitTransaction();

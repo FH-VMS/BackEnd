@@ -135,13 +135,16 @@ namespace Chuang.Back.Controllers
             XmlNode payResultNode = xmlDoc.SelectSingleNode("xml/result_code");
             if(payResultNode.InnerText.ToUpper()=="SUCCESS")
             {
-                XmlNode tunnelNode = xmlDoc.SelectSingleNode("xml/attach");
-                KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(tunnelNode.InnerText);
+                /*******************************放到微信支付通知参数里，因参数只支付最大128个字符长度，所以注释修改*****************************/
+                //XmlNode tunnelNode = xmlDoc.SelectSingleNode("xml/attach");
+                //KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(tunnelNode.InnerText);
 
-
-
+                string jsonProduct = FileHandler.ReadFile("data/" + tradeNoNode.InnerText + ".wa");
+                KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(jsonProduct);
 
                 _imachine.PostPayResultW(keyJsonModel, tradeNoNode.InnerText);
+                //删除文件
+                FileHandler.DeleteFile("data/" + tradeNoNode.InnerText + ".wa");
             }
 
             return Content(1);
@@ -171,9 +174,15 @@ namespace Chuang.Back.Controllers
             string tradeStatus = HttpContext.Current.Request.Form["trade_status"].ToUpper();
             if (tradeStatus == "TRADE_SUCCESS")
             {
-                string jsonProduct = HttpContext.Current.Request.Form["body"];
+                /*******************************放到微信支付通知参数里，因参数只支付最大128个字符长度，所以注释修改*****************************/
+                //string jsonProduct = HttpContext.Current.Request.Form["body"];
+                //KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(jsonProduct);
+
+                string jsonProduct = FileHandler.ReadFile("data/" + outTradeNo + ".wa");
                 KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(jsonProduct);
                 _imachine.PostPayResultA(keyJsonModel, outTradeNo);
+                //删除文件
+                FileHandler.DeleteFile("data/" + outTradeNo + ".wa");
             }
             return Content(1);
         }
@@ -206,6 +215,9 @@ namespace Chuang.Back.Controllers
         }
 
 
-
+        public ResultObj<string> GetTest()
+        {
+            return Content("中文中文");
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace Chuang.Back
         {
             HttpContext.Current.Response.ClearHeaders();
             HttpContext.Current.Request.ContentEncoding = Encoding.UTF8;
+            
             //2015/12/11 下面的设置放到Web.config中，解决跨域问题
             //var origin = HttpContext.Current.Request.Headers["Origin"];
             //HttpContext.Current.Response.AppendHeader("Access-Control-Allow-Origin", string.IsNullOrEmpty(origin) ? "*" : origin);

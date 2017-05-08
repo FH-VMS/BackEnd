@@ -9,6 +9,7 @@ using PaymentLib.wx;
 using Service;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -92,7 +93,7 @@ namespace Chuang.Back.Controllers
 
                 }
                 JsApi.payInfo.product_name = productNames.Length > 25 ? productNames.Substring(0, 25) : productNames;
-               
+                
                 //string total_fee = "1";
                 //检测是否给当前页面传递了相关参数
 
@@ -102,8 +103,10 @@ namespace Chuang.Back.Controllers
                 // jsApiPay.openid = openid;
                 
                 JsApi.payInfo.total_fee = Convert.ToInt32((totalFee * 100));
-                JsApi.payInfo.jsonProduct=JsonHandler.GetJsonStrFromObject(keyJsonInfo, false);
-                
+                JsApi.payInfo.jsonProduct = JsonHandler.GetJsonStrFromObject(keyJsonInfo, false);
+                //写入交易中转
+                FileHandler.WriteFile("data/", JsApi.payInfo.trade_no + ".wa", JsApi.payInfo.jsonProduct);
+
                 WxPayData unifiedOrderResult = JsApi.GetUnifiedOrderResult();
                 
                 string wxJsApiParam = JsApi.GetJsApiParameters();//获取H5调起JS API参数       
@@ -111,12 +114,14 @@ namespace Chuang.Back.Controllers
                 payState.ProductJson = JsonHandler.GetJsonStrFromObject(lstProduct, false);
                 payState.RequestData = wxJsApiParam;
                 
+                
+
                 return Content(payState);
 
             }
             catch (Exception ex)
             {
-                
+
             }
             return Content(new PayStateModel());
         }
@@ -138,6 +143,8 @@ namespace Chuang.Back.Controllers
             string out_trade_no = DateTime.Now.ToString("yyyyMMddhhmmssffff") + RandKey.ToString();
             return out_trade_no;
         }
+
+   
 
 
         //支付宝支付
@@ -193,7 +200,8 @@ namespace Chuang.Back.Controllers
 
             //商品描述，可空
             string body = JsonHandler.GetJsonStrFromObject(keyJsonInfo, false);
-
+            //写入交易中转
+            FileHandler.WriteFile("data/", out_trade_no + ".wa", body);
 
 
             ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -212,7 +220,7 @@ namespace Chuang.Back.Controllers
             sParaTemp.Add("total_fee", total_fee);
             sParaTemp.Add("show_url", show_url);
             //sParaTemp.Add("app_pay","Y");//启用此参数可唤起钱包APP支付。
-            sParaTemp.Add("body", body);
+            sParaTemp.Add("body", subject);
             //其他业务参数根据在线开发文档，添加参数.文档地址:https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.2Z6TSk&treeId=60&articleId=103693&docType=1
             //如sParaTemp.Add("参数名","参数值");
 
