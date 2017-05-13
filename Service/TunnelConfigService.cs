@@ -83,6 +83,7 @@ namespace Service
                 return null;
             }
             int layerNumber = lstCabinetConfig[0].LayerNumber;
+            string cabinetDispaly = lstCabinetConfig[0].CabinetDisplay;
             string goodsNumber = lstCabinetConfig[0].LayerGoodsNumber;
             string[] arrGoodsNumber = goodsNumber.Split(',');
             for (int i = 1; i <= layerNumber; i++)
@@ -91,7 +92,7 @@ namespace Service
                 {
                     TunnelConfigModel tunnelConfigModel = new TunnelConfigModel();
                     tunnelConfigModel.TunnelPosition = i + "-" + j;
-                    tunnelConfigModel.TunnelId = cabinetId + (i < 10 ? "0" + i : i.ToString()) + (j < 10 ? "0" + j : j.ToString());
+                    tunnelConfigModel.TunnelId = cabinetDispaly + (i < 10 ? "0" + i : i.ToString()) + (j < 10 ? "0" + j : j.ToString());
                     tunnelConfigModel.CabinetId = cabinetId;
                     tunnelConfigModel.MachineId = machineId;
                     lstTunnelConfig.Add(tunnelConfigModel);

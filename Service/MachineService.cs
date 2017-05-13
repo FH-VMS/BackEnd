@@ -32,7 +32,16 @@ namespace Service
                     Logic = ""
                 });
             }
-
+            conditions.Add(new Condition
+            {
+                LeftBrace = "  ",
+                ParamName = "TunnelId",
+                DbColumnName = "tunnel_id",
+                ParamValue = "asc",
+                Operation = ConditionOperate.OrderBy,
+                RightBrace = "",
+                Logic = ""
+            });
             conditions.AddRange(CreatePaginConditions(machineInfo.PageIndex, machineInfo.PageSize));
             return GenerateDal.LoadByConditions<ProductForMachineModel>(CommonSqlKey.GetProductByMachine, conditions);
 

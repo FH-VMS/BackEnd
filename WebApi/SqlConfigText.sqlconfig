@@ -73,7 +73,7 @@ public class SqlConfigText
 
 			//货道配置
 			{"GetTunnelConfig","SELECT * FROM table_goods_config WHERE 1=1"},
-			{"GetCabinetConfig","SELECT layer_number,layer_goods_number FROM table_cabinet_config WHERE 1=1"},
+			{"GetCabinetConfig","SELECT layer_number,layer_goods_number,cabinet_display FROM table_cabinet_config WHERE 1=1"},
 			{"GetTunnelConfigCount","SELECT count(1) FROM table_goods_config WHERE 1 = 1"},
 			{"DeleteTunnelConfig","DELETE from table_goods_config where machine_id=?p_MachineId AND cabinet_id = ?p_CabinetId"},
 			{"UpdateTunnelConfig","UPDATE table_goods_config SET  device_id =?p_DeviceId,  type_id =?p_TypeId,client_id=?p_ClientId,  usr_account =?p_UserAccount, Updater=?p_Updater, update_date=?p_UpdateDate WHERE machine_id =?p_MachineId"},

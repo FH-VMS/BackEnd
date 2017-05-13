@@ -303,6 +303,16 @@ namespace Service
                 RightBrace = "",
                 Logic = ""
             });
+            conditions.Add(new Condition
+            {
+                LeftBrace = "  AND ",
+                ParamName = "AClientId",
+                DbColumnName = "a.client_id",
+                ParamValue = userClientId,
+                Operation = ConditionOperate.Equal,
+                RightBrace = "",
+                Logic = ""
+            });
             return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetPictureDic, conditions);
         }
 

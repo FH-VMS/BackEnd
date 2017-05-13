@@ -53,5 +53,12 @@ namespace Model.Machine
             get;
             set;
         }
+
+        [Column(Name = "cabinet_display")]
+        public string CabinetDisplay
+        {
+            get;
+            set;
+        }
     }
 }
