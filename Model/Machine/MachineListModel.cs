@@ -100,5 +100,17 @@ namespace Model.Machine
              set;
          }
 
+         [Column(Name = "latest_date")]
+         public DateTime LatestDate
+         {
+             get;
+             set;
+         }
+
+         public string LatestOnline
+         {
+             get;
+             set;
+         }
     }
 }

@@ -76,6 +76,7 @@ namespace Utility
             }
             jsonBuilder.Remove(jsonBuilder.Length - 1, 1);
             jsonBuilder.Append("]");
+          
             return jsonBuilder.ToString();
         }
 

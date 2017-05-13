@@ -147,7 +147,7 @@ namespace Service
 
 
         /// <summary>
-        /// 新增/修改会员信息
+        /// 
         /// </summary>
         /// <param name="memberInfo"></param>
         /// <returns></returns>

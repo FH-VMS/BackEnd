@@ -30,6 +30,8 @@ namespace Chuang.Back.Controllers
                 return new MachineService();
             }
         }
+
+        #region 机器需要接口
         // 返回支付结果，需要出货的东东
         public string GetPayResult(string k)
         {
@@ -58,7 +60,15 @@ namespace Chuang.Back.Controllers
         {
             KeyJsonModel keyJsonInfo = AnalizeKey(k);
             DataTable dt = _IMachine.GetBeepHeart(keyJsonInfo.m);
-            return JsonHandler.DataTable2Json(dt);
+            if (dt.Rows.Count > 0)
+            {
+                return "{\"OK\":"+JsonHandler.DataTable2Json(dt) + "}";
+            }
+            else
+            {
+                return "{\"OK\":\"\"}";
+            }
+           
         }
 
         // 上报机器下行处理结果
@@ -107,6 +117,7 @@ namespace Chuang.Back.Controllers
             return result == 1 ? "OK" : "NG";
         }
 
+        //取机器设置接口
         public string GetMachineSetting(string k)
         {
             KeyJsonModel keyJsonInfo = AnalizeKey(k);
@@ -114,81 +125,10 @@ namespace Chuang.Back.Controllers
             return JsonHandler.DataTable2Json(dt);
         }
 
-        // 微信支付结果
-        public ResultObj<int> PostPayResultW()
-        {
-           
-            Stream s = System.Web.HttpContext.Current.Request.InputStream;
-            byte[] b = new byte[s.Length];
-            s.Read(b, 0, (int)s.Length);
-            string postStr = Encoding.UTF8.GetString(b);
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(postStr);
-            // 商户交易号
-            XmlNode tradeNoNode = xmlDoc.SelectSingleNode("xml/out_trade_no");
-             IMachine _imachine = new MachineService();
-             if (_imachine.GetCountByTradeNo(tradeNoNode.InnerText) > 0)
-             {
-                 return Content(1);
-             }
-            //支付结果
-            XmlNode payResultNode = xmlDoc.SelectSingleNode("xml/result_code");
-            if(payResultNode.InnerText.ToUpper()=="SUCCESS")
-            {
-                /*******************************放到微信支付通知参数里，因参数只支付最大128个字符长度，所以注释修改*****************************/
-                //XmlNode tunnelNode = xmlDoc.SelectSingleNode("xml/attach");
-                //KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(tunnelNode.InnerText);
 
-                string jsonProduct = FileHandler.ReadFile("data/" + tradeNoNode.InnerText + ".wa");
-                KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(jsonProduct);
+        #endregion
 
-                _imachine.PostPayResultW(keyJsonModel, tradeNoNode.InnerText);
-                //删除文件
-                FileHandler.DeleteFile("data/" + tradeNoNode.InnerText + ".wa");
-            }
-
-            return Content(1);
-            //File.WriteAllText(@"c:\text.txt", postStr); 
-        }
-
-        //支付宝支付结果
-        /*
-        public ResultObj<int> PostPayResultA(List<ProductModel> listProductInfo)
-        {
-            
-            IMachine _imachine = new MachineService();
-            _imachine.PostPayResultA(listProductInfo);
-            return Content(1);
-        }
-        */
-        public ResultObj<int> PostPayResultA()
-        {
-           
-            string outTradeNo = HttpContext.Current.Request.Form["out_trade_no"];
-            IMachine _imachine = new MachineService();
-            if (_imachine.GetCountByTradeNo(outTradeNo) > 0)
-            {
-                return Content(1);
-            }
-
-            string tradeStatus = HttpContext.Current.Request.Form["trade_status"].ToUpper();
-            if (tradeStatus == "TRADE_SUCCESS")
-            {
-                /*******************************放到微信支付通知参数里，因参数只支付最大128个字符长度，所以注释修改*****************************/
-                //string jsonProduct = HttpContext.Current.Request.Form["body"];
-                //KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(jsonProduct);
-
-                string jsonProduct = FileHandler.ReadFile("data/" + outTradeNo + ".wa");
-                KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(jsonProduct);
-                _imachine.PostPayResultA(keyJsonModel, outTradeNo);
-                //删除文件
-                FileHandler.DeleteFile("data/" + outTradeNo + ".wa");
-            }
-            return Content(1);
-        }
-
-
-        //取商品列表
+        //取销售的商品列表
         public ResultObj<List<ProductForMachineModel>> GetProductByMachine(string k = "", int pageIndex = 1, int pageSize = 10)
         {
             //KeyJsonModel keyJsonInfo = AnalizeKey(k);
@@ -215,9 +155,104 @@ namespace Chuang.Back.Controllers
         }
 
 
-        public ResultObj<string> GetTest()
+        #region 支付结果通知
+        // 微信支付结果
+        public ResultObj<int> PostPayResultW()
         {
-            return Content("中文中文");
+            try
+            {
+                Stream s = System.Web.HttpContext.Current.Request.InputStream;
+                byte[] b = new byte[s.Length];
+                s.Read(b, 0, (int)s.Length);
+                string postStr = Encoding.UTF8.GetString(b);
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(postStr);
+                // 商户交易号
+                XmlNode tradeNoNode = xmlDoc.SelectSingleNode("xml/out_trade_no");
+                IMachine _imachine = new MachineService();
+                if (_imachine.GetCountByTradeNo(tradeNoNode.InnerText) > 0)
+                {
+                    return Content(1);
+                }
+                //支付结果
+                XmlNode payResultNode = xmlDoc.SelectSingleNode("xml/result_code");
+                if (payResultNode.InnerText.ToUpper() == "SUCCESS")
+                {
+                    /*******************************放到微信支付通知参数里，因参数只支付最大128个字符长度，所以注释修改*****************************/
+                    //XmlNode tunnelNode = xmlDoc.SelectSingleNode("xml/attach");
+                    //KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(tunnelNode.InnerText);
+
+                    string jsonProduct = FileHandler.ReadFile("data/" + tradeNoNode.InnerText + ".wa");
+                    KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(jsonProduct);
+
+                    _imachine.PostPayResultW(keyJsonModel, tradeNoNode.InnerText);
+                    //删除文件
+                    FileHandler.DeleteFile("data/" + tradeNoNode.InnerText + ".wa");
+                }
+
+                return Content(1);
+            }
+            catch (Exception ex)
+            {
+                return Content(0);
+            }
+            
+            //File.WriteAllText(@"c:\text.txt", postStr); 
         }
+
+        //支付宝支付结果
+        /*
+        public ResultObj<int> PostPayResultA(List<ProductModel> listProductInfo)
+        {
+            
+            IMachine _imachine = new MachineService();
+            _imachine.PostPayResultA(listProductInfo);
+            return Content(1);
+        }
+        */
+        public ResultObj<int> PostPayResultA()
+        {
+            try
+            {
+                string outTradeNo = HttpContext.Current.Request.Form["out_trade_no"];
+                IMachine _imachine = new MachineService();
+                if (_imachine.GetCountByTradeNo(outTradeNo) > 0)
+                {
+                    return Content(1);
+                }
+
+                string tradeStatus = HttpContext.Current.Request.Form["trade_status"].ToUpper();
+                if (tradeStatus == "TRADE_SUCCESS")
+                {
+                    /*******************************放到微信支付通知参数里，因参数只支付最大128个字符长度，所以注释修改*****************************/
+                    //string jsonProduct = HttpContext.Current.Request.Form["body"];
+                    //KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(jsonProduct);
+
+                    string jsonProduct = FileHandler.ReadFile("data/" + outTradeNo + ".wa");
+                    KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(jsonProduct);
+                    int result = _imachine.PostPayResultA(keyJsonModel, outTradeNo);
+                    if (result == 1)
+                    {
+                        HttpContext.Current.Response.Write("success");
+                    }
+                    //删除文件
+                    FileHandler.DeleteFile("data/" + outTradeNo + ".wa");
+                }
+                return Content(1);
+            }
+            catch (Exception ex)
+            {
+                return Content(0);
+            }
+            
+        }
+
+        #endregion
+
+        #region 退款结果通知
+
+
+
+        #endregion
     }
 }

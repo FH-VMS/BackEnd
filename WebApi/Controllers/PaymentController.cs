@@ -219,7 +219,7 @@ namespace Chuang.Back.Controllers
             sParaTemp.Add("subject", subject);
             sParaTemp.Add("total_fee", total_fee);
             sParaTemp.Add("show_url", show_url);
-            //sParaTemp.Add("app_pay","Y");//启用此参数可唤起钱包APP支付。
+            sParaTemp.Add("app_pay","Y");//启用此参数可唤起钱包APP支付。
             sParaTemp.Add("body", subject);
             //其他业务参数根据在线开发文档，添加参数.文档地址:https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.2Z6TSk&treeId=60&articleId=103693&docType=1
             //如sParaTemp.Add("参数名","参数值");

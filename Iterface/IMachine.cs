@@ -21,7 +21,7 @@ namespace Interface
         void PostPayResultW(KeyJsonModel keyJsonModel, string tradeNo);
 
         [Remark("支付宝支付结果回调", ParmsNote = "商品信息列表", ReturnNote = "void")]
-        void PostPayResultA(KeyJsonModel keyJsonModel, string tradeNo);
+        int PostPayResultA(KeyJsonModel keyJsonModel, string tradeNo);
 
         [Remark("判断是否已存在该单", ParmsNote = "商户交易号", ReturnNote = "int")]
         int GetCountByTradeNo(string tradeNo);

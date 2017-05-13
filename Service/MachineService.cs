@@ -106,7 +106,7 @@ namespace Service
         }
 
         //支付宝支付结果插入数据库
-        public void PostPayResultA(KeyJsonModel keyJsonModel, string tradeNo)
+        public int PostPayResultA(KeyJsonModel keyJsonModel, string tradeNo)
         {
             try
             {
@@ -132,11 +132,13 @@ namespace Service
                 }
 
                 GenerateDal.CommitTransaction();
+                return 1;
 
             }
             catch (Exception e)
             {
                 GenerateDal.RollBack();
+                return 0;
             }
 
 
@@ -283,7 +285,17 @@ namespace Service
         {
             IDictionary<string,object> dicParam = new Dictionary<string,object>();
             dicParam.Add("P_MachineId",machineId);
+            UpdateMachineInlineTime(machineId);
             return GenerateDal.LoadDataTable(CommonSqlKey.GetBeepHeart, dicParam);
+        }
+
+        private int UpdateMachineInlineTime(string machineId)
+        {
+            MachineListModel machineList = new MachineListModel();
+            machineList.MachineId = machineId;
+            machineList.LatestDate = DateTime.Now;
+
+            return GenerateDal.Update(CommonSqlKey.UpdateMachineInlineTime, machineList);
         }
 
         //机器上报下行处理结果
@@ -309,14 +321,18 @@ namespace Service
         {
             try
             {
-                GenerateDal.BeginTransaction();
-                ToMachineModel toMachineInfo = new ToMachineModel();
-                toMachineInfo.MachineId = machineId;
-                toMachineInfo.MachineStatus = machineStatus;
-                GenerateDal.Delete<ToMachineModel>(CommonSqlKey.DeleteToMachine, toMachineInfo);
-                GenerateDal.Create<ToMachineModel>(toMachineInfo);
+                if (!string.IsNullOrEmpty(machineId) && !string.IsNullOrEmpty(machineStatus))
+                {
+                    GenerateDal.BeginTransaction();
+                    ToMachineModel toMachineInfo = new ToMachineModel();
+                    toMachineInfo.MachineId = machineId;
+                    toMachineInfo.MachineStatus = machineStatus;
+                    GenerateDal.Delete<ToMachineModel>(CommonSqlKey.DeleteToMachine, toMachineInfo);
+                    GenerateDal.Create<ToMachineModel>(toMachineInfo);
 
-                GenerateDal.CommitTransaction();
+                    GenerateDal.CommitTransaction();
+                }
+                
                
             }
             catch (Exception e)

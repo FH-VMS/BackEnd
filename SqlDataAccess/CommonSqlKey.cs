@@ -133,6 +133,7 @@ namespace SqlDataAccess
         UpdateCurrStock,
         UpdateMaxPuts,
         UpdatePrice,
+        UpdateMachineInlineTime,
         //支付对应接口
         GetProductInfo
     }
