@@ -270,7 +270,7 @@ namespace Service
                     }
                    
                     tunnelInfo.UpdateDate = DateTime.Now;
-                    tunnelInfo.CabinetId = keyTunnelInfo.tid.Substring(0, 1);
+                    tunnelInfo.CabinetId = GetCabinetIdByMachine(keyJsonModel.m);
                     GenerateDal.Delete<TunnelInfoModel>(CommonSqlKey.DeleteTunnelStatusByMachineAndTunnel, tunnelInfo);
                     GenerateDal.Create<TunnelInfoModel>(tunnelInfo);
                 }
@@ -287,6 +287,34 @@ namespace Service
                 return 0;
             }
             return 1;
+        }
+
+        private string GetCabinetIdByMachine(string machineId)
+        {
+            var conditions = new List<Condition>();
+
+            if (!string.IsNullOrEmpty(machineId))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "MachineId",
+                    DbColumnName = "b.machine_id",
+                    ParamValue = machineId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+            DataTable dt = GenerateDal.LoadDataTableByConditions(CommonSqlKey.GetCabinetId, conditions);
+            if (dt.Rows.Count > 0)
+            {
+                return dt.Rows[0][0].ToString();
+            } else
+            {
+                return "";
+            }
+            
         }
 
         //心跳包

@@ -123,7 +123,7 @@ public class SqlConfigText
 			{"UpdateCurrStock","UPDATE table_goods_status SET curr_stock=curr_stock-?p_CurrStock WHERE machine_id=?p_MachineId AND goods_stu_id=?p_GoodsStuId"},  //销售后更新库存
 			{"FullfilGoodsOneKey","INSERT INTO table_goods_status(goods_stu_id,machine_id,curr_stock,curr_status,cabinet_id,update_date) SELECT tunnel_id as goods_stu_id, machine_id, max_puts AS curr_stock,is_used as curr_status, cabinet_id, NOW() as update_date FROM table_goods_config WHERE machine_id = ?p_MachineId"},  //一键补货
 			{"DeleteTunnelStatusByMachine","DELETE FROM table_goods_status WHERE machine_id = ?p_MachineId"}, 
-			{"DeleteTunnelStatusByMachineAndTunnel","DELETE FROM table_goods_status WHERE machine_id = ?p_MachineId And goods_stu_id = ?p_GoodsStuId"}, 
+			{"DeleteTunnelStatusByMachineAndTunnel","DELETE FROM table_goods_status WHERE machine_id = ?p_MachineId And goods_stu_id = ?p_GoodsStuId AND cabinet_id=?p_CabinetId"}, 
 			{"GetBeepHeart","SELECT machine_status as s FROM table_to_machine WHERE machine_id = ?p_MachineId"}, //心跳包
 			{"DeleteToMachine","DELETE FROM table_to_machine WHERE machine_id = ?p_MachineId AND machine_status=?p_MachineStatus"},
 			{"ToMachinePrice","SELECT TUNNEL_ID AS TID,CASH_PRICES AS P1,ALIPAY_PRICES AS P2,WPAY_PRICES AS P3,IC_PRICES AS P4, max_puts as ms  FROM TABLE_GOODS_CONFIG  WHERE 1=1"},
@@ -133,6 +133,7 @@ public class SqlConfigText
 			{"UpdateMaxPuts","UPDATE table_goods_config SET  max_puts=?p_MaxPuts WHERE machine_id=?p_MachineId AND  tunnel_id=?p_TunnelId"},
 			{"GetMachineSetting","SELECT mc_area1_temp as t1, mc_area2_temp as t2, mc_area3_temp as t3, mc_area4_temp as t4, mc_status as s  FROM table_machine_config WHERE 1=1"},
 			{"UpdateMachineInlineTime","UPDATE table_machine SET latest_date=?p_LatestDate WHERE machine_id=?p_MachineId"},//更新机器最新在线时间
+			{"GetCabinetId","SELECT a.cabinet_type_id FROM table_mt_goods a LEFT JOIN table_machine b ON a.machine_type_id=b.type_id WHERE 1=1"},//取货柜ID
 			//支付相关对应接口
 			{"GetProductInfo","SELECT a.machine_id as MachineId,a.tunnel_id as TunnelId, a.wpay_prices as UnitW,a.alipay_prices as UnitA, b.wares_name as WaresName from table_goods_config a Left Join table_product b On a.wares_id=b.wares_id WHERE 1=1"}
 
