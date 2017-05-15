@@ -163,6 +163,7 @@ namespace Service
                 }
                 foreach (TunnelConfigModel tunnelConfigInfo in lstTunnelConfigInfo)
                 {
+                    tunnelConfigInfo.IsUsed = 1;
                     GenerateDal.Create(tunnelConfigInfo);
                 }
                 //向机器下行表里插入数据

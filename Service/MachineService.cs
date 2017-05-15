@@ -317,6 +317,8 @@ namespace Service
             
         }
 
+       
+
         //心跳包
         public DataTable GetBeepHeart(string machineId)
         {

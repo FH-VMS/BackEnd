@@ -84,5 +84,23 @@ namespace Model.Machine
             set;
         }
 
+        public string MaxPuts
+        {
+            get;
+            set;
+        }
+
+        public int PageIndex
+        {
+            get;
+            set;
+        }
+
+        public int PageSize
+        {
+            get;
+            set;
+        }
+
     }
 }

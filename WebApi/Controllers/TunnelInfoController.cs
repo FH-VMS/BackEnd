@@ -30,6 +30,8 @@ namespace Chuang.Back.Controllers
             TunnelInfoModel tunnelConfigInfo = new TunnelInfoModel();
             tunnelConfigInfo.MachineId = machineId;
             tunnelConfigInfo.CabinetId = cabinetId;
+            tunnelConfigInfo.PageIndex = pageIndex;
+            tunnelConfigInfo.PageSize = pageSize;
             var tunnels = _IBase.GetAll(tunnelConfigInfo);
             int totalcount = _IBase.GetCount(tunnelConfigInfo);
 

@@ -115,6 +115,8 @@ namespace SqlDataAccess
         GetTunnelInfo,
         DeleteTunnelInfo,
         UpdateTunnelInfo,
+        GenerateFullfilBill,
+        GetFullfilCount,
 
         //机器对应接口
         GetProductByMachine,
