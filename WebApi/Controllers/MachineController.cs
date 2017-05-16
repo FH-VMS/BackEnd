@@ -112,7 +112,8 @@ namespace Chuang.Back.Controllers
         //机器端设置价格和最大库存上报
         public string GetReportMaxStockAndPrice(string k)
         {
-            LogMachineData(new string[] {"GetReportMaxStockAndPrice",k,DateTime.Now.ToString()});
+            FileHandler.LogMachineData(new string[] { "GetReportMaxStockAndPrice", k, DateTime.Now.ToString() });
+            //LogMachineData(new string[] {"GetReportMaxStockAndPrice",k,DateTime.Now.ToString()});
             PriceAndMaxStock priceAndMaxStock = JsonHandler.GetObjectFromJson<PriceAndMaxStock>(k);
             int result = _IMachine.PostMaxStockAndPrice(priceAndMaxStock.t, priceAndMaxStock.m);
             return result == 1 ? "OK" : "NG";
@@ -255,10 +256,11 @@ namespace Chuang.Back.Controllers
 
 
         #endregion
-
+        /*
         private void LogMachineData(string[] data)
         {
             File.AppendAllLines("c:/test.txt", data);
         }
+         */
     }
 }

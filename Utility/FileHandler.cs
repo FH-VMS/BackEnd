@@ -159,6 +159,11 @@ namespace Utility
             byte[] compressAfterByte = Decompress(compressBeforeByte);
             compressString = Encoding.GetEncoding("UTF-8").GetString(compressAfterByte);
             return compressString;
-        }  
+        }
+
+        public static void LogMachineData(string[] data)
+        {
+            File.AppendAllLines("c:/test.txt", data);
+        }
     }
 }

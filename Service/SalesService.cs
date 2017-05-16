@@ -127,7 +127,7 @@ namespace Service
                 {
                     LeftBrace = " AND ",
                     ParamName = "DeviceId",
-                    DbColumnName = "DeviceId",
+                    DbColumnName = "b.device_id",
                     ParamValue = "%" + saleInfo.DeviceId + "%",
                     Operation = ConditionOperate.Like,
                     RightBrace = "",
