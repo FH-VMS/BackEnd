@@ -53,5 +53,20 @@ namespace Chuang.Back.Controllers
         {
             return Content(_IBase.DeleteData(idList));
         }
+
+        public ResultObj<List<TunnelInfoModel>> GetFullfilAll(string machineId = "", string cabinetId = "", int pageIndex = 1, int pageSize = 10)
+        {
+            IFullfilBill ifullfilBill = new TunnelInfoService();
+            TunnelInfoModel tunnelConfigInfo = new TunnelInfoModel();
+            tunnelConfigInfo.MachineId=machineId;
+            tunnelConfigInfo.CabinetId=cabinetId;
+            tunnelConfigInfo.PageIndex=pageIndex;
+            tunnelConfigInfo.PageSize=pageSize;
+            var fullfilInfo = ifullfilBill.GetFullfilAll(tunnelConfigInfo);
+            int totalcount = ifullfilBill.GetFullfilCount(tunnelConfigInfo);
+
+            var pagination = new Pagination { PageSize = pageSize, PageIndex = pageIndex, StartIndex = 0, TotalRows = totalcount, TotalPage = 0 };
+            return Content(fullfilInfo, pagination);
+        }
     }
 }
