@@ -121,7 +121,7 @@ namespace Service
             string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
             var result = new List<SaleModel>();
             var conditions = new List<Condition>();
-            if (!string.IsNullOrEmpty(saleInfo.MachineId))
+            if (!string.IsNullOrEmpty(saleInfo.DeviceId))
             {
                 conditions.Add(new Condition
                 {
@@ -196,13 +196,13 @@ namespace Service
             string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
             string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
             var conditions = new List<Condition>();
-            if (!string.IsNullOrEmpty(saleInfo.MachineId))
+            if (!string.IsNullOrEmpty(saleInfo.DeviceId))
             {
                 conditions.Add(new Condition
                 {
                     LeftBrace = " AND ",
                     ParamName = "DeviceId",
-                    DbColumnName = "DeviceId",
+                    DbColumnName = "b.device_id",
                     ParamValue = "%" + saleInfo.DeviceId + "%",
                     Operation = ConditionOperate.Like,
                     RightBrace = "",

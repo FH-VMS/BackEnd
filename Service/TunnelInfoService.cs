@@ -74,7 +74,7 @@ namespace Service
                 {
                     LeftBrace = " AND ",
                     ParamName = "MachineId",
-                    DbColumnName = "machine_id",
+                    DbColumnName = "a.machine_id",
                     ParamValue = tunnelInfoInfo.MachineId,
                     Operation = ConditionOperate.Equal,
                     RightBrace = "",
@@ -88,7 +88,7 @@ namespace Service
                 {
                     LeftBrace = " AND ",
                     ParamName = "CabinetId",
-                    DbColumnName = "cabinet_id",
+                    DbColumnName = "a.cabinet_id",
                     ParamValue = tunnelInfoInfo.CabinetId,
                     Operation = ConditionOperate.Equal,
                     RightBrace = "",
