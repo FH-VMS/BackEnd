@@ -35,7 +35,7 @@ namespace PaymentLib.wx
         /* 支付结果通知回调url，用于商户接收支付结果
         */
         //public static string NOTIFY_URL = Path.PathConfig + "/m.html#/payresult";
-        public static string NOTIFY_URL = "http://120.27.217.224:8088/api/Machine/PostPayResultW";
+        public static string NOTIFY_URL = Path.NotidyAddr + "/Machine/PostPayResultW";
 
         //=======【商户系统后台机器IP】===================================== 
         /* 此参数可手动配置也可在程序中自动获取
