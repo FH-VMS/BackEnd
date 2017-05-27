@@ -33,7 +33,7 @@ namespace Service
                    if(i==0) {
                         conditions.Add(new Condition
                         {
-                            LeftBrace = " AND ",
+                            LeftBrace = " AND (",
                             ParamName = "TunnelId" + i,
                             DbColumnName = "a.tunnel_id",
                             ParamValue = lstTunnels[i].tid,
@@ -41,8 +41,19 @@ namespace Service
                             RightBrace = "",
                             Logic = ""
                         });
-                   } else {
+                   } else if(i==lstTunnels.Count-1) {
                        conditions.Add(new Condition
+                        {
+                            LeftBrace = " OR ",
+                            ParamName = "TunnelId" + i,
+                            DbColumnName = "a.tunnel_id",
+                            ParamValue = lstTunnels[i].tid,
+                            Operation = ConditionOperate.Equal,
+                            RightBrace = ")",
+                            Logic = ""
+                        });
+                   } else {
+                        conditions.Add(new Condition
                         {
                             LeftBrace = " OR ",
                             ParamName = "TunnelId" + i,
