@@ -31,16 +31,33 @@ namespace Service
                for(int i=0;i<lstTunnels.Count;i++)
                {
                    if(i==0) {
-                        conditions.Add(new Condition
-                        {
-                            LeftBrace = " AND (",
-                            ParamName = "TunnelId" + i,
-                            DbColumnName = "a.tunnel_id",
-                            ParamValue = lstTunnels[i].tid,
-                            Operation = ConditionOperate.Equal,
-                            RightBrace = "",
-                            Logic = ""
-                        });
+                       if (lstTunnels.Count == 1)
+                       {
+                           conditions.Add(new Condition
+                           {
+                               LeftBrace = " AND (",
+                               ParamName = "TunnelId" + i,
+                               DbColumnName = "a.tunnel_id",
+                               ParamValue = lstTunnels[i].tid,
+                               Operation = ConditionOperate.Equal,
+                               RightBrace = " )",
+                               Logic = ""
+                           });
+                       }
+                       else
+                       {
+                           conditions.Add(new Condition
+                           {
+                               LeftBrace = " AND (",
+                               ParamName = "TunnelId" + i,
+                               DbColumnName = "a.tunnel_id",
+                               ParamValue = lstTunnels[i].tid,
+                               Operation = ConditionOperate.Equal,
+                               RightBrace = "",
+                               Logic = ""
+                           });
+                       }
+                        
                    } else if(i==lstTunnels.Count-1) {
                        conditions.Add(new Condition
                         {
