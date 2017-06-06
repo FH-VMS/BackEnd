@@ -102,5 +102,6 @@ namespace Model.Machine
             set;
         }
 
+
     }
 }

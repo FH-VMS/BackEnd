@@ -66,6 +66,7 @@
     <Compile Include="FileHandler.cs" />
     <Compile Include="HttpCache.cs" />
     <Compile Include="HttpContextHandler.cs" />
+    <Compile Include="HttpHelper.cs" />
     <Compile Include="ICacheStrategy.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="JsonHandler.cs" />

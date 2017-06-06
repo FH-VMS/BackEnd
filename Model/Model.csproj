@@ -61,6 +61,7 @@
     <Compile Include="Product\ProductConfigModel.cs" />
     <Compile Include="Product\ProductListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Refund\RefundModel.cs" />
     <Compile Include="Resource\PictureModel.cs" />
     <Compile Include="Sale\SaleModel.cs" />
     <Compile Include="Sys\ColumnAttribute.cs" />

@@ -133,11 +133,15 @@ namespace SqlDataAccess
         PostPriceAndMaxStock,
         GetMachineSetting,
         UpdateCurrStock,
+        UpdateAddCurrStock,
         UpdateMaxPuts,
         UpdatePrice,
         UpdateMachineInlineTime,
         GetCabinetId,
+        GetSalesByNo,
         //支付对应接口
-        GetProductInfo
+        GetProductInfo,
+        GetRefundData,
+        UpdateRefundResult
     }
 }

@@ -47,6 +47,7 @@
     <Compile Include="IFullfilBill.cs" />
     <Compile Include="IMachine.cs" />
     <Compile Include="IPay.cs" />
+    <Compile Include="IRefund.cs" />
     <Compile Include="ISale.cs" />
     <Compile Include="ITunnel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

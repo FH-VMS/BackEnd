@@ -1,0 +1,281 @@
+﻿using Chuang.Back.Base;
+using Interface;
+using Model.Pay;
+using Model.Refund;
+using Model.Sale;
+using Model.Sys;
+using PaymentLib.ali;
+using PaymentLib.wx;
+using Service;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Http;
+using Utility;
+
+namespace Chuang.Back.Controllers
+{
+    public class RefundController : ApiBaseController
+    {
+        public ResultObj<int> PostRefund(List<string> lstTradeNo)
+        {
+            if (lstTradeNo.Count == 0)
+            {
+                return Content(1);
+            }
+            IRefund irefund = new RefundService();
+            List<SaleModel> lstSaleModel = irefund.GetRefundOrder(lstTradeNo);
+            if (lstSaleModel.Count == 0)
+            {
+                return Content(1);
+            }
+            //支付宝
+            var aPayData = from n in lstSaleModel
+                           where n.PayInterface=="支付宝"
+                           select n;
+            if (aPayData.ToList<SaleModel>().Count > 0)
+            {
+                PostRefundA(aPayData.ToList<SaleModel>());
+            }
+            
+
+            var wPayData = from m in lstSaleModel
+                           where m.PayInterface == "微信"
+                           select m;
+            if (wPayData.ToList<SaleModel>().Count > 0)
+            {
+                PostRefundW(wPayData.ToList<SaleModel>());
+            }
+            return Content(1);
+        }
+        public ResultObj<int> PostRefundA(List<SaleModel> lstSaleModel)
+        {
+            try
+            {
+                if (lstSaleModel.Count == 0)
+                {
+                    return Content(1);
+                }
+                string detail_data = string.Empty;
+                int batch_num = 1;
+                foreach (SaleModel saleModel in lstSaleModel)
+                {
+                    if (saleModel.RealitySaleNumber==0)
+                    {
+                        detail_data = detail_data + saleModel.ComId + "^" + saleModel.TradeAmount + "^出货失败退款" + "#";
+                    }
+                    else
+                    {
+                        detail_data = detail_data + saleModel.ComId + "^" + saleModel.TradeAmount * ((saleModel.SalesNumber - saleModel.RealitySaleNumber) / saleModel.SalesNumber) + "^出货失败退款" + "#";
+                    }
+                }
+                if(!string.IsNullOrEmpty(detail_data)) {
+              
+                    detail_data = detail_data.TrimEnd('#');
+                    batch_num = detail_data.Split('#').Length;
+                    //把请求参数打包成数组
+                    SortedDictionary<string, string> sParaTemp = new SortedDictionary<string, string>();
+                    sParaTemp.Add("service", Config.refund_service);
+                    sParaTemp.Add("partner", Config.partner);
+                    sParaTemp.Add("_input_charset", Config.refund_input_charset.ToLower());
+                    sParaTemp.Add("notify_url", Config.refund_notify_url);
+                    sParaTemp.Add("seller_user_id", Config.seller_id);
+                    sParaTemp.Add("refund_date", Config.refund_date);
+                    sParaTemp.Add("batch_no", GeneraterRefundNo());
+                    sParaTemp.Add("batch_num", batch_num.ToString());//退款笔数，必填，参数detail_data的值中，“#”字符出现的数量加1，最大支持1000笔（即“#”字符出现的数量999个）
+                    sParaTemp.Add("detail_data", detail_data);  //退款详细数据，必填，格式（支付宝交易号^退款金额^备注），多笔请用#隔开
+                    //sParaTemp.Add("sign_type", Config.sign_type);
+                    //sParaTemp.Add("sign", Config.key); 
+
+                    //建立请求
+                    string sHtmlText = Config.GateWay + Submit.BuildRequestParaToString(sParaTemp, Encoding.UTF8);
+                    HttpHelper.CreateGetHttpResponse(sHtmlText, 2000, "", null);
+                    //string sHtmlText = Submit.BuildRequest(sParaTemp, "get", "确认");
+                    //HttpContext.Current.Response.Write(sHtmlText);
+                    
+
+
+                  
+                }
+                
+                
+                return Content(1);
+            }
+            catch (Exception ex)
+            {
+                return Content(0);
+            }
+
+        }
+
+        //退款通知
+        public ResultObj<int> PostRefundResultA()
+        {
+            try
+            {
+                SortedDictionary<string, string> sPara = GetRequestPost();
+
+                if (sPara.Count > 0)//判断是否有带返回参数
+                {
+                    Notify aliNotify = new Notify();
+                    bool verifyResult = aliNotify.Verify(sPara, HttpContext.Current.Request.Form["notify_id"], HttpContext.Current.Request.Form["sign"]);
+                    if (verifyResult)//验证成功
+                    {
+                        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        //请在这里加上商户的业务逻辑程序代码
+
+
+                        //——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
+                        //获取支付宝的通知返回参数，可参考技术文档中服务器异步通知参数列表
+
+                        //批次号
+
+                        string batch_no = HttpContext.Current.Request.Form["batch_no"];
+
+                        //批量退款数据中转账成功的笔数
+
+                        string success_num = HttpContext.Current.Request.Form["success_num"];
+
+                        //批量退款数据中的详细信息
+                        string result_details = HttpContext.Current.Request.Form["result_details"];
+
+                        string[] arr = { batch_no, success_num, result_details };
+
+                        FileHandler.LogMachineData(arr);
+                        //判断是否在商户网站中已经做过了这次通知返回的处理
+                        //如果没有做过处理，那么执行商户的业务程序
+                        //如果有做过处理，那么不执行商户的业务程序
+
+                        HttpContext.Current.Response.Write("success");  //请不要修改或删除
+
+                        //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
+
+                        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    }
+                    else//验证失败
+                    {
+                        HttpContext.Current.Response.Write("fail");
+                    }
+                }
+                return Content(1);
+            }
+            catch (Exception ex)
+            {
+                return Content(0);
+            }
+
+        }
+
+        private string GeneraterRefundNo()
+        {
+            Random ran = new Random();
+            int RandKey = ran.Next(1000, 9999);
+            string out_trade_no = DateTime.Now.ToString("yyyyMMddhhmmssffff") + RandKey.ToString();
+            return out_trade_no;
+        }
+
+        /// <summary>
+        /// 获取支付宝POST过来通知消息，并以“参数名=参数值”的形式组成数组
+        /// </summary>
+        /// <returns>request回来的信息组成的数组</returns>
+        public SortedDictionary<string, string> GetRequestPost()
+        {
+            int i = 0;
+            SortedDictionary<string, string> sArray = new SortedDictionary<string, string>();
+            NameValueCollection coll;
+            //Load Form variables into NameValueCollection variable.
+            coll = HttpContext.Current.Request.Form;
+
+            // Get names of all forms into a string array.
+            String[] requestItem = coll.AllKeys;
+
+            for (i = 0; i < requestItem.Length; i++)
+            {
+                sArray.Add(requestItem[i], HttpContext.Current.Request.Form[requestItem[i]]);
+            }
+
+            return sArray;
+        }
+
+
+
+
+        /**********************************微信退款*******************************/
+        public ResultObj<int> PostRefundW(List<SaleModel> lstSaleModel)
+        {
+            try
+            {
+                if (lstSaleModel.Count == 0)
+                {
+                    return Content(1);
+                }
+                foreach (SaleModel saleModel in lstSaleModel)
+                {
+                    WxPayData data = new WxPayData();
+
+                    data.SetValue("out_trade_no", saleModel.TradeNo);
+
+
+                    data.SetValue("total_fee", int.Parse((saleModel.TradeAmount*100).ToString()));//订单总金额
+                    if (saleModel.RealitySaleNumber == 0)
+                    {
+                        data.SetValue("refund_fee", int.Parse((saleModel.TradeAmount * 100).ToString()));//退款金额
+                    }
+                    else
+                    {
+                        data.SetValue("refund_fee", int.Parse(((saleModel.TradeAmount * 100)*((saleModel.SalesNumber - saleModel.RealitySaleNumber) / saleModel.SalesNumber)).ToString()));//退款金额
+                    }
+                    
+                    data.SetValue("out_refund_no", WxPayApi.GenerateOutTradeNo());//随机生成商户退款单号
+                    data.SetValue("op_user_id", WxPayConfig.MCHID);//操作员，默认为商户号
+
+                    WxPayData result = WxPayApi.Refund(data);//提交退款申请给API，接收返回数据
+                    //更新销售状态
+                    if (result.GetValue("result_code").ToString().ToUpper() == "SUCCESS")
+                    {
+                        
+                        IRefund irefund = new RefundService();
+                        SaleModel salInfo = new SaleModel();
+                        salInfo.MachineId = saleModel.MachineId;
+                        salInfo.GoodsId = saleModel.GoodsId;
+                        salInfo.TradeNo = saleModel.TradeNo;
+                        if (saleModel.RealitySaleNumber == 0)
+                        {
+                            salInfo.TradeStatus=6;
+                            
+                            //更新成6
+                        }
+                        else
+                        {
+                            //更新成3
+                            salInfo.TradeStatus = 3;
+                        }
+                        irefund.UpdateRefundResult(salInfo);
+                        RefundModel refundInfo = new RefundModel();
+                        refundInfo.OutTradeNo = salInfo.TradeNo;
+                        refundInfo.RefundDetail = result.ToJson();
+                        irefund.PostRefundDetail(refundInfo);
+                    }
+                    
+                }
+              
+
+
+                return Content(1);
+            }
+            catch (Exception ex)
+            {
+                return Content(0);
+            }
+
+        }
+
+    }
+}

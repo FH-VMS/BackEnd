@@ -153,6 +153,7 @@ namespace Service
 
         }
 
+        //支付后更新减库存
         private void UpdateCurrStock(string machineId, string tunnelId, int saleNumber)
         {
             TunnelInfoModel tunnelInfo = new TunnelInfoModel();
@@ -160,6 +161,24 @@ namespace Service
             tunnelInfo.GoodsStuId = tunnelId;
             tunnelInfo.CurrStock = saleNumber;
             GenerateDal.Execute(CommonSqlKey.UpdateCurrStock, tunnelInfo);
+        }
+
+        //出货失败后更新加库存
+        private void UpdateAddCurrStock(string machineId, string tunnelId, int saleNumber)
+        {
+            try
+            {
+                TunnelInfoModel tunnelInfo = new TunnelInfoModel();
+                tunnelInfo.MachineId = machineId;
+                tunnelInfo.GoodsStuId = tunnelId;
+                tunnelInfo.CurrStock = saleNumber;
+                GenerateDal.Execute(CommonSqlKey.UpdateAddCurrStock, tunnelInfo);
+            }
+            catch
+            {
+
+            }
+           
         }
 
         //是否已存在此单
@@ -194,14 +213,28 @@ namespace Service
 
                 foreach (KeyTunnelModel keyTunnelInfo in keyJsonInfo.t)
                 {
-                    SaleModel saleInfo = new SaleModel();
-                    saleInfo.SalesDate = DateTime.Now;
-                    saleInfo.GoodsId = keyTunnelInfo.tid;
-                    saleInfo.MachineId = keyJsonInfo.m;
-                    saleInfo.TradeNo = keyTunnelInfo.tn;
-                    saleInfo.RealitySaleNumber = Convert.ToInt32(keyTunnelInfo.n);
-                    saleInfo.TradeStatus = Convert.ToInt32(keyTunnelInfo.s);
-                    GenerateDal.Update(CommonSqlKey.UpdatePayResult, saleInfo);
+                    List<SaleModel> lstSaleModel = GetSalesByNo(keyJsonInfo.m, keyTunnelInfo.tid, keyTunnelInfo.tn);
+                    if (lstSaleModel.Count > 0&&lstSaleModel[0].TradeStatus==1)
+                    {
+                        SaleModel saleInfo = new SaleModel();
+                        saleInfo.SalesDate = DateTime.Now;
+                        saleInfo.GoodsId = keyTunnelInfo.tid;
+                        saleInfo.MachineId = keyJsonInfo.m;
+                        saleInfo.TradeNo = keyTunnelInfo.tn;
+                        saleInfo.RealitySaleNumber = Convert.ToInt32(keyTunnelInfo.n);
+                        saleInfo.TradeStatus = Convert.ToInt32(keyTunnelInfo.s);
+                        //出货失败后库存回滚
+                        if (saleInfo.TradeStatus == 5)
+                        {
+                            UpdateAddCurrStock(saleInfo.MachineId, saleInfo.GoodsId, lstSaleModel[0].SalesNumber);
+                        }
+                        if (saleInfo.TradeStatus == 3)
+                        {
+                            UpdateAddCurrStock(saleInfo.MachineId, saleInfo.GoodsId, lstSaleModel[0].SalesNumber - saleInfo.RealitySaleNumber);
+                        }
+                        GenerateDal.Update(CommonSqlKey.UpdatePayResult, saleInfo);
+                    }
+                   
                 }
 
                 GenerateDal.CommitTransaction();
@@ -213,6 +246,49 @@ namespace Service
                 return 0;
             }
             return 1;
+        }
+
+        private List<SaleModel> GetSalesByNo(string machineId,string tunnelId,string tradeNo)
+        {
+            if (string.IsNullOrEmpty(machineId) || string.IsNullOrEmpty(tunnelId) || string.IsNullOrEmpty(tradeNo))
+            {
+                return null;
+            }
+            var conditions = new List<Condition>();
+
+            
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "MachineId",
+                    DbColumnName = "machine_id",
+                    ParamValue = machineId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            
+            conditions.Add(new Condition
+            {
+                LeftBrace = " AND ",
+                ParamName = "GoodsId",
+                DbColumnName = "goods_id",
+                ParamValue = tunnelId,
+                Operation = ConditionOperate.Equal,
+                RightBrace = "",
+                Logic = ""
+            });
+            conditions.Add(new Condition
+            {
+                LeftBrace = " AND ",
+                ParamName = "TradeNo",
+                DbColumnName = "trade_no",
+                ParamValue = tradeNo,
+                Operation = ConditionOperate.Equal,
+                RightBrace = "",
+                Logic = ""
+            });
+            return GenerateDal.LoadByConditions<SaleModel>(CommonSqlKey.GetSalesByNo, conditions);
         }
 
         //一键补货操作

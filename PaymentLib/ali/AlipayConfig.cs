@@ -59,5 +59,27 @@ namespace PaymentLib.ali
         /*************************************退款接口配置************************************/
         //实现异步http://www.cnblogs.com/wintersun/archive/2013/01/11/2856541.html
 
+        /*****************************************退款配置**********************************************/
+        public static string refund_appid = "2017042106870868";
+
+        public static string rsa_sign = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxYzgAHv6GEr1C6a3iVZdztLYPWmiI2bVSWbel1oNLlGDvYCnbYY9zb80FqNh3toLpHNgdOrKQf4AtYxtF+aU4I0x+v29PzNQ5+QWSqa5AqYZwCXx0bbk9HXogz94uJBzs3QN1J3rm2xDi8w7KNJTDn42FBgxZV7iprhsEnnEqKI8fWb2WXB/TPguBEzaku6LFWqKfBTF50HybknXfbpiergUpZdpBGIW7CHrsBxTmkSl9A4R76kb770N2xcBmC6/gMUT4gG4OPRWKfWoXaNHSCX8T/Fv7uEANe39w59ze0XOoitxH1o60DvzSg5Mhwd7PVtPU3aLY/3Jf0cwe6cvIQIDAQAB";
+
+        public static string refund_notify_url = Path.NotidyAddr+"/Refund/PostRefundResultA"; //退款通知
+
+        // 退款日期 时间格式 yyyy-MM-dd HH:mm:ss
+        public static string refund_date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+        // 调试用，创建TXT日志文件夹路径，见AlipayCore.cs类中的LogResult(string sWord)打印方法。
+        public static string refund_log_path = HttpRuntime.AppDomainAppPath.ToString() + "log\\";
+
+        // 字符编码格式 目前支持 gbk 或 utf-8
+        public static string refund_input_charset = "utf-8";
+
+
+        // 调用的接口名，无需修改
+        public static string refund_service = "refund_fastpay_by_platform_pwd";
+
+
+
     }
 }

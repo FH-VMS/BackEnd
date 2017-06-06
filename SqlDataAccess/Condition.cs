@@ -70,6 +70,7 @@ namespace SqlDataAccess
         LimitIndex,
         LimitLength,
         None,
-        OrderBy
+        OrderBy,
+        IN
     }
 }

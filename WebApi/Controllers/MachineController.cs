@@ -51,6 +51,15 @@ namespace Chuang.Back.Controllers
         {
             KeyJsonModel keyJsonInfo = AnalizeKey(k);
             int result = _IMachine.PutPayResult(keyJsonInfo);
+            if (result == 1)
+            {
+                var tns = from m in keyJsonInfo.t
+                          where m.s=="3" || m.s=="5"
+                          select m.tn;
+                
+                RefundController refund = new RefundController();
+                refund.PostRefund(tns.ToList<string>());
+            }
 
             return result==1?"OK":"NG";
         }

@@ -124,6 +124,7 @@ public class SqlConfigText
 			{"GetCountByTradeNo","SELECT count(1) FROM table_sales_cashless WHERE 1=1"},
 			{"UpdatePayResult","UPDATE table_sales_cashless SET  trade_status=?p_TradeStatus, reality_sale_number=?p_RealitySaleNumber, sales_date=?p_SalesDate WHERE machine_id=?p_MachineId AND trade_no=?p_TradeNo AND goods_id=?p_GoodsId"},  //上报出货结果
 			{"UpdateCurrStock","UPDATE table_goods_status SET curr_stock=curr_stock-?p_CurrStock WHERE machine_id=?p_MachineId AND goods_stu_id=?p_GoodsStuId"},  //销售后更新库存
+			{"UpdateAddCurrStock","UPDATE table_goods_status SET curr_stock=curr_stock+?p_CurrStock WHERE machine_id=?p_MachineId AND goods_stu_id=?p_GoodsStuId"},  //出货失败后更新库存
 			{"FullfilGoodsOneKey","INSERT INTO table_goods_status(goods_stu_id,machine_id,curr_stock,curr_status,cabinet_id,update_date,curr_missing) SELECT tunnel_id as goods_stu_id, machine_id, max_puts AS curr_stock,is_used as curr_status, cabinet_id, NOW() as update_date,max_puts as curr_missing FROM table_goods_config WHERE machine_id = ?p_MachineId"},  //一键补货
 			{"DeleteTunnelStatusByMachine","DELETE FROM table_goods_status WHERE machine_id = ?p_MachineId"}, 
 			{"DeleteTunnelStatusByMachineAndTunnel","DELETE FROM table_goods_status WHERE machine_id = ?p_MachineId And goods_stu_id = ?p_GoodsStuId AND cabinet_id=?p_CabinetId"}, 
@@ -137,8 +138,11 @@ public class SqlConfigText
 			{"GetMachineSetting","SELECT mc_area1_temp as t1, mc_area2_temp as t2, mc_area3_temp as t3, mc_area4_temp as t4, mc_status as s  FROM table_machine_config WHERE 1=1"},
 			{"UpdateMachineInlineTime","UPDATE table_machine SET latest_date=?p_LatestDate WHERE machine_id=?p_MachineId"},//更新机器最新在线时间
 			{"GetCabinetId","SELECT a.cabinet_type_id FROM table_mt_goods a LEFT JOIN table_machine b ON a.machine_type_id=b.type_id WHERE 1=1"},//取货柜ID
+			{"GetSalesByNo","SELECT * FROM table_sales_cashless WHERE 1=1"},
 			//支付相关对应接口
-			{"GetProductInfo","SELECT a.machine_id as MachineId,a.tunnel_id as TunnelId, a.wpay_prices as UnitW,a.alipay_prices as UnitA, b.wares_name as WaresName from table_goods_config a Left Join table_product b On a.wares_id=b.wares_id WHERE 1=1"}
+			{"GetProductInfo","SELECT a.machine_id as MachineId,a.tunnel_id as TunnelId, a.wpay_prices as UnitW,a.alipay_prices as UnitA, b.wares_name as WaresName from table_goods_config a Left Join table_product b On a.wares_id=b.wares_id WHERE 1=1"},
+			{"GetRefundData","SELECT * FROM table_sales_cashless WHERE 1=1"},
+			{"UpdateRefundResult","UPDATE table_sales_cashless SET  trade_status=?p_TradeStatus WHERE machine_id=?p_MachineId AND trade_no=?p_TradeNo AND goods_id=?p_GoodsId"}
 
 		}; 
         return dic; 
