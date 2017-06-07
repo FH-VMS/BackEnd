@@ -108,6 +108,7 @@ public class SqlConfigText
 			{"GetSaleList","SELECT a.*,c.client_name as ClientName,b.device_id as DeviceId FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"},
 			{"GetSaleListAllCount","SELECT count(1) FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id LEFT JOIN table_client c ON b.client_id = c.client_id WHERE 1=1"},
 			{"GetSaleListCount","SELECT COUNT(1) FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE 1=1"},
+			{"GetRefundDetail","SELECT * FROM table_refund WHERE 1=1"},
 
 			//货道信息
 			{"GetTunnelInfo","SELECT a.machine_id,a.tunnel_id as TunnelId,a.cabinet_id, b.* FROM table_goods_config a LEFT JOIN table_goods_status b ON a.machine_id=b.machine_id AND a.tunnel_id=b.goods_stu_id AND a.cabinet_id=b.cabinet_id WHERE 1=1"},
@@ -143,7 +144,8 @@ public class SqlConfigText
 			{"GetProductInfo","SELECT a.machine_id as MachineId,a.tunnel_id as TunnelId, a.wpay_prices as UnitW,a.alipay_prices as UnitA, b.wares_name as WaresName from table_goods_config a Left Join table_product b On a.wares_id=b.wares_id WHERE 1=1"},
 			{"GetRefundData","SELECT * FROM table_sales_cashless WHERE 1=1"},
 			{"UpdateRefundResult","UPDATE table_sales_cashless SET  trade_status=?p_TradeStatus WHERE machine_id=?p_MachineId AND trade_no=?p_TradeNo AND goods_id=?p_GoodsId"},
-			{"UpdateOrderStatusForAli","update table_sales_cashless set trade_status = (case reality_sale_number when 0 then 6 when NULL then 6 else 4 end ) WHERE com_id=?p_ComId AND trade_status<>2"}
+			{"UpdateOrderStatusForAli","update table_sales_cashless set trade_status = (case reality_sale_number when 0 then 6 when NULL then 6 else 4 end ) WHERE com_id=?p_ComId AND trade_status<>2"},
+			{"IsRefundSucceed","SELECT COUNT(1) FROM table_refund WHERE 1=1"}
 
 		}; 
         return dic; 

@@ -109,6 +109,7 @@ namespace SqlDataAccess
         GetSaleList,
         GetSaleListAllCount,
         GetSaleListCount,
+        GetRefundDetail,
 
         //货道信息
         GetTunnelInfoCount,
@@ -143,6 +144,7 @@ namespace SqlDataAccess
         GetProductInfo,
         GetRefundData,
         UpdateRefundResult,
-        UpdateOrderStatusForAli
+        UpdateOrderStatusForAli,
+        IsRefundSucceed
     }
 }

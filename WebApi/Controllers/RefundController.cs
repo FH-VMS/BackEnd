@@ -160,7 +160,12 @@ namespace Chuang.Back.Controllers
                             if (refundResult == "SUCCESS")
                             {
                                 string tradeNo = result_details.Split('^')[0];
+                                
                                 IRefund irefund = new RefundService();
+                                if (irefund.IsRefundSucceed(tradeNo) == 1)
+                                {
+                                    return Content(1);
+                                }
                                 irefund.UpdateOrderStatusForAli(tradeNo);
 
                                 //插入退款信息表

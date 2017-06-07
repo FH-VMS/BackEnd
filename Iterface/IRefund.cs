@@ -21,5 +21,8 @@ namespace Interface
 
          [Remark("阿里退款通知更新订单状态", ParmsNote = "", ReturnNote = "")]
          void UpdateOrderStatusForAli(string comId);
+
+         [Remark("判断阿里退款是否成功", ParmsNote = "", ReturnNote = "")]
+         int IsRefundSucceed(string tradeNo);
     }
 }

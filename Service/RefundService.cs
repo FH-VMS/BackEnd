@@ -94,6 +94,31 @@ namespace Service
            
         }
 
+        //判断是否往退款表里插入成功
+        public int IsRefundSucceed(string tradeNo)
+        {
+            var result = 0;
+
+           
+            var conditions = new List<Condition>();
+            if (!string.IsNullOrEmpty(tradeNo))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "TradeNo",
+                    DbColumnName = "trade_no",
+                    ParamValue = tradeNo,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+                result = GenerateDal.CountByConditions(CommonSqlKey.IsRefundSucceed, conditions);
+            }
+
+            return result;
+        }
+
        
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Interface;
 using Model.Pay;
+using Model.Refund;
 using Model.Sale;
 using SqlDataAccess;
 using System;
@@ -257,6 +258,49 @@ namespace Service
             return GenerateDal.Delete<SaleModel>(CommonSqlKey.DeleteSaleList, salesInfo);
         }
 
+        //取退款详情
+        public RefundModel GetRefundDetail(string outTradeNo, string tradeNo)
+        {
+            var conditions = new List<Condition>();
+
+            if (!string.IsNullOrEmpty(outTradeNo))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "OutTradeNo",
+                    DbColumnName = "out_trade_no",
+                    ParamValue = outTradeNo,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+                
+            } else if(!string.IsNullOrEmpty(tradeNo)) {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "TradeNo",
+                    DbColumnName = "trade_no",
+                    ParamValue = tradeNo,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+
+
+            try
+            {
+                return GenerateDal.LoadByConditions<RefundModel>(CommonSqlKey.GetRefundDetail, conditions)[0];
+            }
+            catch (Exception e)
+            {
+                return new RefundModel();
+            }
+           
+        }
 
     }
 }

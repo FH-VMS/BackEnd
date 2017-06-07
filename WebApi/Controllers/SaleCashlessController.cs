@@ -1,5 +1,6 @@
 ﻿using Chuang.Back.Base;
 using Interface;
+using Model.Refund;
 using Model.Sale;
 using Model.Sys;
 using Service;
@@ -52,6 +53,12 @@ namespace Chuang.Back.Controllers
         public ResultObj<int> DeleteData(string idList)
         {
             return Content(_IBase.DeleteData(idList));
+        }
+
+        public ResultObj<RefundModel> GetRefundDetail(string outTradeNo, string tradeNo)
+        {
+            ISale isale = new SalesService();
+            return Content(isale.GetRefundDetail( outTradeNo, tradeNo));
         }
     }
 }
