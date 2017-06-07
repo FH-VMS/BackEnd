@@ -79,6 +79,21 @@ namespace Service
             return result;
         }
 
+        public void UpdateOrderStatusForAli(string comId)
+        {
+            try
+            {
+                SaleModel saleInfo = new SaleModel();
+                saleInfo.ComId = comId;
+                GenerateDal.Execute(CommonSqlKey.UpdateOrderStatusForAli, saleInfo);
+            }
+            catch (Exception e)
+            {
+
+            }
+           
+        }
+
        
     }
 }

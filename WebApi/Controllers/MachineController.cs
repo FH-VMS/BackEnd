@@ -5,6 +5,7 @@ using Model.Pay;
 using Model.Sale;
 using Model.Sys;
 using Newtonsoft.Json;
+using PaymentLib.wx;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,7 @@ namespace Chuang.Back.Controllers
         //出货后，告诉汇报出货情况并更新库存
         public string GetOutResult(string k)
         {
+           
             KeyJsonModel keyJsonInfo = AnalizeKey(k);
             int result = _IMachine.PutPayResult(keyJsonInfo);
             if (result == 1)
@@ -238,10 +240,11 @@ namespace Chuang.Back.Controllers
                     /*******************************放到微信支付通知参数里，因参数只支付最大128个字符长度，所以注释修改*****************************/
                     //string jsonProduct = HttpContext.Current.Request.Form["body"];
                     //KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(jsonProduct);
+                    string tradeNo = HttpContext.Current.Request.Form["trade_no"];
 
                     string jsonProduct = FileHandler.ReadFile("data/" + outTradeNo + ".wa");
                     KeyJsonModel keyJsonModel = JsonHandler.GetObjectFromJson<KeyJsonModel>(jsonProduct);
-                    int result = _imachine.PostPayResultA(keyJsonModel, outTradeNo);
+                    int result = _imachine.PostPayResultA(keyJsonModel, outTradeNo, tradeNo);
                     if (result == 1)
                     {
                         HttpContext.Current.Response.Write("success");

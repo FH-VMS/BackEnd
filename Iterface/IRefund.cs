@@ -18,5 +18,8 @@ namespace Interface
 
          [Remark("插入退款详情", ParmsNote = "", ReturnNote = "")]
         int PostRefundDetail(RefundModel refundInfo);
+
+         [Remark("阿里退款通知更新订单状态", ParmsNote = "", ReturnNote = "")]
+         void UpdateOrderStatusForAli(string comId);
     }
 }

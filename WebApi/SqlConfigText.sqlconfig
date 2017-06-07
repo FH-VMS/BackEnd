@@ -142,7 +142,8 @@ public class SqlConfigText
 			//支付相关对应接口
 			{"GetProductInfo","SELECT a.machine_id as MachineId,a.tunnel_id as TunnelId, a.wpay_prices as UnitW,a.alipay_prices as UnitA, b.wares_name as WaresName from table_goods_config a Left Join table_product b On a.wares_id=b.wares_id WHERE 1=1"},
 			{"GetRefundData","SELECT * FROM table_sales_cashless WHERE 1=1"},
-			{"UpdateRefundResult","UPDATE table_sales_cashless SET  trade_status=?p_TradeStatus WHERE machine_id=?p_MachineId AND trade_no=?p_TradeNo AND goods_id=?p_GoodsId"}
+			{"UpdateRefundResult","UPDATE table_sales_cashless SET  trade_status=?p_TradeStatus WHERE machine_id=?p_MachineId AND trade_no=?p_TradeNo AND goods_id=?p_GoodsId"},
+			{"UpdateOrderStatusForAli","update table_sales_cashless set trade_status = (case reality_sale_number when 0 then 6 when NULL then 6 else 4 end ) WHERE com_id=?p_ComId AND trade_status<>2"}
 
 		}; 
         return dic; 

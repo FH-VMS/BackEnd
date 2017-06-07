@@ -64,10 +64,12 @@ namespace PaymentLib.wx
                 //是否使用证书
                 if (isUseCert)
                 {
+
                     string path = HttpContext.Current.Request.PhysicalApplicationPath;
+                    //Log.Write("wwwww", path + WxPayConfig.SSLCERT_PATH);
                     X509Certificate2 cert = new X509Certificate2(path + WxPayConfig.SSLCERT_PATH, WxPayConfig.SSLCERT_PASSWORD);
                     request.ClientCertificates.Add(cert);
-                    Log.Debug("WxPayApi", "PostXml used cert");
+                    //Log.Debug("WxPayApi", "PostXml used cert");
                 }
 
                 //往服务器写入数据
@@ -85,12 +87,13 @@ namespace PaymentLib.wx
             }
             catch (System.Threading.ThreadAbortException e)
             {
-                Log.Error("HttpService", "Thread - caught ThreadAbortException - resetting.");
-                Log.Error("Exception message: {0}", e.Message);
+                //Log.Error("HttpService", "Thread - caught ThreadAbortException - resetting.");
+                //Log.Error("Exception message: {0}", e.Message);
                 System.Threading.Thread.ResetAbort();
             }
             catch (WebException e)
             {
+                Log.Write("wwwww", "WebException");
                 Log.Error("HttpService", e.ToString());
                 if (e.Status == WebExceptionStatus.ProtocolError)
                 {
@@ -101,6 +104,7 @@ namespace PaymentLib.wx
             }
             catch (Exception e)
             {
+                Log.Write("wwwww", e.Message);
                 Log.Error("HttpService", e.ToString());
                 throw new WxPayException(e.ToString());
             }
@@ -116,6 +120,7 @@ namespace PaymentLib.wx
                     request.Abort();
                 }
             }
+            //Log.Write("wwwww", result);
             return result;
         }
 

@@ -4,12 +4,14 @@ using Model.Pay;
 using Model.Refund;
 using Model.Sale;
 using Model.Sys;
+using Newtonsoft.Json;
 using PaymentLib.ali;
 using PaymentLib.wx;
 using Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -51,6 +53,7 @@ namespace Chuang.Back.Controllers
                            select m;
             if (wPayData.ToList<SaleModel>().Count > 0)
             {
+               
                 PostRefundW(wPayData.ToList<SaleModel>());
             }
             return Content(1);
@@ -120,8 +123,9 @@ namespace Chuang.Back.Controllers
         {
             try
             {
+               
                 SortedDictionary<string, string> sPara = GetRequestPost();
-
+               
                 if (sPara.Count > 0)//判断是否有带返回参数
                 {
                     Notify aliNotify = new Notify();
@@ -136,7 +140,6 @@ namespace Chuang.Back.Controllers
                         //获取支付宝的通知返回参数，可参考技术文档中服务器异步通知参数列表
 
                         //批次号
-
                         string batch_no = HttpContext.Current.Request.Form["batch_no"];
 
                         //批量退款数据中转账成功的笔数
@@ -146,14 +149,29 @@ namespace Chuang.Back.Controllers
                         //批量退款数据中的详细信息
                         string result_details = HttpContext.Current.Request.Form["result_details"];
 
-                        string[] arr = { batch_no, success_num, result_details };
-
-                        FileHandler.LogMachineData(arr);
                         //判断是否在商户网站中已经做过了这次通知返回的处理
                         //如果没有做过处理，那么执行商户的业务程序
                         //如果有做过处理，那么不执行商户的业务程序
 
                         HttpContext.Current.Response.Write("success");  //请不要修改或删除
+                        if (Convert.ToInt32(success_num) > 0)
+                        {
+                            string refundResult = result_details.Split('^')[result_details.Split('^').Length-1];
+                            if (refundResult == "SUCCESS")
+                            {
+                                string tradeNo = result_details.Split('^')[0];
+                                IRefund irefund = new RefundService();
+                                irefund.UpdateOrderStatusForAli(tradeNo);
+
+                                //插入退款信息表
+                                RefundModel refundInfo = new RefundModel();
+                                refundInfo.TradeNo = tradeNo;
+
+                                refundInfo.RefundDetail = JsonConvert.SerializeObject(sPara);
+                                irefund.PostRefundDetail(refundInfo);
+                            }
+                           
+                        }
 
                         //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
 
@@ -212,10 +230,12 @@ namespace Chuang.Back.Controllers
         {
             try
             {
+                
                 if (lstSaleModel.Count == 0)
                 {
                     return Content(1);
                 }
+                
                 foreach (SaleModel saleModel in lstSaleModel)
                 {
                     WxPayData data = new WxPayData();
@@ -235,7 +255,7 @@ namespace Chuang.Back.Controllers
                     
                     data.SetValue("out_refund_no", WxPayApi.GenerateOutTradeNo());//随机生成商户退款单号
                     data.SetValue("op_user_id", WxPayConfig.MCHID);//操作员，默认为商户号
-
+                    //Log.Write("wwwww", "开始退款");
                     WxPayData result = WxPayApi.Refund(data);//提交退款申请给API，接收返回数据
                     //更新销售状态
                     if (result.GetValue("result_code").ToString().ToUpper() == "SUCCESS")

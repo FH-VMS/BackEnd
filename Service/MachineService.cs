@@ -115,7 +115,7 @@ namespace Service
         }
 
         //支付宝支付结果插入数据库
-        public int PostPayResultA(KeyJsonModel keyJsonModel, string tradeNo)
+        public int PostPayResultA(KeyJsonModel keyJsonModel, string outTradeNo, string tradeNo)
         {
             try
             {
@@ -131,7 +131,8 @@ namespace Service
                     saleInfo.PayDate = DateTime.Now;
                     saleInfo.PayInterface = "支付宝";
                     saleInfo.PayType = "支付宝";
-                    saleInfo.TradeNo = tradeNo;
+                    saleInfo.TradeNo = outTradeNo;
+                    saleInfo.ComId = tradeNo;
                     saleInfo.GoodsId = keyTunnelInfo.tid;
                     saleInfo.TradeStatus = 1;
                     saleInfo.TradeAmount = Convert.ToDouble(keyTunnelInfo.p);

@@ -142,6 +142,7 @@ namespace SqlDataAccess
         //支付对应接口
         GetProductInfo,
         GetRefundData,
-        UpdateRefundResult
+        UpdateRefundResult,
+        UpdateOrderStatusForAli
     }
 }

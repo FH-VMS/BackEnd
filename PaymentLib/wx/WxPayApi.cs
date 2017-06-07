@@ -191,10 +191,10 @@ namespace PaymentLib.wx
             
             string xml = inputObj.ToXml();
             var start = DateTime.Now;
-
-            Log.Debug("WxPayApi", "Refund request : " + xml);
+            //Log.Write("wwwww", "Refund request :");
+            //Log.Debug("WxPayApi", "Refund request : " + xml);
             string response = HttpService.Post(xml, url, true, timeOut);//调用HTTP通信接口提交数据到API
-            Log.Debug("WxPayApi", "Refund response : " + response);
+            //Log.Debug("WxPayApi", "Refund response : " + response);
 
             var end = DateTime.Now;
             int timeCost = (int)((end - start).TotalMilliseconds);//获得接口耗时
@@ -395,10 +395,10 @@ namespace PaymentLib.wx
 
             var start = DateTime.Now;
 
-            Log.Debug("WxPayApi", "UnfiedOrder request : " + xml);
+            //Log.Debug("WxPayApi", "UnfiedOrder request : " + xml);
             string response = HttpService.Post(xml, url, false, timeOut);
-            Log.Write("result", response);
-            Log.Debug("WxPayApi", "UnfiedOrder response : " + response);
+            //Log.Write("result", response);
+            //Log.Debug("WxPayApi", "UnfiedOrder response : " + response);
 
             var end = DateTime.Now;
             int timeCost = (int)((end - start).TotalMilliseconds);
