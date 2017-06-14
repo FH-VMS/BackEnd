@@ -46,6 +46,7 @@
     <Compile Include="Common\MenuModel.cs" />
     <Compile Include="Customer\CustomerModel.cs" />
     <Compile Include="Machine\CabinetConfigModel.cs" />
+    <Compile Include="Machine\MachineCabinetModel.cs" />
     <Compile Include="Machine\MachineTypeAndCabinetModel.cs" />
     <Compile Include="Machine\PriceAndMaxStockModel.cs" />
     <Compile Include="Machine\ProductForMachineModel.cs" />

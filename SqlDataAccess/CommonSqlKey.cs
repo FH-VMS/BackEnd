@@ -58,6 +58,11 @@ namespace SqlDataAccess
         UpdateMachineType,
         GetCabinetByMachineTypeId,
         DeleteMachineTypeAndCabinet,
+        //机柜
+        GetMachineCabinet, 
+        GetCabinetCount,
+        DeleteMachineCabinet,
+        UpdateMachineCabinet,
 
         //机器列表
         GetMachineList,

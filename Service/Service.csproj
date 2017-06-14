@@ -45,6 +45,7 @@
     <Compile Include="CabinetService.cs" />
     <Compile Include="CommonService.cs" />
     <Compile Include="CustomerService.cs" />
+    <Compile Include="MachineCabinetService.cs" />
     <Compile Include="MachineConfigService.cs" />
     <Compile Include="MachineListService.cs" />
     <Compile Include="MachineService.cs" />

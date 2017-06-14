@@ -111,6 +111,7 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MachineCabinetController.cs" />
     <Compile Include="Controllers\MachineConfigController.cs" />
     <Compile Include="Controllers\MachineController.cs" />
     <Compile Include="Controllers\MachineListController.cs" />

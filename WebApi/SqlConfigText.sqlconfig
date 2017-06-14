@@ -58,6 +58,12 @@ public class SqlConfigText
 			{"GetCabinetByMachineTypeId","SELECT a.* FROM table_cabinet_config a INNER JOIN table_mt_goods b ON a.cabinet_id = b.cabinet_type_id  WHERE 1=1"},
 			{"DeleteMachineTypeAndCabinet","DELETE from table_mt_goods where machine_type_id=?p_MachineTypeId"},
 
+			//机柜
+			{"GetMachineCabinet","SELECT * FROM table_cabinet_config WHERE 1=1 "},
+			{"GetCabinetCount","SELECT COUNT(1) FROM table_cabinet_config WHERE 1=1 "},
+			{"DeleteMachineCabinet","DELETE from table_cabinet_config where cabinet_id=?p_CabinetId"},
+			{"UpdateMachineCabinet","UPDATE table_cabinet_config SET  cabinet_name=?p_CabinetName,cabinet_type=?p_CabinetType,layer_number=?p_LayerNumber,layer_goods_number=?p_LayerGoodsNumber,cabinet_display=?p_CabinetDisplay,remark =?p_Remark  WHERE cabinet_id=?p_CabinetId"},
+
 			//机器管理
 			{"GetMachineList","SELECT a.*,TIMESTAMPDIFF(SECOND,a.latest_date,NOW()) as LatestOnline, b.client_name as ClientText, c.usr_account as UserAccountName, d.type_name as TypeText FROM table_machine a  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id Left JOIN table_user c ON a.usr_account = c.id Left JOIN table_machine_type d ON a.type_id = d.id WHERE 1=1"},
 			{"GetMachineListCount","SELECT count(1) FROM table_machine a  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1"},
