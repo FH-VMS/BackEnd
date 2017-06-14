@@ -55,10 +55,10 @@ namespace Chuang.Back.Controllers
             return Content(_IBase.DeleteData(idList));
         }
 
-        public ResultObj<RefundModel> GetRefundDetail(string outTradeNo, string tradeNo)
+        public ResultObj<RefundModel> GetRefundDetail(string orderNo, string typ)
         {
             ISale isale = new SalesService();
-            return Content(isale.GetRefundDetail( outTradeNo, tradeNo));
+            return Content(isale.GetRefundDetail(orderNo, typ));
         }
     }
 }

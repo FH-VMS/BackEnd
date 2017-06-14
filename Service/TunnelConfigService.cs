@@ -48,7 +48,7 @@ namespace Service
                     });
                 }
 
-                return GenerateDal.LoadByConditionsWithOrder<TunnelConfigModel>(CommonSqlKey.GetTunnelConfig, conditions, "tunnel_position", "asc");
+                return GenerateDal.LoadByConditionsWithOrder<TunnelConfigModel>(CommonSqlKey.GetTunnelConfig, conditions, "tunnel_id", "asc");
             }
             else
             {

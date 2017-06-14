@@ -259,35 +259,37 @@ namespace Service
         }
 
         //取退款详情
-        public RefundModel GetRefundDetail(string outTradeNo, string tradeNo)
+        public RefundModel GetRefundDetail(string orderNo, string typ)
         {
             var conditions = new List<Condition>();
-
-            if (!string.IsNullOrEmpty(outTradeNo))
+            if (typ == "w")
             {
                 conditions.Add(new Condition
                 {
                     LeftBrace = " AND ",
                     ParamName = "OutTradeNo",
                     DbColumnName = "out_trade_no",
-                    ParamValue = outTradeNo,
-                    Operation = ConditionOperate.Equal,
-                    RightBrace = "",
-                    Logic = ""
-                });
-                
-            } else if(!string.IsNullOrEmpty(tradeNo)) {
-                conditions.Add(new Condition
-                {
-                    LeftBrace = " AND ",
-                    ParamName = "TradeNo",
-                    DbColumnName = "trade_no",
-                    ParamValue = tradeNo,
+                    ParamValue = orderNo,
                     Operation = ConditionOperate.Equal,
                     RightBrace = "",
                     Logic = ""
                 });
             }
+
+            else if (typ == "a")
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "TradeNo",
+                    DbColumnName = "trade_no",
+                    ParamValue = orderNo,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+           
 
 
 

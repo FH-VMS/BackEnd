@@ -15,6 +15,6 @@ namespace Interface
         List<KeyTunnelModel> GetPayResult(string randomId, string tradeStatus, string machineId);
 
         [Remark("退款详情", ParmsNote = "商户订单号,交易号", ReturnNote = "支付结果")]
-        RefundModel GetRefundDetail(string outTradeNo, string tradeNo);
+        RefundModel GetRefundDetail(string orderNo, string typ);
     }
 }
