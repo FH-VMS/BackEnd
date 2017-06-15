@@ -133,6 +133,7 @@ namespace Service
 
         public int UpdateData(TunnelInfoModel tunnelInfoInfo)
         {
+            tunnelInfoInfo.UpdateDate = DateTime.Now;
             return GenerateDal.Update(CommonSqlKey.UpdateTunnelInfo, tunnelInfoInfo);
         }
 
