@@ -171,8 +171,12 @@ namespace Service
                 {
                     MachineService ms = new MachineService();
                     ms.PostToMachine(lstTunnelConfigInfo[0].MachineId,"p");
+                    //操作日志
+                    OperationLogService operationService = new OperationLogService();
+                    operationService.PostData(new OperationLogModel() { MachineId = lstTunnelConfigInfo[0].MachineId, OptContent = "货道配置添加" });
                 }
                 GenerateDal.CommitTransaction();
+               
                 return 1;
             }
             catch (Exception e)
@@ -192,11 +196,18 @@ namespace Service
         {
             TunnelConfigModel tunnelConfigInfo = new TunnelConfigModel();
             tunnelConfigInfo.MachineId = id;
+            //操作日志
+            OperationLogService operationService = new OperationLogService();
+            operationService.PostData(new OperationLogModel() { MachineId = id, OptContent = "货道配置删除" });
             return GenerateDal.Delete<TunnelConfigModel>(CommonSqlKey.DeleteTunnelConfig, tunnelConfigInfo);
         }
 
         public int UpdateData(TunnelConfigModel tunnelConfigInfo)
         {
+            //操作日志
+            OperationLogService operationService = new OperationLogService();
+            operationService.PostData(new OperationLogModel() { MachineId = tunnelConfigInfo.MachineId, OptContent = "货道配置更新" });
+
             return GenerateDal.Update(CommonSqlKey.UpdateTunnelConfig, tunnelConfigInfo);
         }
     }

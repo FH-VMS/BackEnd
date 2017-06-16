@@ -198,7 +198,9 @@ namespace Service
                 MachineService mc = new MachineService();
                 mc.PostToMachine(machineConfigInfo.MachineId, "t");
                 GenerateDal.CommitTransaction();
-
+                //操作日志
+                OperationLogService operationService = new OperationLogService();
+                operationService.PostData(new OperationLogModel() { MachineId = machineConfigInfo.MachineId, OptContent = "机器配置添加" });
                 return 1;
             }
             catch (Exception e)
@@ -218,6 +220,9 @@ namespace Service
         {
             MachineConfigModel machineConfigInfo = new MachineConfigModel();
             machineConfigInfo.MachineId = id;
+            //操作日志
+            OperationLogService operationService = new OperationLogService();
+            operationService.PostData(new OperationLogModel() { MachineId = machineConfigInfo.MachineId, OptContent = "机器配置删除" });
             return GenerateDal.Delete<MachineConfigModel>(CommonSqlKey.DeleteMachineConfig, machineConfigInfo);
         }
 
@@ -226,6 +231,9 @@ namespace Service
             machineConfigInfo.UpdateDate = DateTime.Now;
             string userAccount = HttpContextHandler.GetHeaderObj("UserAccount").ToString();
             machineConfigInfo.Updater = userAccount;
+            //操作日志
+            OperationLogService operationService = new OperationLogService();
+            operationService.PostData(new OperationLogModel() { MachineId = machineConfigInfo.MachineId, OptContent = "机器配置更新" });
             return GenerateDal.Update(CommonSqlKey.UpdateMachineConfig, machineConfigInfo);
         }
     }

@@ -133,8 +133,33 @@ namespace Service
 
         public int UpdateData(TunnelInfoModel tunnelInfoInfo)
         {
-            tunnelInfoInfo.UpdateDate = DateTime.Now;
-            return GenerateDal.Update(CommonSqlKey.UpdateTunnelInfo, tunnelInfoInfo);
+            try
+            {
+                
+                //GenerateDal.BeginTransaction();
+                tunnelInfoInfo.UpdateDate = DateTime.Now;
+                GenerateDal.Update(CommonSqlKey.UpdateTunnelInfo, tunnelInfoInfo);
+                //操作日志
+                OperationLogService operationService = new OperationLogService();
+                operationService.PostData(new OperationLogModel() { MachineId = tunnelInfoInfo.MachineId, OptContent = "货道" + (tunnelInfoInfo.CurrStatus=="1"? "启用":"停用") });
+                /*
+                TunnelConfigModel tunnelConfig = new TunnelConfigModel();
+                tunnelConfig.MachineId = tunnelInfoInfo.MachineId;
+                tunnelConfig.CabinetId = tunnelInfoInfo.CabinetId;
+                tunnelConfig.TunnelId = tunnelInfoInfo.GoodsStuId;
+                tunnelConfig.IsUsed = Convert.ToInt32(tunnelInfoInfo.CurrStatus);
+                GenerateDal.Update(CommonSqlKey.UpdateTunnelConfigStatus, tunnelConfig);
+               */
+                //GenerateDal.CommitTransaction();
+              
+            }
+            catch (Exception e)
+            {
+                //GenerateDal.RollBack();
+                return 0;
+            }
+            return 1;
+           
         }
 
 

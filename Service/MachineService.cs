@@ -14,6 +14,13 @@ namespace Service
 {
     public class MachineService : AbstractService, IMachine
     {
+        private static OperationLogService operationService
+        {
+            get
+            {
+                return new OperationLogService();
+            }
+        }
         //取商品列表
         public List<ProductForMachineModel> GetProductByMachine(ProductForMachineModel machineInfo)
         {
@@ -299,10 +306,36 @@ namespace Service
             {
                 TunnelInfoModel tunnelInfo = new TunnelInfoModel();
                 tunnelInfo.MachineId = machineId;
-                int delResult = GenerateDal.Delete<TunnelInfoModel>(CommonSqlKey.DeleteTunnelStatusByMachine, tunnelInfo);
-                GenerateDal.Execute<TunnelInfoModel>(CommonSqlKey.FullfilGoodsOneKey, tunnelInfo);
+                //int delResult = GenerateDal.Delete<TunnelInfoModel>(CommonSqlKey.DeleteTunnelStatusByMachine, tunnelInfo);
+                var conditions = new List<Condition>();
+              
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "MachineId",
+                    DbColumnName = "machine_id",
+                    ParamValue = machineId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+
+                int resultStatusCount = GenerateDal.CountByConditions(CommonSqlKey.IsExistTunnelInfo, conditions);
+                int resultConfigCount = GenerateDal.CountByConditions(CommonSqlKey.GetTunnelConfigCount, conditions);
+                if (resultStatusCount == resultConfigCount)
+                {
+                    GenerateDal.Execute<TunnelInfoModel>(CommonSqlKey.UpdateFullfilGoodsOneKey, tunnelInfo);
+                }
+                else
+                {
+                    GenerateDal.Delete<TunnelInfoModel>(CommonSqlKey.DeleteTunnelStatusByMachine, tunnelInfo);
+                    GenerateDal.Execute<TunnelInfoModel>(CommonSqlKey.FullfilGoodsOneKey, tunnelInfo);
+                }
+                
                 //往机器下行表里插入库存改变的数据
                 PostToMachine(machineId, "s");
+                //机器管理操作日志
+                operationService.PostData(new OperationLogModel() { MachineId = machineId,OptContent="一键补货" });
                 /*
                 GenerateDal.BeginTransaction();
                 TunnelInfoModel tunnelInfo = new TunnelInfoModel();
@@ -348,19 +381,66 @@ namespace Service
                    
                     tunnelInfo.UpdateDate = DateTime.Now;
                     tunnelInfo.CabinetId = GetCabinetIdByMachine(keyJsonModel.m);
+                    /*
+                    var conditions = new List<Condition>();
+
+                    conditions.Add(new Condition
+                    {
+                        LeftBrace = " AND ",
+                        ParamName = "MachineId",
+                        DbColumnName = "machine_id",
+                        ParamValue = tunnelInfo.MachineId,
+                        Operation = ConditionOperate.Equal,
+                        RightBrace = "",
+                        Logic = ""
+                    });
+
+                    conditions.Add(new Condition
+                    {
+                        LeftBrace = " AND ",
+                        ParamName = "GoodsStuId",
+                        DbColumnName = "goods_stu_id",
+                        ParamValue = tunnelInfo.GoodsStuId,
+                        Operation = ConditionOperate.Equal,
+                        RightBrace = "",
+                        Logic = ""
+                    });
+
+                    conditions.Add(new Condition
+                    {
+                        LeftBrace = " AND ",
+                        ParamName = "CabinetId",
+                        DbColumnName = "cabinet_id",
+                        ParamValue = tunnelInfo.CabinetId,
+                        Operation = ConditionOperate.Equal,
+                        RightBrace = "",
+                        Logic = ""
+                    });
+
+                    int resultStatusCount = GenerateDal.CountByConditions(CommonSqlKey.IsExistTunnelInfo, conditions);
+                    if (resultStatusCount > 0)
+                    {
+                       
+                    }
+                    else
+                    {
+                        GenerateDal.Create<TunnelInfoModel>(tunnelInfo);
+                    }
+                    */
                     GenerateDal.Delete<TunnelInfoModel>(CommonSqlKey.DeleteTunnelStatusByMachineAndTunnel, tunnelInfo);
                     GenerateDal.Create<TunnelInfoModel>(tunnelInfo);
                 }
 
                 //往机器下行表里插入库存改变的数据
                 PostToMachine(keyJsonModel.m, "s");
-
+                //操作日志
+                operationService.PostData(new OperationLogModel() { MachineId = keyJsonModel.m, OptContent = "按货道补货" });
                 GenerateDal.CommitTransaction();
                 
             }
             catch (Exception e)
             {
-                //GenerateDal.RollBack();
+                GenerateDal.RollBack();
                 return 0;
             }
             return 1;
@@ -453,7 +533,7 @@ namespace Service
             }
             catch (Exception e)
             {
-                //GenerateDal.RollBack();
+                GenerateDal.RollBack();
                 return 0;
             }
             return 1;
@@ -614,6 +694,8 @@ namespace Service
 
                 }
                 PostToMachine(machineId, "p");
+                //操作日志
+                operationService.PostData(new OperationLogModel() { MachineId = machineId, OptContent = "机器端设置价格和库存" });
                 GenerateDal.CommitTransaction();
 
             }
@@ -647,6 +729,27 @@ namespace Service
 
             return GenerateDal.LoadDataTableByConditions(CommonSqlKey.GetMachineSetting, conditions);
         }
-       
+
+        //取机器情况根据machine_id
+        public DataTable GetMachineByMachineId(string machineId)
+        {
+            var conditions = new List<Condition>();
+
+            if (!string.IsNullOrEmpty(machineId))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "DeviceId",
+                    DbColumnName = "device_id",
+                    ParamValue = machineId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            return GenerateDal.LoadDataTableByConditions(CommonSqlKey.GetMachineByMachineId, conditions);
+        }
     }
 }

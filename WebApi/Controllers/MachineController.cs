@@ -148,6 +148,22 @@ namespace Chuang.Back.Controllers
             // IProduct service = new ProductService();
             //List<ProductModel> products = service.GetAllProducts();
             //k = "ABC123456789";
+            //机器运行情况
+            DataTable dt = _IMachine.GetMachineByMachineId(k);
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                return Content(new List<ProductForMachineModel>(), ResultCode.Success, "机器不存在", new Pagination { });
+            }
+            //判断机器是否在线 时间大于十五分钟为离线
+            if (string.IsNullOrEmpty(dt.Rows[0][0].ToString()))
+            {
+                return Content(new List<ProductForMachineModel>(), ResultCode.Success, "机器不在线", new Pagination { });
+            }
+            int intval = Convert.ToInt32(dt.Rows[0][0]);
+            if (intval > 900)
+            {
+                return Content(new List<ProductForMachineModel>(), ResultCode.Success, "机器不在线", new Pagination { });
+            }
             ProductForMachineModel machineInfo = new ProductForMachineModel();
             machineInfo.MachineId = k;
             machineInfo.PageIndex = pageIndex;

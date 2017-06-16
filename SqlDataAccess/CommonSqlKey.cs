@@ -121,6 +121,7 @@ namespace SqlDataAccess
         GetTunnelInfo,
         DeleteTunnelInfo,
         UpdateTunnelInfo,
+        UpdateTunnelConfigStatus,
         GenerateFullfilBill,
         GetFullfilCount,
 
@@ -131,6 +132,8 @@ namespace SqlDataAccess
         UpdatePayResult,
         DeleteTunnelStatusByMachine,
         FullfilGoodsOneKey,
+        IsExistTunnelInfo,
+        UpdateFullfilGoodsOneKey,
         DeleteTunnelStatusByMachineAndTunnel,
         GetBeepHeart,
         DeleteToMachine,
@@ -150,6 +153,7 @@ namespace SqlDataAccess
         GetRefundData,
         UpdateRefundResult,
         UpdateOrderStatusForAli,
-        IsRefundSucceed
+        IsRefundSucceed,
+        GetMachineByMachineId
     }
 }

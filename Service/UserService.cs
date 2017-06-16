@@ -1,4 +1,5 @@
 ﻿using Interface;
+using Model.Machine;
 using Model.User;
 using SqlDataAccess;
 using System;
@@ -120,9 +121,11 @@ namespace Service
             userInfo.Sts = 1;
             userInfo.UserPassword = Md5.md5(userInfo.UserPassword, 16);
             result = GenerateDal.Create(userInfo);
-            
 
 
+            //操作日志
+            OperationLogService operationService = new OperationLogService();
+            operationService.PostData(new OperationLogModel() { Remark = userInfo.Id, OptContent = "新增或修改用户信息" });
 
             return result;
         }
@@ -151,6 +154,9 @@ namespace Service
         {
             UserModel userInfo = new UserModel();
             userInfo.Id = id;
+            //操作日志
+            OperationLogService operationService = new OperationLogService();
+            operationService.PostData(new OperationLogModel() { Remark = userInfo.Id, OptContent = "删除用户" });
           return GenerateDal.Delete<UserModel>(CommonSqlKey.DeleteUser, userInfo); 
         }
 
@@ -183,6 +189,9 @@ namespace Service
                 return -1;
             }
             userInfo.UserPassword = Md5.md5(userInfo.UserPassword, 16);
+            //操作日志
+            OperationLogService operationService = new OperationLogService();
+            operationService.PostData(new OperationLogModel() { Remark = userInfo.Id, OptContent = "更新用户" });
             return GenerateDal.Update(CommonSqlKey.UpdateUser, userInfo);
         }
        

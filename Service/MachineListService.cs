@@ -188,7 +188,9 @@ namespace Service
             machineListInfo.Creator = userAccount;
             result = GenerateDal.Create(machineListInfo);
 
-
+            //操作日志
+            OperationLogService operationService = new OperationLogService();
+            operationService.PostData(new OperationLogModel() { MachineId = machineListInfo.MachineId, OptContent = "添加机器" });
 
 
             return result;
@@ -211,7 +213,9 @@ namespace Service
                 MachineConfigService mcService = new MachineConfigService();
                 mcService.DeleteData(id);
                 GenerateDal.CommitTransaction();
-
+                //操作日志
+                OperationLogService operationService = new OperationLogService();
+                operationService.PostData(new OperationLogModel() { MachineId = machineListInfo.MachineId, OptContent = "删除机器" });
                 return 1;
             }
             catch (Exception e)
@@ -226,6 +230,9 @@ namespace Service
             machineListInfo.UpdateDate = DateTime.Now;
              string userAccount = HttpContextHandler.GetHeaderObj("UserAccount").ToString();
              machineListInfo.Updater = userAccount;
+             //操作日志
+             OperationLogService operationService = new OperationLogService();
+             operationService.PostData(new OperationLogModel() { MachineId = machineListInfo.MachineId, OptContent = "更新机器" });
             return GenerateDal.Update(CommonSqlKey.UpdateMachineList, machineListInfo);
         }
        

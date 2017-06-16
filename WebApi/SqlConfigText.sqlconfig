@@ -121,6 +121,7 @@ public class SqlConfigText
 			{"GetTunnelInfoCount","SELECT COUNT(1) FROM table_goods_config a LEFT JOIN table_goods_status b ON a.machine_id=b.machine_id AND a.tunnel_id=b.goods_stu_id AND a.cabinet_id=b.cabinet_id WHERE 1=1"},
 			{"DeleteTunnelInfo","DELETE from table_goods_status WHERE machine_id=?p_MachineId"},
 			{"UpdateTunnelInfo","UPDATE table_goods_status SET curr_status=?p_CurrStatus,update_date=?p_UpdateDate WHERE machine_id=?p_MachineId AND goods_stu_id=?p_GoodsStuId AND cabinet_id=?p_CabinetId"},
+			{"UpdateTunnelConfigStatus","UPDATE table_goods_config SET is_used =?p_IsUsed WHERE machine_id =?p_MachineId AND tunnel_id=?p_TunnelId AND cabinet_id=?p_CabinetId"},
 			{"GenerateFullfilBill","SELECT a.max_puts as MaxPuts,a.tunnel_id as TunnelId, b.curr_stock,a.cabinet_id FROM table_goods_config a LEFT JOIN table_goods_status b ON a.machine_id=b.machine_id AND a.tunnel_id=b.goods_stu_id AND a.cabinet_id=b.cabinet_id WHERE 1=1 AND (a.max_puts<>b.curr_stock OR b.curr_stock is NULL)"},//补货单
 			{"GetFullfilCount","SELECT count(1) FROM table_goods_config a LEFT JOIN table_goods_status b ON a.machine_id=b.machine_id AND a.tunnel_id=b.goods_stu_id AND a.cabinet_id=b.cabinet_id WHERE 1=1 AND (a.max_puts<>b.curr_stock OR b.curr_stock is NULL)"},//补货单
 
@@ -133,6 +134,8 @@ public class SqlConfigText
 			{"UpdateCurrStock","UPDATE table_goods_status SET curr_stock=curr_stock-?p_CurrStock WHERE machine_id=?p_MachineId AND goods_stu_id=?p_GoodsStuId"},  //销售后更新库存
 			{"UpdateAddCurrStock","UPDATE table_goods_status SET curr_stock=curr_stock+?p_CurrStock WHERE machine_id=?p_MachineId AND goods_stu_id=?p_GoodsStuId"},  //出货失败后更新库存
 			{"FullfilGoodsOneKey","INSERT INTO table_goods_status(goods_stu_id,machine_id,curr_stock,curr_status,cabinet_id,update_date,curr_missing) SELECT tunnel_id as goods_stu_id, machine_id, max_puts AS curr_stock,is_used as curr_status, cabinet_id, NOW() as update_date,max_puts as curr_missing FROM table_goods_config WHERE machine_id = ?p_MachineId"},  //一键补货
+			{"IsExistTunnelInfo","SELECT COUNT(1) FROM table_goods_status WHERE 1=1"},  //检查是否是第一次补货
+			{"UpdateFullfilGoodsOneKey","UPDATE table_goods_status a INNER JOIN table_goods_config b ON a.machine_id=b.machine_id AND a.goods_stu_id=b.tunnel_id AND a.cabinet_id=b.cabinet_id SET a.curr_stock=b.max_puts WHERE a.machine_id=?p_MachineId"},  //更新补货
 			{"DeleteTunnelStatusByMachine","DELETE FROM table_goods_status WHERE machine_id = ?p_MachineId"}, 
 			{"DeleteTunnelStatusByMachineAndTunnel","DELETE FROM table_goods_status WHERE machine_id = ?p_MachineId And goods_stu_id = ?p_GoodsStuId AND cabinet_id=?p_CabinetId"}, 
 			{"GetBeepHeart","SELECT machine_status as s FROM table_to_machine WHERE machine_id = ?p_MachineId"}, //心跳包
@@ -151,7 +154,8 @@ public class SqlConfigText
 			{"GetRefundData","SELECT * FROM table_sales_cashless WHERE 1=1"},
 			{"UpdateRefundResult","UPDATE table_sales_cashless SET  trade_status=?p_TradeStatus WHERE machine_id=?p_MachineId AND trade_no=?p_TradeNo AND goods_id=?p_GoodsId"},
 			{"UpdateOrderStatusForAli","update table_sales_cashless set trade_status = (case reality_sale_number when 0 then 6 when NULL then 6 else 4 end ) WHERE com_id=?p_ComId AND trade_status<>2"},
-			{"IsRefundSucceed","SELECT COUNT(1) FROM table_refund WHERE 1=1"}
+			{"IsRefundSucceed","SELECT COUNT(1) FROM table_refund WHERE 1=1"},
+			{"GetMachineByMachineId","SELECT TIMESTAMPDIFF(SECOND,latest_date,NOW()) as LatestOnline FROM table_machine WHERE 1=1"}
 
 		}; 
         return dic; 

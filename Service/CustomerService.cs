@@ -1,5 +1,6 @@
 ﻿using Interface;
 using Model.Customer;
+using Model.Machine;
 using SqlDataAccess;
 using System;
 using System.Collections.Generic;
@@ -117,7 +118,9 @@ namespace Service
 
             result = GenerateDal.Create(customerInfo);
 
-
+            //操作日志
+            OperationLogService operationService = new OperationLogService();
+            operationService.PostData(new OperationLogModel() { Remark = customerInfo.Id, OptContent = "新增或修改会员信息" });
 
 
             return result;
@@ -156,6 +159,11 @@ namespace Service
                     }
                     GenerateDal.Update(CommonSqlKey.UpdateChildCustomer, updInfo);
                 }
+
+                //操作日志
+                OperationLogService operationService = new OperationLogService();
+                operationService.PostData(new OperationLogModel() { Remark = customerInfo.Id, OptContent = "删除客户" });
+
                 GenerateDal.CommitTransaction();
                 return 1;
             }
@@ -174,6 +182,9 @@ namespace Service
             {
                 customerInfo.Updater = userAccount;
             }
+            //操作日志
+            OperationLogService operationService = new OperationLogService();
+            operationService.PostData(new OperationLogModel() { Remark = customerInfo.Id, OptContent = "更新客户" });
             return GenerateDal.Update(CommonSqlKey.UpdateCustomer, customerInfo);
         }
     }
