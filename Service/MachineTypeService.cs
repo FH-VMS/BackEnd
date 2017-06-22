@@ -50,7 +50,7 @@ namespace Service
             {
                 foreach (MachineTypeModel item in result)
                 {
-                    item.Cabinets = new CabinetService().GetCabinetByMachineId(item.Id);
+                    item.Cabinets = new CabinetService().GetCabinetByMachineTypeId(item.Id);
                 }
             }
             return result;

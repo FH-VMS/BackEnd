@@ -1,4 +1,5 @@
 ﻿using Interface;
+using Model.Common;
 using Model.Machine;
 using SqlDataAccess;
 using System;
@@ -12,7 +13,7 @@ namespace Service
     public class CabinetService : AbstractService, ICabinet
     {
         // 取货柜作字典
-        public List<CabinetConfigModel> GetCabinetByMachineId(string machineTypeId)
+        public List<CabinetConfigModel> GetCabinetByMachineTypeId(string machineTypeId)
         {
             var conditions = new List<Condition>();
             conditions.Add(new Condition
@@ -26,6 +27,23 @@ namespace Service
                 Logic = ""
             });
             return GenerateDal.LoadByConditions<CabinetConfigModel>(CommonSqlKey.GetCabinetByMachineTypeId, conditions);
+        }
+
+
+        public List<CommonDic> GetCabinetByMachineId(string machineId)
+        {
+            var innerConditions = new List<Condition>();
+            innerConditions.Add(new Condition
+            {
+                LeftBrace = " AND ",
+                ParamName = "MachineId",
+                DbColumnName = "c.machine_id",
+                ParamValue = machineId,
+                Operation = ConditionOperate.Equal,
+                RightBrace = "",
+                Logic = ""
+            });
+            return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetCabinetByMachineId, innerConditions);
         }
 
 
