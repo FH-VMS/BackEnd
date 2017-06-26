@@ -333,7 +333,7 @@ namespace Service
                 }
                 
                 //往机器下行表里插入库存改变的数据
-                PostToMachine(machineId, "s");
+                PostToMachine(machineId, "st");
                 //机器管理操作日志
                 operationService.PostData(new OperationLogModel() { MachineId = machineId,OptContent="一键补货" });
                 /*
@@ -432,7 +432,7 @@ namespace Service
                 }
 
                 //往机器下行表里插入库存改变的数据
-                PostToMachine(keyJsonModel.m, "s");
+                PostToMachine(keyJsonModel.m, "st");
                 //操作日志
                 operationService.PostData(new OperationLogModel() { MachineId = keyJsonModel.m, OptContent = "按货道补货" });
                 GenerateDal.CommitTransaction();

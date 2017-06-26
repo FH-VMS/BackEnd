@@ -124,6 +124,7 @@ namespace SqlDataAccess
         UpdateTunnelConfigStatus,
         GenerateFullfilBill,
         GetFullfilCount,
+        UpdateTunnelCurrStock,
 
         //机器对应接口
         GetProductByMachine,

@@ -121,6 +121,7 @@ public class SqlConfigText
 			{"GetTunnelInfoCount","SELECT COUNT(1) FROM table_goods_config a LEFT JOIN table_goods_status b ON a.machine_id=b.machine_id AND a.tunnel_id=b.goods_stu_id AND a.cabinet_id=b.cabinet_id WHERE 1=1"},
 			{"DeleteTunnelInfo","DELETE from table_goods_status WHERE machine_id=?p_MachineId"},
 			{"UpdateTunnelInfo","UPDATE table_goods_status SET curr_status=?p_CurrStatus,update_date=?p_UpdateDate WHERE machine_id=?p_MachineId AND goods_stu_id=?p_GoodsStuId AND cabinet_id=?p_CabinetId"},
+			{"UpdateTunnelCurrStock","UPDATE table_goods_status SET curr_stock=?p_CurrStock,update_date=?p_UpdateDate WHERE machine_id=?p_MachineId AND goods_stu_id=?p_GoodsStuId AND cabinet_id=?p_CabinetId"},
 			{"UpdateTunnelConfigStatus","UPDATE table_goods_config SET is_used =?p_IsUsed WHERE machine_id =?p_MachineId AND tunnel_id=?p_TunnelId AND cabinet_id=?p_CabinetId"},
 			{"GenerateFullfilBill","SELECT a.max_puts as MaxPuts,a.tunnel_id as TunnelId, b.curr_stock,a.cabinet_id FROM table_goods_config a LEFT JOIN table_goods_status b ON a.machine_id=b.machine_id AND a.tunnel_id=b.goods_stu_id AND a.cabinet_id=b.cabinet_id WHERE 1=1 AND (a.max_puts<>b.curr_stock OR b.curr_stock is NULL)"},//补货单
 			{"GetFullfilCount","SELECT count(1) FROM table_goods_config a LEFT JOIN table_goods_status b ON a.machine_id=b.machine_id AND a.tunnel_id=b.goods_stu_id AND a.cabinet_id=b.cabinet_id WHERE 1=1 AND (a.max_puts<>b.curr_stock OR b.curr_stock is NULL)"},//补货单

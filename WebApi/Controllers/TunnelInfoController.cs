@@ -73,6 +73,14 @@ namespace Chuang.Back.Controllers
             return Content(fullfilInfo, pagination);
         }
 
+        //手机补充库存
+        public ResultObj<int> PutStockWithMobile(List<TunnelInfoModel> lstTunnelInfo)
+        {
+              IFullfilBill ifullfilBill = new TunnelInfoService();
+              int result = ifullfilBill.UpdateStockWithMobile(lstTunnelInfo);
+              return Content(result);
+        }
+
         //导出补货单
         public void ExportFullfilData(string machineId = "", string cabinetId = "")
         {

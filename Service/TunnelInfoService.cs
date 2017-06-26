@@ -257,5 +257,41 @@ namespace Service
 
             return result;
         }
+
+        public int UpdateStockWithMobile(List<TunnelInfoModel> lstTunnelInfo)
+        {
+            try
+            {
+
+                GenerateDal.BeginTransaction();
+                foreach (TunnelInfoModel tunnelInfo in lstTunnelInfo)
+                {
+                    tunnelInfo.UpdateDate = DateTime.Now;
+                    GenerateDal.Update(CommonSqlKey.UpdateTunnelCurrStock, tunnelInfo);
+                }
+                MachineService ms = new MachineService();
+                //往机器下行表里插入库存改变的数据
+                ms.PostToMachine(lstTunnelInfo[0].MachineId, "st");
+                //操作日志
+                OperationLogService operationService = new OperationLogService();
+                operationService.PostData(new OperationLogModel() { MachineId = lstTunnelInfo[0].MachineId, OptContent = "手机补充库存"});
+                /*
+                TunnelConfigModel tunnelConfig = new TunnelConfigModel();
+                tunnelConfig.MachineId = tunnelInfoInfo.MachineId;
+                tunnelConfig.CabinetId = tunnelInfoInfo.CabinetId;
+                tunnelConfig.TunnelId = tunnelInfoInfo.GoodsStuId;
+                tunnelConfig.IsUsed = Convert.ToInt32(tunnelInfoInfo.CurrStatus);
+                GenerateDal.Update(CommonSqlKey.UpdateTunnelConfigStatus, tunnelConfig);
+               */
+                GenerateDal.CommitTransaction();
+
+            }
+            catch (Exception e)
+            {
+               GenerateDal.RollBack();
+                return 0;
+            }
+            return 1;
+        }
     }
 }

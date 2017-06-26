@@ -14,5 +14,8 @@ namespace Interface
 
          [Remark("生成补货单的数量", ParmsNote = "", ReturnNote = "int")]
         int GetFullfilCount(TunnelInfoModel tunnelInfoInfo);
+
+         [Remark("手机端补充库存", ParmsNote = "列表实体", ReturnNote = "int")]
+         int UpdateStockWithMobile(List<TunnelInfoModel> lstTunnelInfo);
     }
 }
