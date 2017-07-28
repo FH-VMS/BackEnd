@@ -77,6 +77,9 @@
     <Compile Include="User\AuthModel.cs" />
     <Compile Include="User\AuthRelateModel.cs" />
     <Compile Include="User\UserModel.cs" />
+    <Compile Include="Withdraw\MachineMoneyModel.cs" />
+    <Compile Include="Withdraw\TotalMoneyModel.cs" />
+    <Compile Include="Withdraw\WithdrawModel.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
