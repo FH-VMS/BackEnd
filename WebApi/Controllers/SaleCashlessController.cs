@@ -23,7 +23,7 @@ namespace Chuang.Back.Controllers
             }
         }
 
-        public ResultObj<List<SaleModel>> GetData(string deviceId = "", string payType = "", int pageIndex = 1, int pageSize = 10)
+        public ResultObj<List<SaleModel>> GetData(string deviceId = "", string payType = "", string tradeStatus="", string salesDate="", int pageIndex = 1, int pageSize = 10)
         {
             // IProduct service = new ProductService();
             //List<ProductModel> products = service.GetAllProducts();
@@ -31,6 +31,17 @@ namespace Chuang.Back.Controllers
             SaleModel saleInfo = new SaleModel();
             saleInfo.DeviceId = deviceId;
             saleInfo.PayType = payType;
+            if (!string.IsNullOrEmpty(tradeStatus))
+            {
+                saleInfo.TradeStatus = Convert.ToInt32(tradeStatus);
+            }
+
+            if (!string.IsNullOrEmpty(salesDate))
+            {
+                saleInfo.SaleDateStart = salesDate.Split('^')[0];
+                saleInfo.SaleDateEnd = salesDate.Split('^')[1];
+            }
+            
             saleInfo.PageIndex = pageIndex;
             saleInfo.PageSize = pageSize;
             var sales = _IBase.GetAll(saleInfo);

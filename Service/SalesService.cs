@@ -150,6 +150,48 @@ namespace Service
                 });
             }
 
+            if (saleInfo.TradeStatus!=0)
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "TradeStatus",
+                    DbColumnName = "trade_status",
+                    ParamValue = saleInfo.TradeStatus,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            if (!string.IsNullOrEmpty(saleInfo.SaleDateStart))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "SaleDateStart",
+                    DbColumnName = "sales_date",
+                    ParamValue = saleInfo.SaleDateStart,
+                    Operation = ConditionOperate.GreaterThan,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            if (!string.IsNullOrEmpty(saleInfo.SaleDateEnd))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "SaleDateEnd",
+                    DbColumnName = "sales_date",
+                    ParamValue = saleInfo.SaleDateEnd,
+                    Operation = ConditionOperate.LessThan,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
             conditions.Add(new Condition
             {
                 LeftBrace = "  ",
@@ -220,6 +262,48 @@ namespace Service
                     DbColumnName = "pay_type",
                     ParamValue = saleInfo.PayType,
                     Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            if (saleInfo.TradeStatus != 0)
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "TradeStatus",
+                    DbColumnName = "trade_status",
+                    ParamValue = saleInfo.TradeStatus,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            if (!string.IsNullOrEmpty(saleInfo.SaleDateStart))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "SaleDateStart",
+                    DbColumnName = "sales_date",
+                    ParamValue = saleInfo.SaleDateStart,
+                    Operation = ConditionOperate.GreaterThan,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            if (!string.IsNullOrEmpty(saleInfo.SaleDateEnd))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "SaleDateEnd",
+                    DbColumnName = "sales_date",
+                    ParamValue = saleInfo.SaleDateEnd,
+                    Operation = ConditionOperate.LessThan,
                     RightBrace = "",
                     Logic = ""
                 });

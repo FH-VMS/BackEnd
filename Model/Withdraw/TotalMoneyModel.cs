@@ -9,13 +9,6 @@ namespace Model.Withdraw
     [Table("table_total_money")]
     public class TotalMoneyModel
     {
-        [Column(Name = "id")]
-        public string Id
-        {
-            get;
-            set;
-        }
-
         [Column(Name = "client_id")]
         public string ClientId
         {
@@ -24,21 +17,14 @@ namespace Model.Withdraw
         }
 
         [Column(Name = "ali_account")]
-        public string AliAccount
+        public decimal AliAccount
         {
             get;
             set;
         }
 
         [Column(Name = "wx_account")]
-        public string WxAccount
-        {
-            get;
-            set;
-        }
-
-        [Column(Name = "total_money")]
-        public float TotalMoney
+        public decimal WxAccount
         {
             get;
             set;

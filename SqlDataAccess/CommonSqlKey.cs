@@ -155,6 +155,9 @@ namespace SqlDataAccess
         UpdateRefundResult,
         UpdateOrderStatusForAli,
         IsRefundSucceed,
-        GetMachineByMachineId
+        GetMachineByMachineId,
+
+        //总额及提现记录
+        GetTotalMoneyByClient
     }
 }

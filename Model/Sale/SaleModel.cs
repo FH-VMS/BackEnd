@@ -123,6 +123,18 @@ namespace Model.Sale
              set;
          }
 
+         public string SaleDateStart
+         {
+             get;
+             set;
+         }
+
+         public string SaleDateEnd
+         {
+             get;
+             set;
+         }
+
          public string ClientName
          {
              get;
