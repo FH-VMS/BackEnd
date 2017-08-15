@@ -4,6 +4,7 @@ using Model.User;
 using SqlDataAccess;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -359,6 +360,32 @@ namespace Service
         {
             userInfo.UserPassword = Md5.md5(userInfo.UserPassword, 16);
             return GenerateDal.Update(CommonSqlKey.ChangePassword, userInfo);
+        }
+
+        /// <summary>
+        /// 取机器各个状态数
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetTotalMachineCount()
+        {
+            var clientId = HttpContextHandler.GetHeaderObj("UserClientId");
+            var conditions = new List<Condition>();
+            if (string.IsNullOrEmpty(clientId.ToString()))
+            {
+                return new DataTable();
+            }
+            conditions.Add(new Condition
+            {
+                LeftBrace = "",
+                ParamName = "ClientId",
+                DbColumnName = "",
+                ParamValue = clientId,
+                Operation = ConditionOperate.None,
+                RightBrace = "",
+                Logic = ""
+            });
+            // 返回的三个数字按顺序分别代表未启用  离线  在线
+            return GenerateDal.LoadDataTableByConditions(CommonSqlKey.GetMachineCountWithStatus, conditions);
         }
     }
 }

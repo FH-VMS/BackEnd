@@ -3,6 +3,7 @@ using Model.Sys;
 using Model.User;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,6 +51,9 @@ namespace Interface
 
         [Remark("修改密码", ParmsNote = "用户实体", ReturnNote = "int")]
         int UpdatePassword(UserModel userInfo);
+
+        [Remark("取机器状态数", ParmsNote = "用户实体", ReturnNote = "string")]
+        DataTable GetTotalMachineCount();
 
     }
 }

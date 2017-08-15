@@ -70,6 +70,7 @@ namespace SqlDataAccess
         DeleteMachineList,
         UpdateMachineList,
         GetMachineTypeDic,
+        GetMachineCountWithStatus,
 
         //机器配置
         GetMachineConfig,
