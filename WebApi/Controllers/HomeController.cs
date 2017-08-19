@@ -29,5 +29,14 @@ namespace Chuang.Back.Controllers
             string retutStr = JsonHandler.DataTable2Json(icommon.GetTotalMachineCount());
             return Content(retutStr);
         }
+
+
+        //机器 销售额
+        public ResultObj<string> GetSalesAmountByMachine(string salesDateStart="", string salesDateEnd="", bool needPage=false,  int pageIndex = 1, int pageSize = 10)
+        {
+            IStatistic istatistic = new StatisticService();
+            string retutStr = JsonHandler.DataTable2Json(istatistic.GetSalesAmountByMachine(salesDateStart,salesDateEnd,needPage,pageSize,pageIndex));
+            return Content(retutStr);
+        }
     }
 }

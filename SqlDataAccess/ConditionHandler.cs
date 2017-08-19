@@ -167,6 +167,9 @@ namespace SqlDataAccess
                         case ConditionOperate.OrderBy:
                             stringBuilder.Append(string.Format(" " + condition.LeftBrace + "order by {0} {1} ", paramName, condition.ParamValue) + condition.RightBrace + " " + text2);
                             break;
+                        case ConditionOperate.GroupBy:
+                            stringBuilder.Append(string.Format(" " + condition.LeftBrace + "group by {0} {1} ", paramName, condition.ParamValue) + condition.RightBrace + " " + text2);
+                            break;
                         case ConditionOperate.LimitIndex:
                             //stringBuilder.Append($"  limit {text + "p_" + condition.ParamName}");
                             stringBuilder.Append(string.Format(" limit {0} ", text + preParaName + condition.ParamName));

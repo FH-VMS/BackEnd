@@ -49,6 +49,7 @@
     <Compile Include="IPay.cs" />
     <Compile Include="IRefund.cs" />
     <Compile Include="ISale.cs" />
+    <Compile Include="IStatistic.cs" />
     <Compile Include="ITunnel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -159,7 +159,9 @@ public class SqlConfigText
 			{"IsRefundSucceed","SELECT COUNT(1) FROM table_refund WHERE 1=1"},
 			{"GetMachineByMachineId","SELECT TIMESTAMPDIFF(SECOND,latest_date,NOW()) as LatestOnline FROM table_machine WHERE 1=1"},
 			//总额及体现记录
-			{"GetTotalMoneyByClient","select a.client_id,a.ali_account,a.wx_account from table_total_money a INNER JOIN (select client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))) b ON a.client_id=b.client_id UNION ALL SELECT * FROM table_total_money WHERE client_id = ?p_ClientId"}
+			{"GetTotalMoneyByClient","select a.client_id,a.ali_account,a.wx_account from table_total_money a INNER JOIN (select client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))) b ON a.client_id=b.client_id UNION ALL SELECT * FROM table_total_money WHERE client_id = ?p_ClientId"},
+			//统计
+			{"GetSalesAmountByMachine","SELECT a.machine_id, SUM(a.reality_sale_number*a.trade_amount) as total FROM table_sales_cashless a RIGHT JOIN  table_machine b ON a.machine_id=b.machine_id  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE a.trade_status = 2 or a.trade_status=4 "}
 		}; 
         return dic; 
     }

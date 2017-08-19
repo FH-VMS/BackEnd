@@ -159,6 +159,8 @@ namespace SqlDataAccess
         GetMachineByMachineId,
 
         //总额及提现记录
-        GetTotalMoneyByClient
+        GetTotalMoneyByClient,
+        //统计
+        GetSalesAmountByMachine
     }
 }

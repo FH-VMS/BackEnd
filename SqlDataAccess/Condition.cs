@@ -71,6 +71,7 @@ namespace SqlDataAccess
         LimitLength,
         None,
         OrderBy,
+        GroupBy,
         IN
     }
 }
