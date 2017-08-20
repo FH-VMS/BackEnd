@@ -37,8 +37,10 @@ namespace Chuang.Back.Controllers
         public ResultObj<PayStateModel> GetDataW(string k, string code)
         {
             //解码机器传过来的key值
-           
-
+            //解析k值
+            KeyJsonModel keyJsonInfo = AnalizeKey(k);
+            //移动支付赋值
+            GenerateConfigModel("w", keyJsonInfo.m);
             JsApi.payInfo = new PayModel();
             JsApi.payInfo.k = k;
             //生成code 根据code取微信支付的openid和access_token
@@ -56,8 +58,7 @@ namespace Chuang.Back.Controllers
             //JSAPI支付预处理
             try
             {
-                //解析k值
-                KeyJsonModel keyJsonInfo = AnalizeKey(k);
+               
                 if (string.IsNullOrEmpty(keyJsonInfo.m) || keyJsonInfo.t.Count == 0)
                 {
                     payState.RequestState = "2";
@@ -154,6 +155,7 @@ namespace Chuang.Back.Controllers
             PayStateModel payStateModel = new PayStateModel();
             //解析k值
             KeyJsonModel keyJsonInfo = AnalizeKey(k);
+
             if (string.IsNullOrEmpty(keyJsonInfo.m) || keyJsonInfo.t.Count == 0)
             {
                 payStateModel.RequestState = "2";
@@ -161,6 +163,8 @@ namespace Chuang.Back.Controllers
                 payStateModel.RequestData = "";
                 return Content(payStateModel);
             }
+            //移动支付赋值
+            GenerateConfigModel("a",keyJsonInfo.m);
             //生成交易号
             string out_trade_no = GeneraterTradeNo();
             //取商品信息
@@ -230,6 +234,33 @@ namespace Chuang.Back.Controllers
             payStateModel.RequestData = sHtmlText;
             payStateModel.RequestState = "1";
             return Content(payStateModel);
+        }
+
+        public void GenerateConfigModel(string isAliOrWx, string machineId)
+        {
+            IPay ipay = new PayService();
+            List<ConfigModel> lstConfig = ipay.GetConfig(machineId);
+            if (lstConfig.Count > 0)
+            {
+                ConfigModel cModel = lstConfig[0];
+                if (isAliOrWx == "a")
+                {
+                    Config.partner = cModel.AliParter;
+                    Config.key = cModel.AliKey;
+                    Config.seller_id = cModel.AliParter;
+                    Config.refund_appid = cModel.AliRefundAppId;
+                    Config.rsa_sign = cModel.AliRefundRsaSign;
+                }
+                else if (isAliOrWx == "w")
+                {
+                    WxPayConfig.APPID = cModel.WxAppId;
+                    WxPayConfig.MCHID = cModel.WxMchId;
+                    WxPayConfig.KEY = cModel.WxKey;
+                    WxPayConfig.APPSECRET = cModel.WxAppSecret;
+                    WxPayConfig.SSLCERT_PATH = cModel.WxSslcertPath;
+                    WxPayConfig.SSLCERT_PASSWORD = cModel.WxSslcertPassword;
+                }
+            }
         }
     }
 }

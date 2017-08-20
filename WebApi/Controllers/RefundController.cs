@@ -60,12 +60,15 @@ namespace Chuang.Back.Controllers
         }
         public ResultObj<int> PostRefundA(List<SaleModel> lstSaleModel)
         {
+
             try
             {
                 if (lstSaleModel.Count == 0)
                 {
                     return Content(1);
                 }
+                //移动支付配置赋值
+                GenerateConfigModel("a", lstSaleModel[0].MachineId);
                 string detail_data = string.Empty;
                 int batch_num = 1;
                 foreach (SaleModel saleModel in lstSaleModel)
@@ -240,7 +243,8 @@ namespace Chuang.Back.Controllers
                 {
                     return Content(1);
                 }
-                
+                //移动支付配置赋值
+                GenerateConfigModel("w", lstSaleModel[0].MachineId);
                 foreach (SaleModel saleModel in lstSaleModel)
                 {
                     WxPayData data = new WxPayData();
@@ -300,6 +304,33 @@ namespace Chuang.Back.Controllers
                 return Content(0);
             }
 
+        }
+
+        public void GenerateConfigModel(string isAliOrWx, string machineId)
+        {
+            IPay ipay = new PayService();
+            List<ConfigModel> lstConfig = ipay.GetConfig(machineId);
+            if (lstConfig.Count > 0)
+            {
+                ConfigModel cModel = lstConfig[0];
+                if (isAliOrWx == "a")
+                {
+                    Config.partner = cModel.AliParter;
+                    Config.key = cModel.AliKey;
+                    Config.seller_id = cModel.AliParter;
+                    Config.refund_appid = cModel.AliRefundAppId;
+                    Config.rsa_sign = cModel.AliRefundRsaSign;
+                }
+                else if (isAliOrWx == "w")
+                {
+                    WxPayConfig.APPID = cModel.WxAppId;
+                    WxPayConfig.MCHID = cModel.WxMchId;
+                    WxPayConfig.KEY = cModel.WxKey;
+                    WxPayConfig.APPSECRET = cModel.WxAppSecret;
+                    WxPayConfig.SSLCERT_PATH = cModel.WxSslcertPath;
+                    WxPayConfig.SSLCERT_PASSWORD = cModel.WxSslcertPassword;
+                }
+            }
         }
 
     }

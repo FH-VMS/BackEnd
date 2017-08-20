@@ -79,7 +79,7 @@ namespace Model.Machine
          }
 
          [Column(Name = "stop_reason")]
-         public DateTime StopReason
+         public string StopReason
          {
              get;
              set;
@@ -102,6 +102,13 @@ namespace Model.Machine
 
          [Column(Name = "latest_date")]
          public DateTime LatestDate
+         {
+             get;
+             set;
+         }
+
+         [Column(Name = "mobile_pay_id")]
+         public string MobilePayId
          {
              get;
              set;

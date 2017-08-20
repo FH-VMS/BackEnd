@@ -82,7 +82,7 @@ namespace Chuang.Back.Controllers
         }
 
         //导出补货单
-        public void ExportFullfilData(string machineId = "", string cabinetId = "")
+        public string GetExportFullfilData(string machineId = "", string cabinetId = "")
         {
             HSSFWorkbook workbook = new HSSFWorkbook();
             ISheet sheet = workbook.CreateSheet("sheet1");
@@ -127,8 +127,8 @@ namespace Chuang.Back.Controllers
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
                 FileName = System.Web.HttpUtility.UrlEncode(fileName)
-            };
-            //return response;
+            };    
+            return string.Empty;
         }
     }
 }

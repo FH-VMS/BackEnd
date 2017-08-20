@@ -89,5 +89,32 @@ namespace Service
 
 
         }
+
+
+        //取商品列表
+        public List<ConfigModel> GetConfig(string machindId)
+        {
+            var conditions = new List<Condition>();
+
+            if (string.IsNullOrEmpty(machindId))
+            {
+                return null;
+            }
+
+            conditions.Add(new Condition
+            {
+                LeftBrace = "  AND ",
+                ParamName = "MachineId",
+                DbColumnName = "b.machine_id",
+                ParamValue = machindId,
+                Operation = ConditionOperate.Equal,
+                RightBrace = "",
+                Logic = ""
+            });
+
+            return GenerateDal.LoadByConditions<ConfigModel>(CommonSqlKey.GetPayConfig, conditions);
+
+
+        }
     }
 }
