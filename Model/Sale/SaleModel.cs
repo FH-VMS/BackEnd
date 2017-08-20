@@ -102,6 +102,13 @@ namespace Model.Sale
              set;
          }
 
+         [Column(Name = "service_charge")]
+         public double ServiceCharge
+         {
+             get;
+             set;
+         }
+
          [Column(Name = "trade_status")]
          public int TradeStatus
          {
@@ -158,5 +165,6 @@ namespace Model.Sale
              get;
              set;
          }
+
     }
 }

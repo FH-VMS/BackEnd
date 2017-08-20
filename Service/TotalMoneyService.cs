@@ -20,7 +20,7 @@ namespace Service
 
             if (userStatus == "100" || userStatus == "99")
             {
-                return null;
+                dics.Add("ClientId", "self");
             }
             else
             {

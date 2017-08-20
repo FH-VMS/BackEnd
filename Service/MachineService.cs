@@ -105,6 +105,7 @@ namespace Service
                     saleInfo.GoodsId = keyTunnelInfo.tid;
                     saleInfo.TradeStatus = 1;
                     saleInfo.TradeAmount = Convert.ToDouble(keyTunnelInfo.p);
+                    saleInfo.ServiceCharge = Math.Round(Convert.ToDouble(keyTunnelInfo.p) * 0.006, 2, MidpointRounding.AwayFromZero);
                     GenerateDal.Create(saleInfo);
                     //更新存存
                     UpdateCurrStock(keyJsonModel.m, keyTunnelInfo.tid, saleInfo.SalesNumber);
@@ -143,6 +144,7 @@ namespace Service
                     saleInfo.GoodsId = keyTunnelInfo.tid;
                     saleInfo.TradeStatus = 1;
                     saleInfo.TradeAmount = Convert.ToDouble(keyTunnelInfo.p);
+                    saleInfo.ServiceCharge = Math.Round(Convert.ToDouble(keyTunnelInfo.p) * 0.006, 2, MidpointRounding.AwayFromZero);
                     GenerateDal.Create(saleInfo);
                     //更新存存
                     UpdateCurrStock(keyJsonModel.m, keyTunnelInfo.tid, saleInfo.SalesNumber);

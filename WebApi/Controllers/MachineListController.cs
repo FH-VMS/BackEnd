@@ -44,7 +44,17 @@ namespace Chuang.Back.Controllers
 
         public ResultObj<int> PostData(MachineListModel machineListInfo)
         {
-            return Content(_IBase.PostData(machineListInfo));
+            ICommon icommon = new CommonService();
+            int result = icommon.CheckMachineId(machineListInfo.DeviceId);
+            if (result > 0)
+            {
+                return Content(0,ResultCode.Fail,"该机器编号已存在");
+            }
+            else
+            {
+                return Content(_IBase.PostData(machineListInfo));
+            }
+           
         }
 
         public ResultObj<int> PutData(MachineListModel machineListInfo)

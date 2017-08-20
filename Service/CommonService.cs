@@ -387,5 +387,25 @@ namespace Service
             // 返回的三个数字按顺序分别代表未启用  离线  在线
             return GenerateDal.LoadDataTableByConditions(CommonSqlKey.GetMachineCountWithStatus, conditions);
         }
+
+        /// <summary>
+        /// 取机器各个状态数
+        /// </summary>
+        /// <returns></returns>
+        public int CheckMachineId(string machineId)
+        {
+            var conditions = new List<Condition>();
+            conditions.Add(new Condition
+            {
+                LeftBrace = " AND ",
+                ParamName = "DeviceId",
+                DbColumnName = "device_id",
+                ParamValue = machineId,
+                Operation = ConditionOperate.Equal,
+                RightBrace = "",
+                Logic = ""
+            });
+            return GenerateDal.CountByConditions(CommonSqlKey.CheckMachineId, conditions);
+        }
     }
 }

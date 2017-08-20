@@ -50,6 +50,7 @@ namespace SqlDataAccess
         GetProductDic,
         GetCabinetDic,
         GetProductDicAll,
+        CheckMachineId,
 
         //机型
         GetMachineType,

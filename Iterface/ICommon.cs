@@ -55,5 +55,8 @@ namespace Interface
         [Remark("取机器状态数", ParmsNote = "用户实体", ReturnNote = "string")]
         DataTable GetTotalMachineCount();
 
+         [Remark("检查机器 是否存在", ParmsNote = "机器ID", ReturnNote = "string")]
+        int CheckMachineId(string machineId);
+
     }
 }
