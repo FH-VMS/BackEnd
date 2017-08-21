@@ -163,6 +163,12 @@ namespace SqlDataAccess
         //总额及提现记录
         GetTotalMoneyByClient,
         //统计
-        GetSalesAmountByMachine
+        GetSalesAmountByMachine,
+
+        //支付配置
+        GetPayConfigList,
+        GetPayConfigListCount,
+        DeletePayConfig,
+        UpdatePayConfig
     }
 }

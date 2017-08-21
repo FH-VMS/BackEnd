@@ -100,5 +100,17 @@ namespace Model.Pay
             set;
         }
 
+        public int PageIndex
+        {
+            get;
+            set;
+        }
+
+        public int PageSize
+        {
+            get;
+            set;
+        }
+
     }
 }

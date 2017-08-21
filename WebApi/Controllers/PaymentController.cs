@@ -257,8 +257,8 @@ namespace Chuang.Back.Controllers
                     WxPayConfig.MCHID = cModel.WxMchId;
                     WxPayConfig.KEY = cModel.WxKey;
                     WxPayConfig.APPSECRET = cModel.WxAppSecret;
-                    WxPayConfig.SSLCERT_PATH = cModel.WxSslcertPath;
-                    WxPayConfig.SSLCERT_PASSWORD = cModel.WxSslcertPassword;
+                    //WxPayConfig.SSLCERT_PATH = cModel.WxSslcertPath;
+                    //WxPayConfig.SSLCERT_PASSWORD = cModel.WxSslcertPassword;
                 }
             }
         }

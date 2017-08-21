@@ -35,8 +35,8 @@ namespace PaymentLib.wx
         public static string KEY = "";
         public static string APPSECRET = "";
 
-        public static string SSLCERT_PATH = "";
-        public static string SSLCERT_PASSWORD = "";
+        public static string SSLCERT_PATH = "cert/apiclient_cert.p12";
+        public static string SSLCERT_PASSWORD = "1433899402";
 
         public static string FRONT_URL = Path.PathConfig+"/m.html";
 

@@ -102,6 +102,13 @@ namespace Model.Customer
             set;
         }
 
+        [Column(Name = "mobile_arr")]
+        public string MobileArr
+        {
+            get;
+            set;
+        }
+
         public List<CustomerModel> children
         {
             get;

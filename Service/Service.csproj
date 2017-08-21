@@ -51,6 +51,7 @@
     <Compile Include="MachineService.cs" />
     <Compile Include="MachineTypeService.cs" />
     <Compile Include="OperationLogService.cs" />
+    <Compile Include="PayConfigService.cs" />
     <Compile Include="PayService.cs" />
     <Compile Include="PictureService.cs" />
     <Compile Include="ProductConfigService.cs" />

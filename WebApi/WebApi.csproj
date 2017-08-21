@@ -120,6 +120,7 @@
     <Compile Include="Controllers\MachineController.cs" />
     <Compile Include="Controllers\MachineListController.cs" />
     <Compile Include="Controllers\MachineTypeController.cs" />
+    <Compile Include="Controllers\PayConfigController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ProductConfigController.cs" />
     <Compile Include="Controllers\ProductListController.cs" />
