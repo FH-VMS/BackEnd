@@ -19,6 +19,10 @@ namespace Interface
          [Remark("手机端补充库存", ParmsNote = "列表实体", ReturnNote = "int")]
          int UpdateStockWithMobile(List<TunnelInfoModel> lstTunnelInfo);
 
-         //DataTable ExportByProduct(string machineId);
+         [Remark("按产品导出", ParmsNote = "机器编号", ReturnNote = "datatable")]
+         DataTable ExportByProduct(string machineId);
+
+         [Remark("按货道导出", ParmsNote = "机器编号", ReturnNote = "datatable")]
+         DataTable ExportByTunnel(string machineId);
     }
 }

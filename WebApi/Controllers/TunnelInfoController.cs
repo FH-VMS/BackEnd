@@ -7,6 +7,8 @@ using NPOI.SS.UserModel;
 using Service;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -89,12 +91,9 @@ namespace Chuang.Back.Controllers
                 {
                     return null;
                 }
-                foreach (string machineId in machineIds.Split('^'))
-                {
+              
 
-                }
-                
-                var file = ExcelStream();
+                var file = ExcelStream(machineIds);
                 //string csv = _service.GetData(model);
                 HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
                 result.Content = new StreamContent(file);
@@ -104,33 +103,76 @@ namespace Chuang.Back.Controllers
                 result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.ms-excel");
                 //we used attachment to force download
                 result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                result.Content.Headers.ContentDisposition.FileName = "补货单"+"file.xls";
+                result.Content.Headers.ContentDisposition.FileName = "补货单" + DateTime.Now.ToString("yyyyMMddHHmmss") +".xls";
                 return result;
          }
 
 
          //得到excel文件流
-         private System.IO.Stream ExcelStream()
+         private System.IO.Stream ExcelStream(string machineIds)
          {
-             //var list = dc.v_bs_dj_bbcdd1.Where(eps).ToList();
              HSSFWorkbook hssfworkbook = new HSSFWorkbook();
+             MemoryStream file = new MemoryStream();
+             foreach (string machineId in machineIds.Split('^'))
+             {
+                 IFullfilBill ifullFill = new TunnelInfoService();
+                 DataTable dtProduct = ifullFill.ExportByProduct(machineId);
+                 DataTable dtTunnel = ifullFill.ExportByTunnel(machineId);
+                 ISheet sheet1 = hssfworkbook.CreateSheet(machineId);
+                 IRow rowHeader = sheet1.CreateRow(0);
+                 
+                 //生成excel标题
+                 rowHeader.CreateCell(0).SetCellValue("商品名称");
+                 rowHeader.CreateCell(1).SetCellValue("需要数量");
+                 rowHeader.CreateCell(2).SetCellValue("");
+               
+                 rowHeader.CreateCell(3).SetCellValue("");
+                 rowHeader.CreateCell(4).SetCellValue("货道号");
+                 rowHeader.CreateCell(5).SetCellValue("商品名称");
+                 rowHeader.CreateCell(6).SetCellValue("需补货数量");
+                 
+                 
+                  for (int i = 0; i < dtTunnel.Rows.Count; i++)
+                  {
+                      NPOI.SS.UserModel.IRow rowtemp = null;
+                      if (sheet1.GetRow(i + 1) == null)
+                      {
+                         rowtemp = sheet1.CreateRow(i + 1);
+                      }
+                      else
+                      {
+                          rowtemp = sheet1.GetRow(i + 1);
+                      }
+                      rowtemp.CreateCell(4).SetCellValue(dtTunnel.Rows[i]["tunnel_id"].ToString());
+                      rowtemp.CreateCell(5).SetCellValue(dtTunnel.Rows[i]["wares_name"].ToString());
+                      rowtemp.CreateCell(6).SetCellValue(dtTunnel.Rows[i]["curr_missing"].ToString());
+                      sheet1.AutoSizeColumn(i);
+                  }
+                  for (int i = 0; i < dtProduct.Rows.Count; i++)
+                  {
+                      NPOI.SS.UserModel.IRow rowtemp = null;
+                      if (sheet1.GetRow(i + 1) == null)
+                      {
+                          rowtemp = sheet1.CreateRow(i + 1);
+                      }
+                      else
+                      {
+                          rowtemp = sheet1.GetRow(i + 1);
+                      }
+                      rowtemp.CreateCell(0).SetCellValue(dtProduct.Rows[i]["wares_name"].ToString());
+                      rowtemp.CreateCell(1).SetCellValue(dtProduct.Rows[i]["currMissing"].ToString());
+                      sheet1.AutoSizeColumn(i);
+                  }
+                  hssfworkbook.Write(file);
+                  file.Seek(0, SeekOrigin.Begin);
+             }
+             //var list = dc.v_bs_dj_bbcdd1.Where(eps).ToList();
+            
  
-            ISheet sheet1 = hssfworkbook.CreateSheet("保税订单");
+           
 
 
-            IRow rowHeader = sheet1.CreateRow(0);
-
-            //生成excel标题
-            rowHeader.CreateCell(0).SetCellValue("汇通单号");
-            rowHeader.CreateCell(1).SetCellValue("单据日期");
-            rowHeader.CreateCell(2).SetCellValue("订单号");
-            rowHeader.CreateCell(3).SetCellValue("收件人");
-            rowHeader.CreateCell(4).SetCellValue("收件人电话");
-            rowHeader.CreateCell(5).SetCellValue("收件人地址");
-            rowHeader.CreateCell(6).SetCellValue("物流公司");
-            rowHeader.CreateCell(7).SetCellValue("运单号");
-            rowHeader.CreateCell(8).SetCellValue("数量");
-            rowHeader.CreateCell(9).SetCellValue("状态");
+           
 
             //生成excel内容
             //for (int i = 0; i < list.Count; i++)
@@ -148,12 +190,9 @@ namespace Chuang.Back.Controllers
             //    rowtemp.CreateCell(9).SetCellValue(list[i].mc_state_dd);
             //}
 
-            for (int i = 0; i < 10; i++)
-                sheet1.AutoSizeColumn(i);
 
-            MemoryStream file = new MemoryStream();
-            hssfworkbook.Write(file);
-            file.Seek(0, SeekOrigin.Begin);
+           
+           
 
             return file;
 

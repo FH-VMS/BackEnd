@@ -318,7 +318,7 @@ namespace Service
                 LeftBrace = "  ",
                 ParamName = "",
                 DbColumnName = "b.wares_name",
-                ParamValue = machineId,
+                ParamValue = "",
                 Operation = ConditionOperate.GroupBy,
                 RightBrace = "",
                 Logic = ""
