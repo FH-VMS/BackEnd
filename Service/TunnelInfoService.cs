@@ -3,6 +3,7 @@ using Model.Machine;
 using SqlDataAccess;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -293,5 +294,57 @@ namespace Service
             }
             return 1;
         }
+
+        public DataTable ExportByProduct(string machineId)
+        {
+            var conditions = new List<Condition>();
+
+            if (!string.IsNullOrEmpty(machineId))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "MachineId",
+                    DbColumnName = "a.machine_id",
+                    ParamValue = machineId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            conditions.Add(new Condition
+            {
+                LeftBrace = "  ",
+                ParamName = "",
+                DbColumnName = "b.wares_name",
+                ParamValue = machineId,
+                Operation = ConditionOperate.GroupBy,
+                RightBrace = "",
+                Logic = ""
+            });
+            return GenerateDal.LoadDataTableByConditions(CommonSqlKey.ExportByProduct, conditions);
+        }
+
+        public DataTable ExportByTunnel(string machineId)
+        {
+            var conditions = new List<Condition>();
+
+            if (!string.IsNullOrEmpty(machineId))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "MachineId",
+                    DbColumnName = "a.machine_id",
+                    ParamValue = machineId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+            return GenerateDal.LoadDataTableByConditions(CommonSqlKey.ExportByTunnel, conditions);
+        }
+
     }
 }

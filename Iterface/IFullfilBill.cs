@@ -2,6 +2,7 @@
 using Model.Sys;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
@@ -17,5 +18,7 @@ namespace Interface
 
          [Remark("手机端补充库存", ParmsNote = "列表实体", ReturnNote = "int")]
          int UpdateStockWithMobile(List<TunnelInfoModel> lstTunnelInfo);
+
+         //DataTable ExportByProduct(string machineId);
     }
 }
