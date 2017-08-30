@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Utility;
 
 namespace Chuang.Back.Controllers
 {
@@ -70,6 +71,20 @@ namespace Chuang.Back.Controllers
         {
             ISale isale = new SalesService();
             return Content(isale.GetRefundDetail(orderNo, typ));
+        }
+
+        public ResultObj<string> GetStatisticSalesMoneyByDate(string salesDate="")
+        {
+            SaleModel saleInfo = new SaleModel();
+
+            if (!string.IsNullOrEmpty(salesDate))
+            {
+                saleInfo.SaleDateStart = salesDate.Split('^')[0];
+                saleInfo.SaleDateEnd = salesDate.Split('^')[1];
+            }
+            IStatistic istatistic = new StatisticService();
+            string retutStr = JsonHandler.DataTable2Json(istatistic.GetStatisticSalesMoneyByDate(saleInfo));
+            return Content(retutStr);
         }
     }
 }

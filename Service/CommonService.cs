@@ -407,5 +407,22 @@ namespace Service
             });
             return GenerateDal.CountByConditions(CommonSqlKey.CheckMachineId, conditions);
         }
+
+
+        public List<CommonDic> GetMachineNameById(string machineId)
+        {
+            var conditions = new List<Condition>();
+            conditions.Add(new Condition
+            {
+                LeftBrace = " AND ",
+                ParamName = "MachineId",
+                DbColumnName = "machine_id",
+                ParamValue = machineId,
+                Operation = ConditionOperate.Equal,
+                RightBrace = "",
+                Logic = ""
+            });
+            return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetMachineNameById, conditions);
+        }
     }
 }

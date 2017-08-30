@@ -1,9 +1,11 @@
 ﻿using Chuang.Back.Base;
 using Interface;
+using Model.Common;
 using Model.Machine;
 using Model.Sys;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using NPOI.SS.Util;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -113,56 +115,62 @@ namespace Chuang.Back.Controllers
          {
              HSSFWorkbook hssfworkbook = new HSSFWorkbook();
              MemoryStream file = new MemoryStream();
+             
              foreach (string machineId in machineIds.Split('^'))
              {
+                 int nowRow = 0;
                  IFullfilBill ifullFill = new TunnelInfoService();
                  DataTable dtProduct = ifullFill.ExportByProduct(machineId);
                  DataTable dtTunnel = ifullFill.ExportByTunnel(machineId);
                  ISheet sheet1 = hssfworkbook.CreateSheet(machineId);
-                 IRow rowHeader = sheet1.CreateRow(0);
-                 
+                 IRow rowHeader = sheet1.CreateRow(nowRow);
+
+                 sheet1.AddMergedRegion(new CellRangeAddress(nowRow, nowRow, 0, 3));
                  //生成excel标题
-                 rowHeader.CreateCell(0).SetCellValue("商品名称");
-                 rowHeader.CreateCell(1).SetCellValue("需要数量");
-                 rowHeader.CreateCell(2).SetCellValue("");
-               
-                 rowHeader.CreateCell(3).SetCellValue("");
-                 rowHeader.CreateCell(4).SetCellValue("货道号");
-                 rowHeader.CreateCell(5).SetCellValue("商品名称");
-                 rowHeader.CreateCell(6).SetCellValue("需补货数量");
-                 
-                 
+                 rowHeader.CreateCell(0).SetCellValue("补货单   导出时间:"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                 //第二行
+                 nowRow += 1;
+                 ICommon icommon = new CommonService();
+                 List<CommonDic> lstCommon=icommon.GetMachineNameById(machineId);
+                 sheet1.CreateRow(nowRow).CreateCell(0).SetCellValue("机器编号：" + lstCommon[0].Id + lstCommon[0].Name);
+                 sheet1.AddMergedRegion(new CellRangeAddress(nowRow, nowRow, 0, 3));
+
+                 nowRow = nowRow+1;
+                 IRow titleRow = sheet1.CreateRow(nowRow);
+                 sheet1.AddMergedRegion(new CellRangeAddress(nowRow, nowRow, 0, 1));
+                 sheet1.AddMergedRegion(new CellRangeAddress(nowRow, nowRow, 2, 3));
+                 titleRow.CreateCell(0).SetCellValue("商品名称");
+                 titleRow.CreateCell(2).SetCellValue("缺货数");
+                 for (int i = 0; i < dtProduct.Rows.Count; i++)
+                 {
+                     nowRow = nowRow + 1;
+                     NPOI.SS.UserModel.IRow rowtemp = sheet1.CreateRow(nowRow);
+                     sheet1.AddMergedRegion(new CellRangeAddress(nowRow,nowRow, 0, 1));
+                     sheet1.AddMergedRegion(new CellRangeAddress(nowRow, nowRow, 2, 3));
+                     rowtemp.CreateCell(0).SetCellValue(dtProduct.Rows[i]["wares_name"].ToString());
+                     rowtemp.CreateCell(2).SetCellValue(dtProduct.Rows[i]["currMissing"].ToString());
+                     sheet1.AutoSizeColumn(i);
+                 }
+                 nowRow = nowRow + 1;
+                 sheet1.CreateRow(nowRow);
+                 sheet1.AddMergedRegion(new CellRangeAddress(nowRow, nowRow, 0, 3));
+                 nowRow = nowRow + 1;
+                 NPOI.SS.UserModel.IRow secondRowTitle = sheet1.CreateRow(nowRow);
+                 secondRowTitle.CreateCell(0).SetCellValue("货道号");
+                 secondRowTitle.CreateCell(1).SetCellValue("商品名称");
+                 secondRowTitle.CreateCell(2).SetCellValue("满货容量");
+                 secondRowTitle.CreateCell(3).SetCellValue("缺货数");
                   for (int i = 0; i < dtTunnel.Rows.Count; i++)
                   {
-                      NPOI.SS.UserModel.IRow rowtemp = null;
-                      if (sheet1.GetRow(i + 1) == null)
-                      {
-                         rowtemp = sheet1.CreateRow(i + 1);
-                      }
-                      else
-                      {
-                          rowtemp = sheet1.GetRow(i + 1);
-                      }
-                      rowtemp.CreateCell(4).SetCellValue(dtTunnel.Rows[i]["tunnel_id"].ToString());
-                      rowtemp.CreateCell(5).SetCellValue(dtTunnel.Rows[i]["wares_name"].ToString());
-                      rowtemp.CreateCell(6).SetCellValue(dtTunnel.Rows[i]["curr_missing"].ToString());
+                      nowRow = nowRow + 1;
+                      NPOI.SS.UserModel.IRow rowtemp = sheet1.CreateRow(nowRow);
+                      rowtemp.CreateCell(0).SetCellValue(dtTunnel.Rows[i]["tunnel_id"].ToString());
+                      rowtemp.CreateCell(1).SetCellValue(dtTunnel.Rows[i]["wares_name"].ToString());
+                      rowtemp.CreateCell(2).SetCellValue(dtTunnel.Rows[i]["max_puts"].ToString());
+                      rowtemp.CreateCell(3).SetCellValue(dtTunnel.Rows[i]["curr_missing"].ToString());
                       sheet1.AutoSizeColumn(i);
                   }
-                  for (int i = 0; i < dtProduct.Rows.Count; i++)
-                  {
-                      NPOI.SS.UserModel.IRow rowtemp = null;
-                      if (sheet1.GetRow(i + 1) == null)
-                      {
-                          rowtemp = sheet1.CreateRow(i + 1);
-                      }
-                      else
-                      {
-                          rowtemp = sheet1.GetRow(i + 1);
-                      }
-                      rowtemp.CreateCell(0).SetCellValue(dtProduct.Rows[i]["wares_name"].ToString());
-                      rowtemp.CreateCell(1).SetCellValue(dtProduct.Rows[i]["currMissing"].ToString());
-                      sheet1.AutoSizeColumn(i);
-                  }
+                  
                   hssfworkbook.Write(file);
                   file.Seek(0, SeekOrigin.Begin);
              }

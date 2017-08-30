@@ -58,5 +58,8 @@ namespace Interface
          [Remark("检查机器 是否存在", ParmsNote = "机器ID", ReturnNote = "string")]
         int CheckMachineId(string machineId);
 
+         [Remark("根据机器ID取名称", ParmsNote = "机器ID", ReturnNote = "string")]
+         List<CommonDic> GetMachineNameById(string machineId);
+
     }
 }

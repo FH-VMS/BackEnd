@@ -51,6 +51,7 @@ namespace SqlDataAccess
         GetCabinetDic,
         GetProductDicAll,
         CheckMachineId,
+        GetMachineNameById,
 
         //机型
         GetMachineType,
@@ -166,6 +167,7 @@ namespace SqlDataAccess
         GetTotalMoneyByClient,
         //统计
         GetSalesAmountByMachine,
+        GetStatisticSalesMoneyByDate,
 
         //支付配置
         GetPayConfigList,

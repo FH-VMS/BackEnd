@@ -1,4 +1,5 @@
 ﻿using Interface;
+using Model.Sale;
 using SqlDataAccess;
 using System;
 using System.Collections.Generic;
@@ -78,8 +79,79 @@ namespace Service
                 conditions.AddRange(CreatePaginConditions(pageIndex, pageSize));
             }
             
-            // 返回的三个数字按顺序分别代表未启用  离线  在线
+            
             return GenerateDal.LoadDataTableByConditions(CommonSqlKey.GetSalesAmountByMachine, conditions);
+        }
+
+        /// <summary>
+        /// 统计金额
+        /// </summary>
+        /// <param name="saleInfo"></param>
+        /// <returns></returns>
+        public DataTable GetStatisticSalesMoneyByDate(SaleModel saleInfo)
+        {
+            string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
+            string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
+            DataTable result = new DataTable();
+            var conditions = new List<Condition>();
+
+            if (!string.IsNullOrEmpty(saleInfo.SaleDateStart))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "SaleDateStart",
+                    DbColumnName = "sales_date",
+                    ParamValue = saleInfo.SaleDateStart,
+                    Operation = ConditionOperate.GreaterThan,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            if (!string.IsNullOrEmpty(saleInfo.SaleDateEnd))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "SaleDateEnd",
+                    DbColumnName = "sales_date",
+                    ParamValue = saleInfo.SaleDateEnd,
+                    Operation = ConditionOperate.LessThan,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+         
+
+          
+
+            conditions.Add(new Condition
+            {
+                LeftBrace = "",
+                ParamName = "ClientId",
+                DbColumnName = "",
+                ParamValue = userClientId,
+                Operation = ConditionOperate.None,
+                RightBrace = "",
+                Logic = ""
+            });
+
+            conditions.Add(new Condition
+            {
+                LeftBrace = "  ",
+                ParamName = "",
+                DbColumnName = "a.pay_interface",
+                ParamValue = "",
+                Operation = ConditionOperate.GroupBy,
+                RightBrace = "",
+                Logic = ""
+            });
+
+            result = GenerateDal.LoadDataTableByConditions(CommonSqlKey.GetStatisticSalesMoneyByDate, conditions);
+
+            return result;
         }
     }
 }

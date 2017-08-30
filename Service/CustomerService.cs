@@ -18,10 +18,41 @@ namespace Service
         {
             string userStatus = HttpContextHandler.GetHeaderObj("Sts").ToString();
             var userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
-            var dics = new Dictionary<string, object>();
 
-            dics.Add("ClientName", customerInfo.ClientName + "%");
+
+            var conditions = new List<Condition>();
+
+            if (!string.IsNullOrEmpty(customerInfo.ClientName))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "ClientName",
+                    DbColumnName = "client_name",
+                    ParamValue = "%" + customerInfo.ClientName + "%",
+                    Operation = ConditionOperate.Like,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            conditions.Add(new Condition
+            {
+                LeftBrace = "",
+                ParamName = "ClientId",
+                DbColumnName = "",
+                ParamValue = userClientId,
+                Operation = ConditionOperate.None,
+                RightBrace = "",
+                Logic = ""
+            });
+
+            conditions.AddRange(CreatePaginConditions(customerInfo.PageIndex, customerInfo.PageSize));
+           // var dics = new Dictionary<string, object>();
+
+            //dics.Add("ClientName", customerInfo.ClientName + "%");
             List<CustomerModel> result = null;
+            /*
             if (userStatus == "100" || userStatus == "99")
             {
                 dics.Add("ClientId", "self");
@@ -31,13 +62,11 @@ namespace Service
                 dics.Add("ClientId", userClientId);
                
             }
-            if (customerInfo.PageIndex == 1)
-            {
                 dics.Add("PageIndex", customerInfo.PageIndex - 1);
                 dics.Add("PageSize", customerInfo.PageSize);
-            }
-
-            result = GenerateDal.Load<CustomerModel>(CommonSqlKey.GetCustomer, dics);
+            
+            */
+            result = GenerateDal.LoadByConditions<CustomerModel>(CommonSqlKey.GetCustomer, conditions);
             CustomerModel curItem = new CustomerModel();
             curItem.Id = userClientId;
             var finalResult = LoopToAppendChildren(result, curItem);

@@ -24,8 +24,8 @@ public class SqlConfigText
 			{"ChangePassword","UPDATE table_user SET usr_pwd=?p_UserPassword WHERE id =?p_Id"},
 
 			// 客户列表
-			{"GetCustomer","select * from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) AND client_name like ?p_ClientName limit ?p_PageIndex  ,?p_PageSize"},
-			{"GetCustomerCount","select count(1) from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) AND client_name like ?p_ClientName"},
+			{"GetCustomer","select * from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))"},
+			{"GetCustomerCount","select count(1) from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))"},
 			{"DeleteCustomer","DELETE from table_client where client_id=?p_Id"},
 			{"UpdateCustomer","UPDATE table_client SET  client_name =?p_ClientName,  client_status =?p_ClientStatus, client_type =?p_ClientType,  client_contect =?p_ClientContect,  client_tel =?p_ClientTel,  client_email =?p_ClientEmail,  client_country =?p_ClientCountry,  client_currency =?p_ClientCurrency,  client_address =?p_ClientAddress,  creator =?p_Creator,  create_date =?p_CreateDate,  updater =?p_Updater,  update_date =?p_UpdateDate,  remark =?p_Remark  WHERE client_id =?p_Id"},
 			{"UpdateChildCustomer","UPDATE table_client SET  client_father_id =?p_ClientFatherId  WHERE client_father_id =?p_Id"},
@@ -49,6 +49,7 @@ public class SqlConfigText
 			{"GetProductDicAll","SELECT wares_id as Id, wares_name as Name FROM table_product WHERE 1=1"},
 			{"GetCabinetDic","SELECT cabinet_id as Id, cabinet_name as Name FROM table_cabinet_config WHERE 1=1"},
 			{"CheckMachineId","SELECT count(1) FROM table_machine WHERE 1=1"},
+			{"GetMachineNameById","SELECT machine_id as Id, remark as Name FROM table_machine WHERE 1=1"},
 
 			//机型
 			{"GetMachineType","SELECT a.*,b.book_chinese as TypeTypeText FROM table_machine_type as a  LEFT JOIN table_book as b ON a.type_type=b.value WHERE b.id='typetype'"},
@@ -126,7 +127,7 @@ public class SqlConfigText
 			{"UpdateTunnelConfigStatus","UPDATE table_goods_config SET is_used =?p_IsUsed WHERE machine_id =?p_MachineId AND tunnel_id=?p_TunnelId AND cabinet_id=?p_CabinetId"},
 			{"GenerateFullfilBill","SELECT a.max_puts as MaxPuts,a.tunnel_id as TunnelId, b.curr_stock,a.cabinet_id FROM table_goods_config a LEFT JOIN table_goods_status b ON a.machine_id=b.machine_id AND a.tunnel_id=b.goods_stu_id AND a.cabinet_id=b.cabinet_id WHERE 1=1 AND (a.max_puts<>b.curr_stock OR b.curr_stock is NULL)"},//补货单
 			{"GetFullfilCount","SELECT count(1) FROM table_goods_config a LEFT JOIN table_goods_status b ON a.machine_id=b.machine_id AND a.tunnel_id=b.goods_stu_id AND a.cabinet_id=b.cabinet_id WHERE 1=1 AND (a.max_puts<>b.curr_stock OR b.curr_stock is NULL)"},//补货单
-			{"ExportByTunnel","SELECT a.tunnel_id,b.wares_name,a.max_puts-c.curr_stock as curr_missing FROM table_goods_config a LEFT JOIN table_product b ON a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id WHERE a.max_puts<>c.curr_stock"},
+			{"ExportByTunnel","SELECT a.tunnel_id,b.wares_name,a.max_puts-c.curr_stock as curr_missing,a.max_puts FROM table_goods_config a LEFT JOIN table_product b ON a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id WHERE a.max_puts<>c.curr_stock"},
 			{"ExportByProduct","SELECT  b.wares_name,sum(a.max_puts-c.curr_stock) as currMissing FROM table_goods_config a LEFT JOIN table_product b ON a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id WHERE a.max_puts<>c.curr_stock"},
 			
 			//机器所对应接口
@@ -164,6 +165,7 @@ public class SqlConfigText
 			{"GetTotalMoneyByClient","select a.client_id,a.ali_account,a.wx_account from table_total_money a INNER JOIN (select client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId))) b ON a.client_id=b.client_id UNION ALL SELECT * FROM table_total_money WHERE client_id = ?p_ClientId"},
 			//统计
 			{"GetSalesAmountByMachine","SELECT a.machine_id, SUM(a.reality_sale_number*a.trade_amount) as total FROM table_sales_cashless a RIGHT JOIN  table_machine b ON a.machine_id=b.machine_id  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE a.trade_status = 2 or a.trade_status=4 "},
+			{"GetStatisticSalesMoneyByDate","SELECT SUM(a.trade_amount*a.reality_sale_number) as totalMoney,a.pay_interface FROM table_sales_cashless a LEFT JOIN table_machine b ON a.machine_id = b.machine_id  INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) c ON b.client_id = c.client_id WHERE a.trade_status=2 or a.trade_status=4"},
 			//支付配置
 			{"GetPayConfigList","SELECT a.* FROM table_mobile_pay_config a INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1 "},
 			{"GetPayConfigListCount","SELECT Count(1) FROM table_mobile_pay_config a INNER JOIN (select client_name,client_id from table_client  where FIND_IN_SET(client_father_id ,getClientLst(?p_ClientId)) OR FIND_IN_SET(client_id ,getClientLst(?p_ClientId))) b ON a.client_id = b.client_id WHERE 1=1 "},
