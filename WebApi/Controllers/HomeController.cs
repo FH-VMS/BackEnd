@@ -35,8 +35,17 @@ namespace Chuang.Back.Controllers
         public ResultObj<string> GetSalesAmountByMachine(string salesDateStart="", string salesDateEnd="", bool needPage=false,  int pageIndex = 1, int pageSize = 10)
         {
             IStatistic istatistic = new StatisticService();
-            string retutStr = JsonHandler.DataTable2Json(istatistic.GetSalesAmountByMachine(salesDateStart,salesDateEnd,needPage,pageSize,pageIndex));
-            return Content(retutStr);
+            string retutStr = JsonHandler.DataTable2Json(istatistic.GetSalesAmountByMachine(salesDateStart, salesDateEnd, needPage, pageIndex, pageSize));
+            if (!needPage)
+            {
+                return Content(retutStr);
+            }
+
+            int totalcount = istatistic.GetSalesAmountByMachineCount(salesDateStart, salesDateEnd, needPage, pageIndex, pageSize);
+
+            var pagination = new Pagination { PageSize = pageSize, PageIndex = pageIndex, StartIndex = 0, TotalRows = totalcount, TotalPage = 0 };
+            return Content(retutStr, pagination);
+          
         }
     }
 }

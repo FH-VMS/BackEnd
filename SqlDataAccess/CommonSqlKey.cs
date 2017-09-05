@@ -167,6 +167,7 @@ namespace SqlDataAccess
         GetTotalMoneyByClient,
         //统计
         GetSalesAmountByMachine,
+        GetSalesAmountByMachineCount,
         GetStatisticSalesMoneyByDate,
 
         //支付配置

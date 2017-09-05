@@ -83,6 +83,58 @@ namespace Service
             return GenerateDal.LoadDataTableByConditions(CommonSqlKey.GetSalesAmountByMachine, conditions);
         }
 
+        public int GetSalesAmountByMachineCount(string salesDateStart, string salesDateEnd, bool needPage, int pageIndex, int pageSize)
+        {
+            var result = 0;
+
+            var clientId = HttpContextHandler.GetHeaderObj("UserClientId");
+            var conditions = new List<Condition>();
+            conditions.Add(new Condition
+            {
+                LeftBrace = "",
+                ParamName = "ClientId",
+                DbColumnName = "",
+                ParamValue = clientId,
+                Operation = ConditionOperate.None,
+                RightBrace = "",
+                Logic = ""
+            });
+
+            if (!string.IsNullOrEmpty(salesDateStart))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "SaleDateStart",
+                    DbColumnName = "sales_date",
+                    ParamValue = salesDateStart,
+                    Operation = ConditionOperate.GreaterThan,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            if (!string.IsNullOrEmpty(salesDateEnd))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "SaleDateEnd",
+                    DbColumnName = "sales_date",
+                    ParamValue = salesDateEnd,
+                    Operation = ConditionOperate.LessThan,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+
+
+            result = GenerateDal.CountByConditions(CommonSqlKey.GetSalesAmountByMachineCount, conditions);
+
+            return result;
+        }
+
         /// <summary>
         /// 统计金额
         /// </summary>
