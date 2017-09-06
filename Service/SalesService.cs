@@ -185,7 +185,7 @@ namespace Service
                     LeftBrace = " AND ",
                     ParamName = "SaleDateEnd",
                     DbColumnName = "sales_date",
-                    ParamValue = saleInfo.SaleDateEnd,
+                    ParamValue = Convert.ToDateTime(saleInfo.SaleDateEnd).AddDays(1),
                     Operation = ConditionOperate.LessThan,
                     RightBrace = "",
                     Logic = ""
@@ -195,8 +195,8 @@ namespace Service
             conditions.Add(new Condition
             {
                 LeftBrace = "  ",
-                ParamName = "PayDate",
-                DbColumnName = "pay_date",
+                ParamName = "SalesDate",
+                DbColumnName = "sales_date",
                 ParamValue = "desc",
                 Operation = ConditionOperate.OrderBy,
                 RightBrace = "",
@@ -302,7 +302,7 @@ namespace Service
                     LeftBrace = " AND ",
                     ParamName = "SaleDateEnd",
                     DbColumnName = "sales_date",
-                    ParamValue = saleInfo.SaleDateEnd,
+                    ParamValue = Convert.ToDateTime(saleInfo.SaleDateEnd).AddDays(1),
                     Operation = ConditionOperate.LessThan,
                     RightBrace = "",
                     Logic = ""

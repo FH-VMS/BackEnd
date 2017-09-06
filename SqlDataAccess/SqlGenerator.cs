@@ -326,7 +326,7 @@ namespace SqlDataAccess
 
             //解析where 后查询条件
             List<DbParameter> parameter;
-            var whereSql = ConditionHandler.GetWhereSql(parmObj.ToList(), out parameter);
+            var whereSql = ConditionHandler.GetWhereSql(parmObj.ToList(), out parameter, sqlKey);
 
             sqlTxt = sqlTxt + whereSql;
 
@@ -420,7 +420,7 @@ namespace SqlDataAccess
                 logStep++;
                 var parmDic = SqlConstructor.MakeParms(parmObj);
                   List<DbParameter> parameter;
-                  var whereSql = ConditionHandler.GetWhereSql(parmObj.ToList(), out parameter);
+                  var whereSql = ConditionHandler.GetWhereSql(parmObj.ToList(), out parameter, sqlKey);
                   sqlTxt = SqlConstructor.FilterSQLWithInsteadValue(sqlTxt + whereSql, parmDic);
                 logStep++;
                 parmDic = SqlConstructor.FilterParmsWithList(parmDic, CommSqlText.SqlParms[sqlKey]);
@@ -526,7 +526,7 @@ namespace SqlDataAccess
 
                 //解析where 后查询条件
                 List<DbParameter> parameter;
-                var whereSql = ConditionHandler.GetWhereSql(conditions.ToList(), out parameter);
+                var whereSql = ConditionHandler.GetWhereSql(conditions.ToList(), out parameter, sqlKey);
 
                 sqlTxt = sqlTxt + whereSql;
 
@@ -578,7 +578,7 @@ namespace SqlDataAccess
 
                 //解析where 后查询条件
                 List<DbParameter> parameter;
-                var whereSql = ConditionHandler.GetWhereSql(conditions.ToList(), out parameter, orderField, orderType);
+                var whereSql = ConditionHandler.GetWhereSql(conditions.ToList(), out parameter,sqlKey, orderField, orderType);
 
                 sqlTxt = sqlTxt + whereSql;
 

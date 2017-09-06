@@ -514,7 +514,7 @@ namespace Utility
                     parms += parameter.Key + "-" + parameter.Value;
                 }
             }
-            _logger.LogInfo(String.Format("method:{0},Error:{1},SQL:{2},params:{3}", methodName, e.Message, sql, parms), 0, LogType.ERROR);
+            //_logger.LogInfo(String.Format("method:{0},Error:{1},SQL:{2},params:{3}", methodName, e.Message, sql, parms), 0, LogType.ERROR);
             var ee = new Exception(e.Message + ":" + sql);
             throw ee;
         }

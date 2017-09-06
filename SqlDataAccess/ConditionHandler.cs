@@ -13,7 +13,7 @@ namespace SqlDataAccess
 {
     public class ConditionHandler
     {
-        public static string GetWhereSql(IList conditions, out List<DbParameter> parameter, string orderField = "", string orderType = "")
+        public static string GetWhereSql(IList conditions, out List<DbParameter> parameter, CommonSqlKey sqlKey,string orderField = "", string orderType = "")
         {
             var text = "?";
             var preParaName = "p_";
@@ -458,7 +458,67 @@ namespace SqlDataAccess
                 stringBuilder.Append(" Order By " + orderField + " " + orderType);
             }
             parameter = list;
-            return stringBuilder.ToString();
+            string finalWhereCondition = stringBuilder.ToString().Trim().ToUpper();
+            if (string.IsNullOrEmpty(finalWhereCondition) || finalWhereCondition.Length < 3)
+            {
+                return finalWhereCondition;
+            }
+            switch (sqlKey)
+            {
+                case CommonSqlKey.GetCustomer:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetCustomerCount:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetAuth:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetRankValue:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetProductByMachine:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetProductByMachineCount:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetTotalMoneyByClient:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetSalesAmountByMachine:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetSalesAmountByMachineCount:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetStatisticSalesMoneyByDate:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetPayConfigList:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetPayConfigListCount:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetLogin:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetUser:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetUserCount:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetMenuByUser:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetAuthDic:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetAuthByDmsId:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetDic:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetRank:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetMachineCountWithStatus:
+                    return finalWhereCondition;
+                case CommonSqlKey.GetMachineType:
+                    return finalWhereCondition;
+                case CommonSqlKey.ExportByTunnel:
+                    return finalWhereCondition;
+                case CommonSqlKey.ExportByProduct:
+                    return finalWhereCondition;
+            }
+            if (finalWhereCondition.Substring(0, 3) == "AND")
+            {
+                finalWhereCondition = " WHERE " + finalWhereCondition.Substring(3, finalWhereCondition.Length-3) + " ";
+            }
+            return finalWhereCondition;
         }
 
         public static DbParameter CreateDbParameter()

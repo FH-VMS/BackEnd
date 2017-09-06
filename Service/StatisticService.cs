@@ -4,6 +4,7 @@ using SqlDataAccess;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Utility;
@@ -56,7 +57,7 @@ namespace Service
                     LeftBrace = " AND ",
                     ParamName = "SaleDateEnd",
                     DbColumnName = "sales_date",
-                    ParamValue = salesDateEnd,
+                    ParamValue =  Convert.ToDateTime(salesDateEnd).AddDays(1),
                     Operation = ConditionOperate.LessThan,
                     RightBrace = "",
                     Logic = ""
@@ -121,7 +122,7 @@ namespace Service
                     LeftBrace = " AND ",
                     ParamName = "SaleDateEnd",
                     DbColumnName = "sales_date",
-                    ParamValue = salesDateEnd,
+                    ParamValue = Convert.ToDateTime(salesDateEnd).AddDays(1),
                     Operation = ConditionOperate.LessThan,
                     RightBrace = "",
                     Logic = ""
