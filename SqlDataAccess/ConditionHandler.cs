@@ -83,6 +83,22 @@ namespace SqlDataAccess
                         }));
                             list.Add(CreateDbParameter(text + text3, condition.ParamValue));
                             break;
+                        case ConditionOperate.INWithNoPara:
+                            stringBuilder.Append(string.Concat(new string[]
+                        {
+                            " ",
+                            condition.LeftBrace,
+                            paramName,
+                            " in ",
+                            "(",
+                          condition.ParamValue.ToString(),
+                            ")",
+                            condition.RightBrace,
+                            " ",
+                            text2
+                        }));
+                            
+                            break;
                         case ConditionOperate.NotEqual:
                             stringBuilder.Append(string.Concat(new string[]
                         {

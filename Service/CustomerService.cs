@@ -143,7 +143,7 @@ namespace Service
                 customerInfo.Creator = userAccount;
             }
 
-            customerInfo.Id = Guid.NewGuid().ToString();
+            //customerInfo.Id = Guid.NewGuid().ToString();
 
             result = GenerateDal.Create(customerInfo);
 

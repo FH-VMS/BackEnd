@@ -72,6 +72,7 @@ namespace SqlDataAccess
         None,
         OrderBy,
         GroupBy,
-        IN
+        IN,
+        INWithNoPara
     }
 }

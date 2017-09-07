@@ -5,6 +5,7 @@ using Model.Sale;
 using SqlDataAccess;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using Utility;
@@ -316,15 +317,27 @@ namespace Service
             }
             else
             {
+                string clientIds = GetClientIds(userClientId);
                 conditions.Add(new Condition
                 {
-                    LeftBrace = "",
-                    ParamName = "ClientId",
-                    DbColumnName = "",
-                    ParamValue = userClientId,
-                    Operation = ConditionOperate.None,
+                    LeftBrace = " AND (",
+                    ParamName = "ClientIdA",
+                    DbColumnName = "c.client_id",
+                    ParamValue = clientIds,
+                    Operation = ConditionOperate.INWithNoPara,
                     RightBrace = "",
-                    Logic = ""
+                    Logic = " OR "
+                });
+
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " ",
+                    ParamName = "ClientIdB",
+                    DbColumnName = "c.client_father_id",
+                    ParamValue = clientIds,
+                    Operation = ConditionOperate.INWithNoPara,
+                    RightBrace = " ) ",
+                    Logic = "  "
                 });
                 result = GenerateDal.CountByConditions(CommonSqlKey.GetSaleListCount, conditions);
             }
@@ -333,6 +346,31 @@ namespace Service
 
 
             return result;
+        }
+
+        private string GetClientIds(string clientId)
+        {
+            var conditions = new List<Condition>();
+            conditions.Add(new Condition
+            {
+                LeftBrace = "",
+                ParamName = "ClientId",
+                DbColumnName = "",
+                ParamValue = clientId,
+                Operation = ConditionOperate.None,
+                RightBrace = "",
+                Logic = ""
+            });
+
+            DataTable result = GenerateDal.LoadDataTableByConditions(CommonSqlKey.GetClientIds, conditions);
+            if (result.Rows.Count == 0)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return result.Rows[0][0].ToString();
+            }
         }
 
         public int DeleteData(string id)

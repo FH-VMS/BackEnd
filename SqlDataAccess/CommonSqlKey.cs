@@ -117,6 +117,7 @@ namespace SqlDataAccess
         GetSaleList,
         GetSaleListAllCount,
         GetSaleListCount,
+        GetClientIds,
         GetRefundDetail,
 
         //货道信息
