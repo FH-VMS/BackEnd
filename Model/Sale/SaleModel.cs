@@ -130,6 +130,13 @@ namespace Model.Sale
              set;
          }
 
+         [Column(Name = "wares_id")]
+         public string WaresId
+         {
+             get;
+             set;
+         }
+
          public string SaleDateStart
          {
              get;

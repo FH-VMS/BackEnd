@@ -33,9 +33,12 @@ namespace Chuang.Back.Controllers
             return null;
         }
 
+        #region 按货道购买商品
+
         //微信支付
         public ResultObj<PayStateModel> GetDataW(string k, string code)
         {
+            bool isPayByTunnel = true;
             //解码机器传过来的key值
             //解析k值
             KeyJsonModel keyJsonInfo = AnalizeKey(k);
@@ -73,26 +76,61 @@ namespace Chuang.Back.Controllers
 
                 decimal totalFee = 0;
                 string productNames = string.Empty;
-               
-                List<ProductModel> lstProduct = _ipay.GetProducInfo(keyJsonInfo.m, keyJsonInfo.t);
-                
-                //遍历商品
-                foreach (ProductModel productInfo in lstProduct)
+                List<ProductModel> lstProduct = new List<ProductModel>();
+                if (keyJsonInfo.t.Count > 0 && keyJsonInfo.t[0].tid.Length > 10)
                 {
-                    var tunnelInfo = (from m in keyJsonInfo.t
-                                      where m.tid == productInfo.TunnelId
-                                      select m).ToList<KeyTunnelModel>();
-                    if (tunnelInfo.Count > 0)
-                    {
-                        productInfo.Num = string.IsNullOrEmpty(tunnelInfo[0].n) ? "1" : tunnelInfo[0].n;
-                        totalFee = totalFee + Convert.ToInt32(productInfo.Num) * Convert.ToDecimal(productInfo.UnitW);
-                        productNames = productNames + productInfo.WaresName + ",";
-                        productInfo.TradeNo = JsApi.payInfo.trade_no;
-                        tunnelInfo[0].p = productInfo.UnitW;
-                    }
-
-
+                    isPayByTunnel = false;
                 }
+            
+                //按货道付款
+                if (isPayByTunnel)
+                {
+                    lstProduct = _ipay.GetProducInfo(keyJsonInfo.m, keyJsonInfo.t);
+                    //遍历商品
+                    foreach (ProductModel productInfo in lstProduct)
+                    {
+                        var tunnelInfo = (from m in keyJsonInfo.t
+                                          where m.tid == productInfo.TunnelId
+                                          select m).ToList<KeyTunnelModel>();
+                        if (tunnelInfo.Count > 0)
+                        {
+                            productInfo.Num = string.IsNullOrEmpty(tunnelInfo[0].n) ? "1" : tunnelInfo[0].n;
+                            totalFee = totalFee + Convert.ToInt32(productInfo.Num) * Convert.ToDecimal(productInfo.UnitW);
+                            productNames = productNames + productInfo.WaresName + ",";
+                            productInfo.TradeNo = JsApi.payInfo.trade_no;
+                            tunnelInfo[0].p = productInfo.UnitW;
+                            tunnelInfo[0].wid = productInfo.WaresId;
+
+                        }
+                    }
+                }
+                else
+                {
+                    lstProduct = _ipay.GetProducInfoByWaresId(keyJsonInfo.m, keyJsonInfo.t);
+                    //遍历商品
+                    foreach (ProductModel productInfo in lstProduct)
+                    {
+                        var tunnelInfo = (from m in keyJsonInfo.t
+                                          where m.tid == productInfo.WaresId
+                                          select m).ToList<KeyTunnelModel>();
+                        if (tunnelInfo.Count > 0)
+                        {
+                            productInfo.Num = string.IsNullOrEmpty(tunnelInfo[0].n) ? "1" : tunnelInfo[0].n;
+                            totalFee = totalFee + Convert.ToInt32(productInfo.Num) * Convert.ToDecimal(productInfo.UnitW);
+                            productNames = productNames + productInfo.WaresName + ",";
+                            productInfo.TradeNo = JsApi.payInfo.trade_no;
+                            tunnelInfo[0].p = productInfo.UnitW;
+
+                            tunnelInfo[0].wid = productInfo.WaresId;
+                            tunnelInfo[0].tid = productInfo.TunnelId;
+
+                        }
+
+
+                    }
+                }
+
+                
                 JsApi.payInfo.product_name = productNames.Length > 25 ? productNames.Substring(0, 25) : productNames;
                 
                 //string total_fee = "1";
@@ -149,7 +187,7 @@ namespace Chuang.Back.Controllers
 
 
         //支付宝支付
-        public ResultObj<PayStateModel> GetDataA(string k)
+        public ResultObj<PayStateModel> GetDataA(string k, bool isPayByTunnel = true)
         {
             ////////////////////////////////////////////请求参数////////////////////////////////////////////
             PayStateModel payStateModel = new PayStateModel();
@@ -172,25 +210,58 @@ namespace Chuang.Back.Controllers
 
             decimal totalFee = 0;
             string productNames = string.Empty;
-           
-            List<ProductModel> lstProduct = _ipay.GetProducInfo(keyJsonInfo.m, keyJsonInfo.t);
-            //遍历商品
-            foreach (ProductModel productInfo in lstProduct)
+
+            List<ProductModel> lstProduct = new List<ProductModel>();
+            //按货道付款
+            if (isPayByTunnel)
             {
-                var tunnelInfo = (from m in keyJsonInfo.t
-                                  where m.tid == productInfo.TunnelId
-                                  select m).ToList<KeyTunnelModel>();
-                if (tunnelInfo.Count > 0)
+                lstProduct = _ipay.GetProducInfo(keyJsonInfo.m, keyJsonInfo.t);
+                //遍历商品
+                foreach (ProductModel productInfo in lstProduct)
                 {
-                    productInfo.Num = string.IsNullOrEmpty(tunnelInfo[0].n) ? "1" : tunnelInfo[0].n;
-                    totalFee = totalFee + Convert.ToInt32(productInfo.Num) * Convert.ToDecimal(productInfo.UnitA);
-                    productNames = productNames + productInfo.WaresName + ",";
-                    productInfo.TradeNo = out_trade_no;
-                    tunnelInfo[0].p = productInfo.UnitA;
+                    var tunnelInfo = (from m in keyJsonInfo.t
+                                      where m.tid == productInfo.TunnelId
+                                      select m).ToList<KeyTunnelModel>();
+                    if (tunnelInfo.Count > 0)
+                    {
+                        productInfo.Num = string.IsNullOrEmpty(tunnelInfo[0].n) ? "1" : tunnelInfo[0].n;
+                        totalFee = totalFee + Convert.ToInt32(productInfo.Num) * Convert.ToDecimal(productInfo.UnitA);
+                        productNames = productNames + productInfo.WaresName + ",";
+                        productInfo.TradeNo = out_trade_no;
+                        tunnelInfo[0].p = productInfo.UnitA;
+                        tunnelInfo[0].wid = productInfo.WaresId;
+                    }
+
+
                 }
-
-
             }
+            else
+            {
+                lstProduct = _ipay.GetProducInfoByWaresId(keyJsonInfo.m, keyJsonInfo.t);
+                //遍历商品
+                foreach (ProductModel productInfo in lstProduct)
+                {
+                    var tunnelInfo = (from m in keyJsonInfo.t
+                                      where m.tid == productInfo.WaresId
+                                      select m).ToList<KeyTunnelModel>();
+                    if (tunnelInfo.Count > 0)
+                    {
+                        productInfo.Num = string.IsNullOrEmpty(tunnelInfo[0].n) ? "1" : tunnelInfo[0].n;
+                        totalFee = totalFee + Convert.ToInt32(productInfo.Num) * Convert.ToDecimal(productInfo.UnitA);
+                        productNames = productNames + productInfo.WaresName + ",";
+                        productInfo.TradeNo = out_trade_no;
+                        tunnelInfo[0].p = productInfo.UnitA;
+                        
+                        tunnelInfo[0].wid = productInfo.WaresId;
+                        tunnelInfo[0].tid = productInfo.TunnelId;
+                        
+                    }
+
+
+                }
+            }
+
+            
 
 
             //订单名称，必填
@@ -235,6 +306,8 @@ namespace Chuang.Back.Controllers
             payStateModel.RequestState = "1";
             return Content(payStateModel);
         }
+
+        #endregion
 
         public void GenerateConfigModel(string isAliOrWx, string machineId)
         {

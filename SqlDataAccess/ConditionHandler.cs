@@ -529,6 +529,8 @@ namespace SqlDataAccess
                     return finalWhereCondition;
                 case CommonSqlKey.ExportByProduct:
                     return finalWhereCondition;
+                case CommonSqlKey.GetProductInfoByWaresId:
+                    return finalWhereCondition;
             }
             if (finalWhereCondition.Substring(0, 3) == "AND")
             {

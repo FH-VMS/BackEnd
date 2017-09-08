@@ -17,7 +17,7 @@ namespace Model.Machine
         }
 
         [Column(Name = "wares_id")]
-        public string WaredsId
+        public string WaresId
         {
             get;
             set;

@@ -132,8 +132,8 @@ public class SqlConfigText
 			{"ExportByProduct","SELECT  b.wares_name,sum(a.max_puts-c.curr_stock) as currMissing FROM table_goods_config a LEFT JOIN table_product b ON a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id WHERE a.max_puts<>c.curr_stock "},
 			
 			//机器所对应接口
-			{"GetProductByMachine","SELECT a.machine_id,a.tunnel_id, a.wares_id, a.alipay_prices, a.wpay_prices, b.wares_name as WaresName, c.curr_stock as CurrStock, d.pic_path as PicUrl FROM table_goods_config a LEFT JOIN table_product b ON a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id LEFT JOIN table_pic d ON b.pic_id=d.pic_id WHERE c.curr_status=1 "},
-			{"GetProductByMachineCount","SELECT count(1) FROM table_goods_config a LEFT JOIN table_product b ON a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id LEFT JOIN table_pic d ON b.pic_id=d.pic_id WHERE c.curr_status=1 "},
+			{"GetProductByMachine","SELECT a.machine_id, a.wares_id, a.alipay_prices, a.wpay_prices, b.wares_name as WaresName, sum(c.curr_stock) as CurrStock, d.pic_path as PicUrl FROM table_goods_config a LEFT JOIN table_product b ON a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id LEFT JOIN table_pic d ON b.pic_id=d.pic_id WHERE c.curr_status=1 AND c.curr_stock>0 "},
+			{"GetProductByMachineCount","SELECT count(1) FROM table_goods_config a LEFT JOIN table_product b ON a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id LEFT JOIN table_pic d ON b.pic_id=d.pic_id WHERE c.curr_status=1 AND c.curr_stock>0 "},
 			{"GetCountByTradeNo","SELECT count(1) FROM table_sales_cashless "},
 			{"UpdatePayResult","UPDATE table_sales_cashless SET  trade_status=?p_TradeStatus, reality_sale_number=?p_RealitySaleNumber, sales_date=?p_SalesDate WHERE machine_id=?p_MachineId AND trade_no=?p_TradeNo AND goods_id=?p_GoodsId "},  //上报出货结果
 			{"UpdateCurrStock","UPDATE table_goods_status SET curr_stock=curr_stock-?p_CurrStock WHERE machine_id=?p_MachineId AND goods_stu_id=?p_GoodsStuId "},  //销售后更新库存
@@ -155,7 +155,8 @@ public class SqlConfigText
 			{"GetCabinetId","SELECT a.cabinet_type_id FROM table_mt_goods a LEFT JOIN table_machine b ON a.machine_type_id=b.type_id "},//取货柜ID
 			{"GetSalesByNo","SELECT * FROM table_sales_cashless "},
 			//支付相关对应接口
-			{"GetProductInfo","SELECT a.machine_id as MachineId,a.tunnel_id as TunnelId, a.wpay_prices as UnitW,a.alipay_prices as UnitA, b.wares_name as WaresName from table_goods_config a Left Join table_product b On a.wares_id=b.wares_id "},
+			{"GetProductInfo","SELECT a.machine_id as MachineId,a.tunnel_id as TunnelId,a.wares_id as WaresId, a.wpay_prices as UnitW,a.alipay_prices as UnitA, b.wares_name as WaresName from table_goods_config a Left Join table_product b On a.wares_id=b.wares_id "},
+			{"GetProductInfoByWaresId","SELECT a.machine_id as MachineId,a.tunnel_id as TunnelId,a.wares_id as WaresId, a.wpay_prices as UnitW,a.alipay_prices as UnitA, b.wares_name as WaresName from table_goods_config a Left Join table_product b On a.wares_id=b.wares_id LEFT JOIN table_goods_status c ON  a.tunnel_id=c.goods_stu_id AND a.machine_id=c.machine_id AND a.cabinet_id=c.cabinet_id  WHERE  c.curr_status=1 AND c.curr_stock>0 "},
 			{"GetRefundData","SELECT * FROM table_sales_cashless "},
 			{"UpdateRefundResult","UPDATE table_sales_cashless SET  trade_status=?p_TradeStatus WHERE machine_id=?p_MachineId AND trade_no=?p_TradeNo AND goods_id=?p_GoodsId"},
 			{"UpdateOrderStatusForAli","update table_sales_cashless set trade_status = (case reality_sale_number when 0 then 6 when NULL then 6 else 4 end ) WHERE com_id=?p_ComId AND trade_status<>2"},

@@ -29,6 +29,13 @@ namespace Model.Pay
             set;
         }
 
+        //商品Id
+        public string wid
+        {
+            get;
+            set;
+        }
+
         //数量
         public string n
         {

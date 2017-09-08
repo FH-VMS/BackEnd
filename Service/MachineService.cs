@@ -42,10 +42,10 @@ namespace Service
             conditions.Add(new Condition
             {
                 LeftBrace = "  ",
-                ParamName = "TunnelId",
-                DbColumnName = "tunnel_id",
-                ParamValue = "asc",
-                Operation = ConditionOperate.OrderBy,
+                ParamName = "",
+                DbColumnName = "a.wares_id",
+                ParamValue = "",
+                Operation = ConditionOperate.GroupBy,
                 RightBrace = "",
                 Logic = ""
             });
@@ -76,7 +76,16 @@ namespace Service
                     Logic = ""
                 });
             }
-
+            conditions.Add(new Condition
+            {
+                LeftBrace = "  ",
+                ParamName = "",
+                DbColumnName = "a.wares_id",
+                ParamValue = "",
+                Operation = ConditionOperate.GroupBy,
+                RightBrace = "",
+                Logic = ""
+            });
 
             result = GenerateDal.CountByConditions(CommonSqlKey.GetProductByMachineCount, conditions);
 
@@ -106,6 +115,7 @@ namespace Service
                     saleInfo.TradeStatus = 1;
                     saleInfo.TradeAmount = Convert.ToDouble(keyTunnelInfo.p);
                     saleInfo.ServiceCharge = Math.Round(Convert.ToDouble(keyTunnelInfo.p) * 0.006, 2, MidpointRounding.AwayFromZero);
+                    saleInfo.WaresId = keyTunnelInfo.wid;
                     GenerateDal.Create(saleInfo);
                     //更新存存
                     UpdateCurrStock(keyJsonModel.m, keyTunnelInfo.tid, saleInfo.SalesNumber);
@@ -145,6 +155,7 @@ namespace Service
                     saleInfo.TradeStatus = 1;
                     saleInfo.TradeAmount = Convert.ToDouble(keyTunnelInfo.p);
                     saleInfo.ServiceCharge = Math.Round(Convert.ToDouble(keyTunnelInfo.p) * 0.006, 2, MidpointRounding.AwayFromZero);
+                    saleInfo.WaresId = keyTunnelInfo.wid;
                     GenerateDal.Create(saleInfo);
                     //更新存存
                     UpdateCurrStock(keyJsonModel.m, keyTunnelInfo.tid, saleInfo.SalesNumber);

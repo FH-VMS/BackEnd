@@ -157,6 +157,7 @@ namespace SqlDataAccess
         GetSalesByNo,
         //支付对应接口
         GetProductInfo,
+        GetProductInfoByWaresId,
         GetRefundData,
         UpdateRefundResult,
         UpdateOrderStatusForAli,

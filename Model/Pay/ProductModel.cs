@@ -18,6 +18,12 @@ namespace Model.Pay
             set;
         }
 
+        public string WaresId
+        {
+            get;
+            set;
+        }
+
         public string WaresName
         {
             get;
