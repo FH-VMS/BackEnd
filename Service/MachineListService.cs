@@ -212,6 +212,8 @@ namespace Service
                 GenerateDal.Delete<MachineListModel>(CommonSqlKey.DeleteMachineList, machineListInfo);
                 MachineConfigService mcService = new MachineConfigService();
                 mcService.DeleteData(id);
+                TunnelConfigService tcService = new TunnelConfigService();
+                tcService.DeleteData(id);
                 GenerateDal.CommitTransaction();
                 //操作日志
                 OperationLogService operationService = new OperationLogService();

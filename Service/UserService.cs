@@ -119,7 +119,7 @@ namespace Service
             } 
             userInfo.Id = Guid.NewGuid().ToString();
             userInfo.Sts = 1;
-            userInfo.UserPassword = Md5.md5(userInfo.UserPassword, 16);
+            userInfo.UserPassword = Md5.md5("888888", 16);
             result = GenerateDal.Create(userInfo);
 
 
@@ -188,7 +188,7 @@ namespace Service
             {
                 return -1;
             }
-            userInfo.UserPassword = Md5.md5(userInfo.UserPassword, 16);
+            // userInfo.UserPassword = Md5.md5(userInfo.UserPassword, 16);
             //操作日志
             OperationLogService operationService = new OperationLogService();
             operationService.PostData(new OperationLogModel() { Remark = userInfo.Id, OptContent = "更新用户" });

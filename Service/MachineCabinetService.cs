@@ -65,11 +65,7 @@ namespace Service
         }
 
 
-        /// <summary>
-        /// 新增/修改会员信息
-        /// </summary>
-        /// <param name="memberInfo"></param>
-        /// <returns></returns>
+        
         public int PostData(MachineCabinetModel machineCabinetInfo)
         {
             int result;
@@ -83,10 +79,7 @@ namespace Service
             return result;
         }
 
-        /// <summary>
-        /// 删除用户
-        /// </summary>
-        /// <returns></returns>
+       
         public int DeleteData(string id)
         {
                 MachineCabinetModel machineCabinetInfo = new MachineCabinetModel();
