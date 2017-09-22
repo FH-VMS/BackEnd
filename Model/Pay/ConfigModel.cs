@@ -72,7 +72,7 @@ namespace Model.Pay
             set;
         }
 
-        [Column(Name = "wx_app_secret")]
+        [Column(Name = "wx_appsecret")]
         public string WxAppSecret
         {
             get;

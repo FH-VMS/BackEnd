@@ -74,5 +74,7 @@ namespace Chuang.Back.Controllers
             return Content(commonService.GetMachineTypeDic());
         }
 
+       
+
     }
 }

@@ -88,24 +88,9 @@ namespace Service
         /// <returns></returns>
         public int DeleteData(string id)
         {
-
-            try
-            {
-                GenerateDal.BeginTransaction();
-
-                ConfigModel configInfo = new ConfigModel();
-                configInfo.Id = id;
-                GenerateDal.Delete<ConfigModel>(CommonSqlKey.DeletePayConfig, configInfo);
-                //操作日志
-                OperationLogService operationService = new OperationLogService();
-                operationService.PostData(new OperationLogModel() { OptContent = "删除支付配置", Remark = configInfo.ClientId });
-                return 1;
-            }
-            catch (Exception e)
-            {
-                GenerateDal.RollBack();
-                return 0;
-            }
+            ConfigModel configInfo = new ConfigModel();
+            configInfo.Id = id;
+            return GenerateDal.Delete<ConfigModel>(CommonSqlKey.DeletePayConfig, configInfo);
         }
 
         public int UpdateData(ConfigModel configInfo)

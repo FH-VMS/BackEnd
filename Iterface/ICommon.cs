@@ -61,5 +61,8 @@ namespace Interface
          [Remark("根据机器ID取名称", ParmsNote = "机器ID", ReturnNote = "string")]
          List<CommonDic> GetMachineNameById(string machineId);
 
+         [Remark("取支付配置字典", ParmsNote = "", ReturnNote = "字典实体列表")]
+         List<CommonDic> GetPayConfigDic(string clientId);
+
     }
 }

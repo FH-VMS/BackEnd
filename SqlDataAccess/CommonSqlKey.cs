@@ -52,6 +52,7 @@ namespace SqlDataAccess
         GetProductDicAll,
         CheckMachineId,
         GetMachineNameById,
+        GetPayConfigDic,
 
         //机型
         GetMachineType,
@@ -118,6 +119,8 @@ namespace SqlDataAccess
         GetSaleListAllCount,
         GetSaleListCount,
         GetClientIds,
+        GetChildAndParentIds,
+        GetClientParentIds,
         GetRefundDetail,
 
         //货道信息

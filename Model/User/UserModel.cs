@@ -70,6 +70,7 @@ namespace Model.User
             set;
         }
 
+
         public List<UserModel> children
         {
             get;

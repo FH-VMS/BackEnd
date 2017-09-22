@@ -424,5 +424,51 @@ namespace Service
             });
             return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetMachineNameById, conditions);
         }
+
+        // 取机型字典模板
+        public List<CommonDic> GetPayConfigDic(string clientId)
+        {
+            string clientIds = GetChildAndParentIds(clientId);
+            var conditions = new List<Condition>();
+            conditions.Add(new Condition
+            {
+                LeftBrace = " AND ",
+                ParamName = "ClientId",
+                DbColumnName = "client_id",
+                ParamValue = "'"+clientIds.Replace(",","','")+"'",
+                Operation = ConditionOperate.INWithNoPara,
+                RightBrace = "",
+                Logic = " "
+            });
+
+
+            return GenerateDal.LoadByConditions<CommonDic>(CommonSqlKey.GetPayConfigDic, conditions);
+
+        }
+
+        private string GetChildAndParentIds(string clientId)
+        {
+            var conditions = new List<Condition>();
+            conditions.Add(new Condition
+            {
+                LeftBrace = "",
+                ParamName = "ClientId",
+                DbColumnName = "",
+                ParamValue = clientId,
+                Operation = ConditionOperate.None,
+                RightBrace = "",
+                Logic = ""
+            });
+
+            DataTable result = GenerateDal.LoadDataTableByConditions(CommonSqlKey.GetChildAndParentIds, conditions);
+            if (result.Rows.Count == 0)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return result.Rows[0][0].ToString();
+            }
+        }
     }
 }

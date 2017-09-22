@@ -144,5 +144,12 @@ namespace Chuang.Back.Controllers
            
             return Content(menusService.UpdatePassword(userInfo));
         }
+
+        //取支付配置字典
+        public ResultObj<List<CommonDic>> GetPayConfigDic(string clientId)
+        {
+            ICommon commonService = new CommonService();
+            return Content(commonService.GetPayConfigDic(clientId));
+        }
     }
 }
