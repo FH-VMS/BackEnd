@@ -117,10 +117,12 @@ namespace PaymentLib.wx
             data.SetValue("goods_tag", "零售");
             data.SetValue("trade_type", "JSAPI");
             data.SetValue("openid", payInfo.openid);
-
+            
             WxPayData result = WxPayApi.UnifiedOrder(data);
+            // Log.Write("GetDataW", result.IsSet("appid").ToString() + "~" + result.IsSet("prepay_id").ToString() + "~" + result.GetValue("prepay_id").ToString());
             if (!result.IsSet("appid") || !result.IsSet("prepay_id") || result.GetValue("prepay_id").ToString() == "")
             {
+
                 throw new WxPayException("UnifiedOrder response error!");
             }
 

@@ -194,6 +194,7 @@ namespace PaymentLib.wx
             //Log.Write("wwwww", "Refund request :");
             //Log.Debug("WxPayApi", "Refund request : " + xml);
             string response = HttpService.Post(xml, url, true, timeOut);//调用HTTP通信接口提交数据到API
+            Log.Write("refund", response);
             //Log.Debug("WxPayApi", "Refund response : " + response);
 
             var end = DateTime.Now;
@@ -394,9 +395,10 @@ namespace PaymentLib.wx
             string xml = inputObj.ToXml();
 
             var start = DateTime.Now;
-
+           
             //Log.Debug("WxPayApi", "UnfiedOrder request : " + xml);
             string response = HttpService.Post(xml, url, false, timeOut);
+            
             //Log.Write("result", response);
             //Log.Debug("WxPayApi", "UnfiedOrder response : " + response);
 
@@ -407,7 +409,7 @@ namespace PaymentLib.wx
             result.FromXml(response);
 
             ReportCostTime(url, timeCost, result);//测速上报
-
+            Log.Write("GetDataW", result.ToXml());
             return result;
         }
 

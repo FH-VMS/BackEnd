@@ -39,6 +39,9 @@ namespace Chuang.Back.Controllers
         public ResultObj<PayStateModel> GetDataW(string k, string code)
         {
             bool isPayByTunnel = true;
+            try
+            {
+              
             //解码机器传过来的key值
             //解析k值
             KeyJsonModel keyJsonInfo = AnalizeKey(k);
@@ -59,8 +62,7 @@ namespace Chuang.Back.Controllers
             }
 
             //JSAPI支付预处理
-            try
-            {
+            
                
                 if (string.IsNullOrEmpty(keyJsonInfo.m) || keyJsonInfo.t.Count == 0)
                 {
@@ -140,14 +142,15 @@ namespace Chuang.Back.Controllers
                 //若传递了相关参数，则调统一下单接口，获得后续相关接口的入口参数 
 
                 // jsApiPay.openid = openid;
-                
+
                 JsApi.payInfo.total_fee = Convert.ToInt32((totalFee * 100));
                 JsApi.payInfo.jsonProduct = JsonHandler.GetJsonStrFromObject(keyJsonInfo, false);
+
                 //写入交易中转
                 FileHandler.WriteFile("data/", JsApi.payInfo.trade_no + ".wa", JsApi.payInfo.jsonProduct);
 
                 WxPayData unifiedOrderResult = JsApi.GetUnifiedOrderResult();
-                
+                Log.Write("GetDataW", "step step");
                 string wxJsApiParam = JsApi.GetJsApiParameters();//获取H5调起JS API参数       
                 payState.RequestState = "1";
                 payState.ProductJson = JsonHandler.GetJsonStrFromObject(lstProduct, false);
@@ -160,7 +163,10 @@ namespace Chuang.Back.Controllers
             }
             catch (Exception ex)
             {
-
+                PayStateModel payStateError = new PayStateModel();
+                payStateError.RequestState = "3";
+                payStateError.RequestData = ex.Message;
+                return Content(payStateError);
             }
             return Content(new PayStateModel());
         }

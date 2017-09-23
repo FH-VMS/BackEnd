@@ -279,11 +279,7 @@ namespace Chuang.Back.Controllers
 
         #endregion
 
-        #region 退款结果通知
-
-
-
-        #endregion
+        
         /*
         private void LogMachineData(string[] data)
         {

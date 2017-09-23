@@ -72,6 +72,8 @@ namespace Service
 
             string userClientId = HttpContextHandler.GetHeaderObj("UserClientId").ToString();
             configInfo.ClientId = userClientId;
+            configInfo.WxSslcertPath = "cert/"+configInfo.WxMchId+"/apiclient_cert.p12";
+            configInfo.WxSslcertPassword = configInfo.WxMchId;
             result = GenerateDal.Create(configInfo);
 
             //操作日志
@@ -98,6 +100,8 @@ namespace Service
             //操作日志
             OperationLogService operationService = new OperationLogService();
             operationService.PostData(new OperationLogModel() { Remark = configInfo.ClientId, OptContent = "更新支付配置" });
+            configInfo.WxSslcertPath = "cert/" + configInfo.WxMchId + "/apiclient_cert.p12";
+            configInfo.WxSslcertPassword = configInfo.WxMchId;
             return GenerateDal.Update(CommonSqlKey.UpdatePayConfig, configInfo);
         }
     }
