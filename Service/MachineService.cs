@@ -498,7 +498,7 @@ namespace Service
             return GenerateDal.LoadDataTable(CommonSqlKey.GetBeepHeart, dicParam);
         }
 
-        private int UpdateMachineInlineTime(string machineId)
+        public int UpdateMachineInlineTime(string machineId)
         {
             MachineListModel machineList = new MachineListModel();
             machineList.MachineId = machineId;

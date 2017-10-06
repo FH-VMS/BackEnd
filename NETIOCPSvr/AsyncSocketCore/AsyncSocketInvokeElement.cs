@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 using System.Threading;
+using SocketAsyncSvr.AsyncSocketCore;
 
 namespace SocketAsyncSvr
 {
@@ -56,6 +57,7 @@ namespace SocketAsyncSvr
             if (receiveBuffer.DataCount > sizeof(int))
             {
                 //按照长度分包
+                /*
                 int packetLength = BitConverter.ToInt32(receiveBuffer.Buffer, 0); //获取包长度
                 if (NetByteOrder)
                     packetLength = System.Net.IPAddress.NetworkToHostOrder(packetLength); //把网络字节顺序转为本地字节顺序
@@ -75,6 +77,11 @@ namespace SocketAsyncSvr
                 {
                     return true;
                 }
+                 * */
+                MachineLogic machineLogic = new MachineLogic();
+                byte[] result = machineLogic.HandleHexByte(buffer);
+                DoSendBuffer(result, 0, result.Length);
+                return true;
             }
             else
             {

@@ -7,6 +7,7 @@ namespace SocketService
 {
     public class Utility
     {
+       
         //http://www.cnblogs.com/zjbtony/archive/2012/04/13/2445055.html
         //http://www.cnblogs.com/allen0118/p/3892028.html
         /// <summary>
@@ -202,6 +203,22 @@ namespace SocketService
                 }
             }
             return returnStr;
+        }
+
+        public static string[] SecretKey = { "12345678", "12345678", "12345678", "12345678", "12345678", "12345678", "12345678", "12345678" };
+
+        //加密
+        public static byte[] Encryption(int size,byte[] hex)
+        {
+            string nowSecretKey = SecretKey[size % 8];
+            return hex;
+        }
+
+        //解密
+        public static byte[] Deencryption(int size, byte[] hex)
+        {
+            string nowSecretKey = SecretKey[size % 8];
+            return hex;
         }
     }
 }

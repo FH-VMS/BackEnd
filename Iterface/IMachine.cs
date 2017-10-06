@@ -38,6 +38,9 @@ namespace Interface
         [Remark("心跳包", ParmsNote = "机器编号", ReturnNote = "DataTable")]
         DataTable GetBeepHeart(string machineId);
 
+        [Remark("更新机器在线时间", ParmsNote = "机器编号", ReturnNote = "int")]
+        int UpdateMachineInlineTime(string machineId);
+
         [Remark("机器上报下行处理结果", ParmsNote = "机器编号,标识类型", ReturnNote = "int")]
         int GetHandleResult(string machineId, string machineStatus);
 
