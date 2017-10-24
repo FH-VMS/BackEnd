@@ -267,8 +267,22 @@ namespace Service
                 GenerateDal.BeginTransaction();
                 foreach (TunnelInfoModel tunnelInfo in lstTunnelInfo)
                 {
+                    decimal price = Convert.ToDecimal(GetPriceByWaresId(tunnelInfo.WaresId));
                     tunnelInfo.UpdateDate = DateTime.Now;
                     GenerateDal.Update(CommonSqlKey.UpdateTunnelCurrStock, tunnelInfo);
+
+                    TunnelConfigModel tunnelConfig = new TunnelConfigModel();
+                    tunnelConfig.MachineId = tunnelInfo.MachineId;
+                    tunnelConfig.CabinetId = tunnelInfo.CabinetId;
+                    tunnelConfig.TunnelId = tunnelInfo.TunnelId;
+                    tunnelConfig.CashPrices = price;
+                    tunnelConfig.WpayPrices = price;
+                    tunnelConfig.AlipayPrices = price;
+                    tunnelConfig.IcPrices = price;
+                    tunnelConfig.WaresId = tunnelInfo.WaresId;
+
+                    GenerateDal.Update(CommonSqlKey.UpdateTunnelPrice, tunnelConfig);
+                    
                 }
                 MachineService ms = new MachineService();
                 //往机器下行表里插入库存改变的数据
@@ -293,6 +307,34 @@ namespace Service
                 return 0;
             }
             return 1;
+        }
+
+        private string GetPriceByWaresId(string waresId)
+        {
+            var conditions = new List<Condition>();
+
+            if (!string.IsNullOrEmpty(waresId))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "WaresId",
+                    DbColumnName = "wares_id",
+                    ParamValue = waresId,
+                    Operation = ConditionOperate.Equal,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+            DataTable result = GenerateDal.LoadDataTableByConditions(CommonSqlKey.GetPriceByWaresId, conditions);
+            if (result.Rows.Count > 0)
+            {
+                return result.Rows[0][0].ToString();
+            }
+            else
+            {
+                return "0";
+            }
         }
 
         public DataTable ExportByProduct(string machineId)

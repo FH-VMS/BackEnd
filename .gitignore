@@ -16,3 +16,7 @@ Utility/bin/
 Utility/obj/
 WebApi/bin/
 WebApi/obj/
+WebApi/Web.config
+WebApi/Web.Debug.config
+WebApi/Web.Release.config
+WebApi/Properties/

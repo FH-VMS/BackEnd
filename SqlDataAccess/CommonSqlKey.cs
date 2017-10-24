@@ -87,6 +87,8 @@ namespace SqlDataAccess
         GetCabinetConfig,
         DeleteTunnelConfig,
         UpdateTunnelConfig,
+        GetPriceByWaresId,
+        UpdateTunnelPrice,
 
         //商品列表
         GetProductList,

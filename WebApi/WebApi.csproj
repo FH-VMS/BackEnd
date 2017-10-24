@@ -102,9 +102,6 @@
     <Content Include="index.html" />
     <Content Include="js\jquery.min.js" />
     <Content Include="js\jquery.qrcode.min.js" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -138,6 +135,7 @@
     <Content Include="packages.config" />
     <Content Include="SqlConfigText.sqlconfig" />
     <None Include="Properties\PublishProfiles\web.config.pubxml" />
+    <Content Include="Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

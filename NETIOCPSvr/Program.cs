@@ -45,7 +45,7 @@ namespace SocketAsyncSvr
             AsyncSocketSvr = new AsyncSocketServer(parallelNum);
             AsyncSocketSvr.SocketTimeOutMS = socketTimeOutMS;
             AsyncSocketSvr.Init();
-            IPEndPoint listenPoint = new IPEndPoint(IPAddress.Parse("10.0.2.15"), port);
+            IPEndPoint listenPoint = new IPEndPoint(IPAddress.Parse("192.168.20.190"), port);
             AsyncSocketSvr.Start(listenPoint);
 
             Console.WriteLine("Press any key to terminate the server process....");

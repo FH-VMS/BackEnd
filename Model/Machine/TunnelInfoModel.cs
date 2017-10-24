@@ -78,6 +78,12 @@ namespace Model.Machine
             set;
         }
 
+        public string WaresId
+        {
+            get;
+            set;
+        }
+
         public string ProductName
         {
             get;
