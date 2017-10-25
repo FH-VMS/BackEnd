@@ -20,3 +20,6 @@ WebApi/Web.config
 WebApi/Web.Debug.config
 WebApi/Web.Release.config
 WebApi/Properties/
+WebApi/SqlConfigText - 副本.sqlconfig
+WebApi/logs/
+WebApi/data/

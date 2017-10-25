@@ -268,8 +268,18 @@ namespace Service
                 foreach (TunnelInfoModel tunnelInfo in lstTunnelInfo)
                 {
                     decimal price = Convert.ToDecimal(GetPriceByWaresId(tunnelInfo.WaresId));
-                    tunnelInfo.UpdateDate = DateTime.Now;
-                    GenerateDal.Update(CommonSqlKey.UpdateTunnelCurrStock, tunnelInfo);
+                    if (string.IsNullOrEmpty(tunnelInfo.GoodsStuId))
+                    {
+                        tunnelInfo.GoodsStuId = tunnelInfo.TunnelId;
+                        tunnelInfo.CurrStatus = "1";
+                        GenerateDal.Create<TunnelInfoModel>(tunnelInfo);
+                    }
+                    else
+                    {
+                        tunnelInfo.UpdateDate = DateTime.Now;
+                        GenerateDal.Update(CommonSqlKey.UpdateTunnelCurrStock, tunnelInfo);
+                    }
+                   
 
                     TunnelConfigModel tunnelConfig = new TunnelConfigModel();
                     tunnelConfig.MachineId = tunnelInfo.MachineId;
