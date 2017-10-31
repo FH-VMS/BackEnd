@@ -51,6 +51,13 @@ namespace Model.Machine
               set;
           }
 
+          [Column(Name = "communicate")]
+          public string Communicate
+          {
+              get;
+              set;
+          }
+
           public List<CabinetConfigModel> Cabinets
           {
               get;

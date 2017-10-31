@@ -114,10 +114,19 @@ namespace Model.Machine
              set;
          }
 
+         [Column(Name = "ip_v4")]
+         public string IpV4
+         {
+             get;
+             set;
+         }
+
          public string LatestOnline
          {
              get;
              set;
          }
+
+
     }
 }
