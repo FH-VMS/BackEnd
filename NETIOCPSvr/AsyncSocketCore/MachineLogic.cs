@@ -1,6 +1,7 @@
 ﻿using Interface;
 using Model.Machine;
 using Model.Pay;
+using Model.Sale;
 using Service;
 using SocketService;
 using System;
@@ -15,7 +16,7 @@ namespace SocketAsyncSvr.AsyncSocketCore
         //处理机器消息
         public byte[] HandleHexByte(byte[] byteInfo)
         {
-            return byteInfo;
+            //return byteInfo;
             //Utility.byteToHexStr(byteInfo.Take(4).ToArray());
             //byte[] byteInfo = Utility.strToToHexByte(info);
             //包头
@@ -29,11 +30,12 @@ namespace SocketAsyncSvr.AsyncSocketCore
             byte[] data = deencryData.Skip(3).Take(infoSize).ToArray();
             //string machine_num = Encoding.ASCII.GetString(data, 1, 4); 
             //验证是否为有效包
+            /*
             if (!IsValidPackage(infoVerify, data))
             {
                 return new byte[0];
             }
-
+            */
             int retResult = 0;
             IMachine imachine = new MachineService();
             //Dao daoBll = new Dao();
@@ -134,7 +136,7 @@ namespace SocketAsyncSvr.AsyncSocketCore
                         }
                         returnByte43[2] = result43Chunk;
                         //SendMsg(finalResultA1, myClientSocket);
-                        Utility.Encryption(returnByte43[1], returnByte43.Skip(2).Take(finalResultA1.Length-3).ToArray()).CopyTo(returnByte43, 3);//加密
+                        Utility.Encryption(returnByte43[1], returnByte43.Skip(2).Take(finalResult43.Length-3).ToArray()).CopyTo(returnByte43, 3);//加密
 
                         return returnByte43;
                     case "45": //满仓信息 (一键补货)
@@ -278,10 +280,10 @@ namespace SocketAsyncSvr.AsyncSocketCore
                         returnByte48[3] = data[0];
                         data.Skip(1).Take(12).ToArray().CopyTo(returnByte48, 4);//机器编号
                         data.Skip(13).Take(12).ToArray().CopyTo(returnByte48, 15);//流水号
-                        returnByte46[29] = 238;
+                        returnByte48[29] = 238;
 
                         byte[] tunnels48 = data.Skip(25).Take(data.Length - 25).ToArray();
-                        int loopTimes48 = (tunnels.Length / 11);
+                        int loopTimes48 = (tunnels48.Length / 11);
                         int result48 = 0;//daoBll.FullfilGoodsByTunnel(tunnels, loopTimes, machineNumA5);
                         List<PriceAndMaxStockModel> lstPrice48 = new List<PriceAndMaxStockModel>();
                         
@@ -324,10 +326,10 @@ namespace SocketAsyncSvr.AsyncSocketCore
                         returnByte49[3] = data[0];
                         data.Skip(1).Take(12).ToArray().CopyTo(returnByte49, 4);//机器编号
                         data.Skip(13).Take(12).ToArray().CopyTo(returnByte49, 15);//流水号
-                        returnByte46[29] = 238;
+                        returnByte49[29] = 238;
 
                         byte[] tunnels49 = data.Skip(25).Take(data.Length - 25).ToArray();
-                        int loopTimes49 = (tunnels.Length / 7);
+                        int loopTimes49 = (tunnels49.Length / 7);
                         int result49 = 0;//daoBll.FullfilGoodsByTunnel(tunnels, loopTimes, machineNumA5);
                         List<PriceAndMaxStockModel> lstPrice49 = new List<PriceAndMaxStockModel>();
 
@@ -359,11 +361,23 @@ namespace SocketAsyncSvr.AsyncSocketCore
                         //SendMsg(returnByteA5, myClientSocket);
                         Utility.Encryption(returnByte49[1], returnByte49.Skip(2).Take(returnByte49.Length - 3).ToArray()).CopyTo(returnByte49, 3);//加密
                         return returnByte49;
+                    case "58":
+                        SaleModel saleInfo = new SaleModel();
+                        saleInfo.SalesIcId = Guid.NewGuid().ToString();
+                        saleInfo.MachineId = "XXXXXX";
+                        IBase<SaleModel> ibase = new SalesService();
+                        ibase.PostData(saleInfo);
+                        byte[] returnByte88 = new byte[2];
+                        returnByte88[0] = byteInfo[0];//包头;
+                        returnByte88[1] = 238;//包头;
+                        return returnByte88;
                 }
+                return byteInfo;
             }
             catch (Exception e)
             {
                 //MessageBox.Show(e.Message);
+                return byteInfo;
             }
 
 

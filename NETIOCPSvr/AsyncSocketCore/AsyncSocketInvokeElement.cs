@@ -56,6 +56,7 @@ namespace SocketAsyncSvr
             receiveBuffer.WriteBuffer(buffer, offset, count);
             if (receiveBuffer.DataCount > sizeof(int))
             {
+
                 //按照长度分包
                 /*
                 int packetLength = BitConverter.ToInt32(receiveBuffer.Buffer, 0); //获取包长度
@@ -78,8 +79,9 @@ namespace SocketAsyncSvr
                     return true;
                 }
                  * */
+                byte[] handleBuffer = buffer.Take(count).ToArray();
                 MachineLogic machineLogic = new MachineLogic();
-                byte[] result = machineLogic.HandleHexByte(buffer);
+                byte[] result = machineLogic.HandleHexByte(handleBuffer);
                 DoSendBuffer(result, 0, result.Length);
                 return true;
             }
