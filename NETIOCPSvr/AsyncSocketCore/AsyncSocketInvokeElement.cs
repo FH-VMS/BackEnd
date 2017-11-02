@@ -81,7 +81,7 @@ namespace SocketAsyncSvr
                  * */
                 byte[] handleBuffer = buffer.Take(count).ToArray();
                 MachineLogic machineLogic = new MachineLogic();
-                byte[] result = machineLogic.HandleHexByte(handleBuffer);
+                byte[] result = machineLogic.HandleHexByte(handleBuffer, m_asyncSocketUserToken);
                 DoSendBuffer(result, 0, result.Length);
                 return true;
             }

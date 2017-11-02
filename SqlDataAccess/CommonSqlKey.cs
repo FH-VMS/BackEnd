@@ -158,6 +158,7 @@ namespace SqlDataAccess
         UpdateMaxPuts,
         UpdatePrice,
         UpdateMachineInlineTime,
+        UpdateMachineInlineTimeAndIpv4,
         GetCabinetId,
         GetSalesByNo,
         //支付对应接口

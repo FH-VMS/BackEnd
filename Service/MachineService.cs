@@ -507,6 +507,16 @@ namespace Service
             return GenerateDal.Update(CommonSqlKey.UpdateMachineInlineTime, machineList);
         }
 
+        public int UpdateMachineInlineTimeAndIpv4(string machineId, string ipv4)
+        {
+            MachineListModel machineList = new MachineListModel();
+            machineList.MachineId = machineId;
+            machineList.IpV4 = ipv4;
+            machineList.LatestDate = DateTime.Now;
+
+            return GenerateDal.Update(CommonSqlKey.UpdateMachineInlineTimeAndIpv4, machineList);
+        }
+
         //机器上报下行处理结果
         public int GetHandleResult(string machineId, string machineStatus)
         {

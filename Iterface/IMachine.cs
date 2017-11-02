@@ -41,6 +41,9 @@ namespace Interface
         [Remark("更新机器在线时间", ParmsNote = "机器编号", ReturnNote = "int")]
         int UpdateMachineInlineTime(string machineId);
 
+        [Remark("更新机器在线时间和ip", ParmsNote = "机器编号,ip号", ReturnNote = "int")]
+        int UpdateMachineInlineTimeAndIpv4(string machineId,string ipv4);
+
         [Remark("机器上报下行处理结果", ParmsNote = "机器编号,标识类型", ReturnNote = "int")]
         int GetHandleResult(string machineId, string machineStatus);
 

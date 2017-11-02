@@ -14,7 +14,7 @@ namespace SocketAsyncSvr.AsyncSocketCore
     public class MachineLogic
     {
         //处理机器消息
-        public byte[] HandleHexByte(byte[] byteInfo)
+        public byte[] HandleHexByte(byte[] byteInfo, AsyncSocketUserToken m_asyncSocketUserToken)
         {
             //return byteInfo;
             //Utility.byteToHexStr(byteInfo.Take(4).ToArray());
@@ -52,14 +52,14 @@ namespace SocketAsyncSvr.AsyncSocketCore
                         //机器编号
                         string machineNum41 = Utility.GenerateRealityData(data.Skip(1).Take(12).ToArray(), "stringval");
 
-                        
-                        resultA1 = imachine.UpdateMachineInlineTime(machineNum41);
+
+                        resultA1 = imachine.UpdateMachineInlineTimeAndIpv4(machineNum41, m_asyncSocketUserToken.ConnectSocket.RemoteEndPoint.ToString() + "-" + m_asyncSocketUserToken.ConnectSocket.LocalEndPoint.ToString());
 
 
 
                         byte[] returnByteA1 = new byte[18];
                         returnByteA1[0] = byteInfo[0];//包头;
-                        returnByteA1[1] = 13; //size
+                        returnByteA1[1] = 14; //size
                         returnByteA1[3] = data[0];
                         data.Skip(1).Take(12).ToArray().CopyTo(returnByteA1, 4);//机器编号
                         
@@ -72,7 +72,7 @@ namespace SocketAsyncSvr.AsyncSocketCore
                             returnByteA1[16] = 31;
                         }
 
-                        data[17]=238;//流水号
+                        returnByteA1[17]=238;//流水号
                         //验证码生成
                         byte resultA1Chunk = new byte();
                         byte[] finalResultA1 = returnByteA1.Skip(3).Take(returnByteA1[1]).ToArray();
@@ -83,7 +83,7 @@ namespace SocketAsyncSvr.AsyncSocketCore
                         returnByteA1[2] = resultA1Chunk;
                         //SendMsg(finalResultA1, myClientSocket);
                         Utility.Encryption(finalResultA1[1], finalResultA1.Skip(2).Take(finalResultA1.Length-3).ToArray()).CopyTo(returnByteA1, 3);//加密
-                        return finalResultA1;
+                        return returnByteA1;
                        
                     case "43": //上报出货结果
                         int result43 = 0;
