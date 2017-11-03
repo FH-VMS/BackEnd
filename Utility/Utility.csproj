@@ -78,6 +78,7 @@
     <Compile Include="ReflectionHandler.cs" />
     <Compile Include="RegexHandler.cs" />
     <Compile Include="ServiceInfoHelper.cs" />
+    <Compile Include="SocketHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">
