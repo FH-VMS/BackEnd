@@ -1,4 +1,8 @@
-﻿using Chuang.Back.Base;
+﻿using Aop.Api;
+using Aop.Api.Domain;
+using Aop.Api.Request;
+using Aop.Api.Response;
+using Chuang.Back.Base;
 using Interface;
 using Model.Pay;
 using Model.Refund;
@@ -69,6 +73,8 @@ namespace Chuang.Back.Controllers
                 }
                 //移动支付配置赋值
                 GenerateConfigModel("a", lstSaleModel[0].MachineId);
+                /****************************旧支付宝退款接口*******************************/
+                /*
                 string detail_data = string.Empty;
                 int batch_num = 1;
                 foreach (SaleModel saleModel in lstSaleModel)
@@ -105,13 +111,54 @@ namespace Chuang.Back.Controllers
                     HttpHelper.CreateGetHttpResponse(sHtmlText, 2000, "", null);
                     //string sHtmlText = Submit.BuildRequest(sParaTemp, "get", "确认");
                     //HttpContext.Current.Response.Write(sHtmlText);
-                    
-
-
-                  
                 }
                 
-                
+                */
+                /************************新支付宝退款接口****************************/
+                DefaultAopClient client = new DefaultAopClient(Config.new_gatewayUrl, Config.refund_appid, Config.private_key, "json", "1.0", Config.refund_sign_type, Config.rsa_sign, Config.new_charset, false);
+                foreach (SaleModel saleModel in lstSaleModel)
+                {
+                    AlipayTradeRefundModel model = new AlipayTradeRefundModel();
+                    model.OutTradeNo = "";
+                    model.TradeNo = saleModel.ComId;
+                    if (saleModel.RealitySaleNumber == 0)
+                    {
+                        model.RefundAmount = saleModel.TradeAmount.ToString();
+                    }
+                    else
+                    {
+                        model.RefundAmount = (saleModel.TradeAmount * ((saleModel.SalesNumber - saleModel.RealitySaleNumber) / saleModel.SalesNumber)).ToString();
+                    }
+                    if(saleModel.TradeStatus==1){
+                        model.RefundReason = "待出货";
+                    }
+                    else if (saleModel.TradeStatus == 3)
+                    {
+                        model.RefundReason = "全部出货失败";
+                    }
+                    else if (saleModel.TradeStatus == 5)
+                    {
+                        model.RefundReason = "部分出货失败";
+                    }
+
+                    model.OutRequestNo = GeneraterRefundNo();
+
+                    AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
+                    request.SetNotifyUrl(Config.refund_notify_url);
+                    request.SetBizModel(model);
+
+                    AlipayTradeRefundResponse response = null;
+                    try
+                    {
+                        response = client.Execute(request);
+                        //WIDresule.Text = response.Body;
+
+                    }
+                    catch (Exception exp)
+                    {
+                        throw exp;
+                    }
+                }
                 return Content(1);
             }
             catch (Exception ex)

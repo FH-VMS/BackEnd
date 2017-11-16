@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AopSdk">
-      <HintPath>..\PaymentLib\alinew\AopSdk.dll</HintPath>
+      <HintPath>commondll\AopSdk.dll</HintPath>
     </Reference>
     <Reference Include="LitJson">
       <HintPath>commondll\LitJson.dll</HintPath>
