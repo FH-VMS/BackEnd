@@ -46,6 +46,17 @@ namespace Service
                 DbColumnName = "trade_status",
                 ParamValue = 5,
                 Operation = ConditionOperate.Equal,
+                RightBrace = "  ",
+                Logic = " OR "
+            });
+
+            conditions.Add(new Condition
+            {
+                LeftBrace = "  ",
+                ParamName = "TradeStatus2",
+                DbColumnName = "trade_status",
+                ParamValue = 1,
+                Operation = ConditionOperate.Equal,
                 RightBrace = " ) ",
                 Logic = ""
             });

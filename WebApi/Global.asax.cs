@@ -33,6 +33,10 @@ namespace Chuang.Back
             }
         }
 
+        protected void Application_EndRequest(object sender, EventArgs e)
+        {
+        }
+
         protected void Application_End()
         {
         }

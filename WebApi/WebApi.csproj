@@ -41,6 +41,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AopSdk">
+      <HintPath>..\PaymentLib\alinew\AopSdk.dll</HintPath>
+    </Reference>
     <Reference Include="LitJson">
       <HintPath>commondll\LitJson.dll</HintPath>
     </Reference>

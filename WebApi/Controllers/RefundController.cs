@@ -320,6 +320,11 @@ namespace Chuang.Back.Controllers
                     Config.seller_id = cModel.AliParter;
                     Config.refund_appid = cModel.AliRefundAppId;
                     Config.rsa_sign = cModel.AliRefundRsaSign;
+
+                    //新支付宝接口
+                    Config.new_app_id = cModel.AliAppId;
+                    Config.private_key = cModel.AliKey;
+                    Config.alipay_public_key = cModel.AliPublicKey;
                 }
                 else if (isAliOrWx == "w")
                 {

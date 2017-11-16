@@ -70,9 +70,9 @@ namespace PaymentLib.ali
         //实现异步http://www.cnblogs.com/wintersun/archive/2013/01/11/2856541.html
 
         /*****************************************退款配置**********************************************/
-        public static string refund_appid = "2017042106870868";
+        public static string refund_appid = "2017042106871270";
 
-        public static string rsa_sign = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxYzgAHv6GEr1C6a3iVZdztLYPWmiI2bVSWbel1oNLlGDvYCnbYY9zb80FqNh3toLpHNgdOrKQf4AtYxtF+aU4I0x+v29PzNQ5+QWSqa5AqYZwCXx0bbk9HXogz94uJBzs3QN1J3rm2xDi8w7KNJTDn42FBgxZV7iprhsEnnEqKI8fWb2WXB/TPguBEzaku6LFWqKfBTF50HybknXfbpiergUpZdpBGIW7CHrsBxTmkSl9A4R76kb770N2xcBmC6/gMUT4gG4OPRWKfWoXaNHSCX8T/Fv7uEANe39w59ze0XOoitxH1o60DvzSg5Mhwd7PVtPU3aLY/3Jf0cwe6cvIQIDAQAB";
+        public static string rsa_sign = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGPgmxK5YV0/fH939lHFxg6lgTqByC9Hom3re4gnphpYFtWKLTvTo8b3YTUMKlmRUsF63MtUrrFfjND9s43XzIiEKj7R12qye8X76/RZfbmvYHF7JVE14KnucBOnQ+hlqf7PskJbQa7+1n3IjknY8iRBHrnGKSDW9iTmCjeHiexwIDAQAB";
 
         public static string refund_notify_url = Path.NotidyAddr + "/Refund/PostRefundResultA"; //退款通知
 
@@ -89,6 +89,25 @@ namespace PaymentLib.ali
         // 调用的接口名，无需修改
         public static string refund_service = "refund_fastpay_by_platform_nopwd ";
 
+
+
+        /**************************************新的api字段************************************/
+        // 应用ID,您的APPID
+        public static string new_app_id = "2017042106871270";
+        // 支付宝网关
+        public static string new_gatewayUrl = "https://openapi.alipay.com/gateway.do";
+
+        // 商户私钥，您的原始格式RSA私钥
+        public static string private_key = "MIICXAIBAAKBgQDGPgmxK5YV0/fH939lHFxg6lgTqByC9Hom3re4gnphpYFtWKLTvTo8b3YTUMKlmRUsF63MtUrrFfjND9s43XzIiEKj7R12qye8X76/RZfbmvYHF7JVE14KnucBOnQ+hlqf7PskJbQa7+1n3IjknY8iRBHrnGKSDW9iTmCjeHiexwIDAQABAoGBAIguPcIzStqbze7UGfN/VAZPdUmrhkp/XxosjNB28VL6uro+1TvXFZZGizohlFTloCG18nJZZ6muYkebyOB7Zie1wqnFHPWxptjptwBZbS149gXl721glKpV5bI4PtmMuyHXLOBuIzjKs8am1vs+T7Gprm7AIvPT9MGJCBr9B7qBAkEA5Yk22pCaHd1/a0aWqNzlLu3po5X1Ocfz200+a3hhKI6f7NpVuzxQQemMSyP8UFDPgjOmbGPssJppLC0FAaqJkQJBAN0ZL+NznvFAzpFvqbCxMDS9igph6UFREAoiUu91ULAtUCpCkBODmkoLrKbm7mm0PF4yeLD5dc7f0HRfIYRSttcCQFI42MFqUwqnsWEIJCfRGPe6mZrTuMg97Ah+nwF4WbVhgcAiZdtwO3+g3XR9K4DJsct+HPtuv/ZzGYGNjuGN6UECQG0q7YlJ4nXOgPAwiUG0C1BPMeR0eb6Fbv0B+58+dqu2g/mJyifIeBsNbp8uMRPCKXh9RThkw/V0bzG2cw8p5BsCQBpG9GAOD59gJp+5BEJxpZa9oCxFfIyIGGYfyRxPiCJFwNUz+MyaHjq1DgFJY8WiicZoKg37Vzalff6MTixDVIc=";
+
+        // 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
+        public static string alipay_public_key = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGPgmxK5YV0/fH939lHFxg6lgTqByC9Hom3re4gnphpYFtWKLTvTo8b3YTUMKlmRUsF63MtUrrFfjND9s43XzIiEKj7R12qye8X76/RZfbmvYHF7JVE14KnucBOnQ+hlqf7PskJbQa7+1n3IjknY8iRBHrnGKSDW9iTmCjeHiexwIDAQAB";
+
+        // 签名方式
+        public static string new_sign_type = "RSA";
+
+        // 编码格式
+        public static string new_charset = "UTF-8";
 
 
     }

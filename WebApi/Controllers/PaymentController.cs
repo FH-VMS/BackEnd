@@ -1,4 +1,8 @@
-﻿using Chuang.Back.Base;
+﻿using Aop.Api;
+using Aop.Api.Domain;
+using Aop.Api.Request;
+using Aop.Api.Response;
+using Chuang.Back.Base;
 using Interface;
 using Model.Pay;
 using Model.Product;
@@ -195,8 +199,11 @@ namespace Chuang.Back.Controllers
         //支付宝支付
         public ResultObj<PayStateModel> GetDataA(string k, bool isPayByTunnel = true)
         {
-            ////////////////////////////////////////////请求参数////////////////////////////////////////////
             PayStateModel payStateModel = new PayStateModel();
+        
+           
+            ////////////////////////////////////////////请求参数////////////////////////////////////////////
+           
             //解析k值
             KeyJsonModel keyJsonInfo = AnalizeKey(k);
 
@@ -288,6 +295,8 @@ namespace Chuang.Back.Controllers
             ////////////////////////////////////////////////////////////////////////////////////////////////
 
             //把请求参数打包成数组
+            /*********************老接口注释 2017年11月16日********************/
+            /*
             SortedDictionary<string, string> sParaTemp = new SortedDictionary<string, string>();
             sParaTemp.Add("partner", Config.partner);
             sParaTemp.Add("seller_id", Config.seller_id);
@@ -307,10 +316,49 @@ namespace Chuang.Back.Controllers
 
             //建立请求
             string sHtmlText = Config.GateWay+Submit.BuildRequestParaToString(sParaTemp, Encoding.UTF8);
+            
             payStateModel.ProductJson = JsonHandler.GetJsonStrFromObject(lstProduct, false);
             payStateModel.RequestData = sHtmlText;
             payStateModel.RequestState = "1";
+           
             return Content(payStateModel);
+        */
+
+
+            /**********************支付宝新接口添加**************************/
+            DefaultAopClient client = new DefaultAopClient(Config.new_gatewayUrl, Config.new_app_id, Config.private_key, "json", "1.0", Config.new_sign_type, Config.alipay_public_key, Config.new_charset, false);
+            AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
+            model.Body = subject;
+            model.Subject = subject;
+            model.TotalAmount = total_fee;
+            model.OutTradeNo = out_trade_no;
+            model.ProductCode = "";
+            model.QuitUrl = "";
+           
+            AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
+            // 设置支付完成同步回调地址
+            request.SetReturnUrl(Config.return_url);
+            // 设置支付完成异步通知接收地址
+            request.SetNotifyUrl(Config.notify_url);
+            // 将业务model载入到request
+            request.SetBizModel(model);
+
+            AlipayTradeWapPayResponse response = null;
+            try
+            {
+                response = client.pageExecute(request, null, "post");
+                payStateModel.ProductJson = JsonHandler.GetJsonStrFromObject(lstProduct, false);
+                payStateModel.RequestData = response.Body;
+                payStateModel.RequestState = "1";
+                return Content(payStateModel);
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+
+            //return Content(new PayStateModel());
+            
         }
 
         #endregion
@@ -329,6 +377,11 @@ namespace Chuang.Back.Controllers
                     Config.seller_id = cModel.AliParter;
                     Config.refund_appid = cModel.AliRefundAppId;
                     Config.rsa_sign = cModel.AliRefundRsaSign;
+
+                    //新支付宝接口
+                    Config.new_app_id = cModel.AliAppId;
+                    Config.private_key = cModel.AliKey;
+                    Config.alipay_public_key = cModel.AliPublicKey;
                 }
                 else if (isAliOrWx == "w")
                 {
@@ -340,6 +393,12 @@ namespace Chuang.Back.Controllers
                     //WxPayConfig.SSLCERT_PASSWORD = cModel.WxSslcertPassword;
                 }
             }
+        }
+
+
+        public void AlipayNew()
+        {
+           
         }
     }
 }
