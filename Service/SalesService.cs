@@ -193,7 +193,19 @@ namespace Service
                 });
             }
 
-            
+            if (!string.IsNullOrEmpty(saleInfo.TradeNo))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "TradeNo",
+                    DbColumnName = "trade_no",
+                    ParamValue = "%" + saleInfo.TradeNo.Trim() + "%",
+                    Operation = ConditionOperate.Like,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
 
             
 
@@ -331,6 +343,20 @@ namespace Service
                     DbColumnName = "sales_date",
                     ParamValue = Convert.ToDateTime(saleInfo.SaleDateEnd).AddDays(1),
                     Operation = ConditionOperate.LessThan,
+                    RightBrace = "",
+                    Logic = ""
+                });
+            }
+
+            if (!string.IsNullOrEmpty(saleInfo.TradeNo))
+            {
+                conditions.Add(new Condition
+                {
+                    LeftBrace = " AND ",
+                    ParamName = "TradeNo",
+                    DbColumnName = "trade_no",
+                    ParamValue = "%" + saleInfo.TradeNo.Trim() + "%",
+                    Operation = ConditionOperate.Like,
                     RightBrace = "",
                     Logic = ""
                 });
