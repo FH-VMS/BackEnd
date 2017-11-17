@@ -380,7 +380,7 @@ namespace Chuang.Back.Controllers
 
                     //新支付宝接口
                     Config.new_app_id = cModel.AliAppId;
-                    Config.private_key = cModel.AliKey;
+                    Config.private_key = cModel.AliPrivateKey;
                     Config.alipay_public_key = cModel.AliPublicKey;
                 }
                 else if (isAliOrWx == "w")

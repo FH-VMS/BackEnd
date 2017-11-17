@@ -85,10 +85,10 @@ namespace PaymentLib.ali
         // 字符编码格式 目前支持 gbk 或 utf-8
         public static string refund_input_charset = "utf-8";
 
-        public static string refund_sign_type = "RSA2";
+        public static string refund_sign_type = "RSA";
 
         // 调用的接口名，无需修改
-        public static string refund_service = "refund_fastpay_by_platform_nopwd ";
+        public static string refund_service = "refund_fastpay_by_platform_nopwd";
 
 
 

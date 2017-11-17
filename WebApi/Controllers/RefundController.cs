@@ -74,7 +74,7 @@ namespace Chuang.Back.Controllers
                 //移动支付配置赋值
                 GenerateConfigModel("a", lstSaleModel[0].MachineId);
                 /****************************旧支付宝退款接口*******************************/
-                /*
+             
                 string detail_data = string.Empty;
                 int batch_num = 1;
                 foreach (SaleModel saleModel in lstSaleModel)
@@ -103,18 +103,27 @@ namespace Chuang.Back.Controllers
                     sParaTemp.Add("batch_no", GeneraterRefundNo());
                     sParaTemp.Add("batch_num", batch_num.ToString());//退款笔数，必填，参数detail_data的值中，“#”字符出现的数量加1，最大支持1000笔（即“#”字符出现的数量999个）
                     sParaTemp.Add("detail_data", detail_data);  //退款详细数据，必填，格式（支付宝交易号^退款金额^备注），多笔请用#隔开
-                    //sParaTemp.Add("sign_type", Config.sign_type);
-                    //sParaTemp.Add("sign", Config.key); 
+                    //sParaTemp.Add("sign_type", Config.refund_sign_type);
+                    //sParaTemp.Add("sign", Config.rsa_sign); 
 
                     //建立请求
-                    string sHtmlText = Config.GateWay + Submit.BuildRequestParaToString(sParaTemp, Encoding.UTF8);
-                    HttpHelper.CreateGetHttpResponse(sHtmlText, 2000, "", null);
+                    try
+                    {
+                        string sHtmlText = Config.GateWay + Submit.BuildRequestParaToString(sParaTemp, Encoding.UTF8);
+                        HttpHelper.CreateGetHttpResponse(sHtmlText, 2000, "", null);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                   
                     //string sHtmlText = Submit.BuildRequest(sParaTemp, "get", "确认");
                     //HttpContext.Current.Response.Write(sHtmlText);
                 }
                 
-                */
+            
                 /************************新支付宝退款接口****************************/
+                /*
                 DefaultAopClient client = new DefaultAopClient(Config.new_gatewayUrl, Config.refund_appid, Config.private_key, "json", "1.0", Config.refund_sign_type, Config.rsa_sign, Config.new_charset, false);
                 foreach (SaleModel saleModel in lstSaleModel)
                 {
@@ -159,6 +168,7 @@ namespace Chuang.Back.Controllers
                         throw exp;
                     }
                 }
+                 * */
                 return Content(1);
             }
             catch (Exception ex)
@@ -370,7 +380,7 @@ namespace Chuang.Back.Controllers
 
                     //新支付宝接口
                     Config.new_app_id = cModel.AliAppId;
-                    Config.private_key = cModel.AliKey;
+                    Config.private_key = cModel.AliPrivateKey;
                     Config.alipay_public_key = cModel.AliPublicKey;
                 }
                 else if (isAliOrWx == "w")

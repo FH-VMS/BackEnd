@@ -59,6 +59,13 @@ namespace Model.Pay
             set;
         }
 
+        [Column(Name = "ali_private_key")]
+        public string AliPrivateKey
+        {
+            get;
+            set;
+        }
+
         [Column(Name = "ali_appid")]
         public string AliAppId
         {
