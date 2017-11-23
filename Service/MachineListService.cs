@@ -84,6 +84,17 @@ namespace Service
                 RightBrace = "",
                 Logic = ""
             });
+
+            conditions.Add(new Condition
+            {
+                LeftBrace = "  ",
+                ParamName = "LatestOnline",
+                DbColumnName = "LatestOnline",
+                ParamValue = "asc",
+                Operation = ConditionOperate.OrderBy,
+                RightBrace = "",
+                Logic = ""
+            });
             
             conditions.AddRange(CreatePaginConditions(machineListInfo.PageIndex, machineListInfo.PageSize));
 
