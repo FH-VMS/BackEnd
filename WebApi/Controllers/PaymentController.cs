@@ -385,6 +385,10 @@ namespace Chuang.Back.Controllers
                     if (Config.private_key.Length > 1000)
                     {
                         Config.new_sign_type = "RSA2";
+                    } 
+                    else
+                    {
+                        Config.new_sign_type = "RSA";
                     }
                 }
                 else if (isAliOrWx == "w")
